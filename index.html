@@ -1,0 +1,2113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https://cdn.jsdelivr.net/npm/three@0.160.0/; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://script.google.com/macros/s/AKfycby-sYlfwB66MaSrgHGhrATI6W3EXnBphI4JAbI5pFSahpUI_x-k0hac6lmdTDQX638Q/exec https://script.googleusercontent.com; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#10171A">
+<link rel="icon" href="data:,">
+<title>Financial Planner, Wealthy4Tomorrow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nothing+You+Could+Do&family=Sora:wght@300;400;500;600&display=swap">
+<style>
+:root{
+  --paper:#F4EFE7;--charcoal:#2D3436;--deep:#1C2427;--night:#10171A;--teal:#0B6F62;--emerald:#0A8967;--gold:#B8975A;
+  --ivory:#F5F0E1;--slate:#4F646A;--grey:#D8D2C7;--clay:#8F4D44;
+  --type:'Sora',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --soft:rgba(245,240,225,.72);--rule:rgba(245,240,225,.16);
+  --pad:clamp(22px,5.6vw,72px);--fw:100vw;--base:max(22px,env(safe-area-inset-bottom));
+  --out:cubic-bezier(.16,1,.3,1);--inout:cubic-bezier(.77,0,.18,1);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--night);height:100%;overscroll-behavior:none}
+body{margin:0;height:100%;font-family:var(--type);font-size:17px;line-height:1.5;color:var(--ivory);-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;overflow:hidden;overscroll-behavior:none}
+p,h1,h2,h3,ol,ul,dl,dd{margin:0;padding:0}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* ---- the film: one table, from before dawn to first light ---- */
+#film{position:fixed;left:0;right:0;top:0;height:100vh;height:100lvh;z-index:0;overflow:hidden;background:var(--night);touch-action:none}
+.split #film{left:auto;width:var(--fw)}
+#reel{position:absolute;inset:0}
+#sky,#set{position:absolute;inset:0;width:100%;height:100%;display:block}
+#set{opacity:0;pointer-events:none}
+/* the words that point at the practice: a gold point, a fine line, a short label */
+#tags{position:absolute;inset:0;pointer-events:none;opacity:0}
+.tag{position:absolute;left:0;top:0;width:0;height:0;will-change:transform}
+.tag b{position:absolute;left:-3.5px;top:-3.5px;width:7px;height:7px;border-radius:50%;background:#E6C078;box-shadow:0 0 0 4px rgba(230,192,120,.2),0 0 12px 2px rgba(230,192,120,.75);transform:scale(0);transition:transform .3s ease}
+.tag i{position:absolute;top:-.5px;height:1px;width:var(--len);background:rgba(230,192,120,.85);transform:scaleX(0);transition:transform .3s ease}
+.tag.tr i{left:9px;transform-origin:0 50%}
+.tag.tl i{right:9px;transform-origin:100% 50%}
+.tag span{position:absolute;top:0;white-space:nowrap;font-weight:500;font-size:clamp(13.5px,1.1vw,16.5px);line-height:1;letter-spacing:-.015em;color:var(--ivory);
+  text-shadow:0 0 14px rgba(16,23,26,.95),0 1px 5px rgba(16,23,26,.9),0 0 2px rgba(16,23,26,.8);opacity:0;transform:translate(var(--dx),-50%);transition:opacity .25s ease,transform .3s ease}
+.tag.tr span{left:calc(var(--len) + 18px);--dx:-10px}
+.tag.tl span{right:calc(var(--len) + 18px);--dx:10px}
+@media (max-width:600px){.tag{--len:18px!important}.tag span{white-space:normal;width:6.6em;line-height:1.18}.tag.tl span{text-align:right}}
+.low .tag{--len:18px!important}.low .tag span{white-space:normal;width:6.6em;line-height:1.18}.low .tag.tl span{text-align:right}
+.tag.on b{transform:none;transition:transform .6s var(--out)}
+.tag.on i{transform:none;transition:transform .8s var(--out) .12s}
+.tag.on span{opacity:1;transform:translate(0,-50%);transition:opacity .6s ease .34s,transform .9s var(--out) .34s}
+.shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 62%;display:none;user-select:none;-webkit-user-drag:none}
+.nogl #sky,.nogl #set,.nogl #tags{display:none}
+.nogl .shot{display:block}
+.nogl #reel{opacity:0;transition:opacity 2.4s ease}
+.nogl.s3 #reel{opacity:1}
+#vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(125% 92% at 50% 46%,rgba(16,23,26,0) 52%,rgba(16,23,26,.46))}
+#grain{position:absolute;inset:-60px;pointer-events:none;opacity:.2;mix-blend-mode:overlay;background-size:160px 160px;animation:grain .56s steps(1) infinite}
+@keyframes grain{0%{transform:translate(0,0)}14%{transform:translate(-31px,17px)}28%{transform:translate(23px,-41px)}42%{transform:translate(-13px,-23px)}57%{transform:translate(37px,29px)}71%{transform:translate(-43px,7px)}85%{transform:translate(11px,43px)}}
+/* the words sit low, like subtitles, on the shadow at the foot of the picture */
+#film::after{content:'';position:absolute;z-index:1;left:0;right:0;bottom:0;height:52%;pointer-events:none;transition:height .8s ease,opacity .8s ease;
+  background:linear-gradient(rgba(16,23,26,0),rgba(16,23,26,.3) 30%,rgba(16,23,26,.8) 70%,rgba(16,23,26,.92))}
+.tab #film::after{height:40%;background:linear-gradient(rgba(16,23,26,0),rgba(16,23,26,.6) 27%,rgba(16,23,26,.86) 62%,rgba(16,23,26,.94))}
+.end #film::after{height:54%;transition:height .5s ease}
+.inflow #film::after,.fin #film::after{opacity:0}
+.split #film::after{display:none}
+#film::before{content:'';position:absolute;z-index:1;left:-1px;top:0;bottom:0;width:22%;pointer-events:none;display:none;
+  background:linear-gradient(90deg,var(--night),rgba(16,23,26,.55) 38%,rgba(16,23,26,0))}
+.split #film::before{display:block}
+
+/* ---- opening: dark, the mark, then the lamp over the table comes on ---- */
+#veil{position:fixed;inset:0;z-index:60;pointer-events:none;background:var(--night);transition:background-color 1.2s ease}
+#veil .v-mark{position:absolute;left:50%;top:44%;width:min(64vw,330px);height:auto;transform:translate(-50%,-50%) translateY(10px);opacity:0;transition:opacity 1s ease,transform 1.6s var(--out)}
+.s1 #veil .v-mark{opacity:1;transform:translate(-50%,-50%)}
+.s3 #veil{background-color:rgba(16,23,26,0)}
+.s3 #veil .v-mark{opacity:0;transition:opacity .8s ease}
+.ready #veil{display:none}
+
+/* ---- the words: fixed over the film, one thought at a time ---- */
+#stage{position:fixed;left:0;right:0;top:0;height:100vh;height:100svh;z-index:2;pointer-events:none;color:var(--ivory);transition:opacity .5s ease}
+#stage::before{content:'';position:absolute;left:0;right:0;top:0;height:132px;background:linear-gradient(rgba(16,23,26,.5),rgba(16,23,26,0))}
+.tab #stage::before{background:linear-gradient(rgba(16,23,26,.68),rgba(16,23,26,0))}
+.inflow #stage{opacity:0;visibility:hidden;transition:opacity .5s ease,visibility 0s .5s}
+.split #stage{right:var(--fw)}
+.split #stage::before{display:none}
+/* the closing frame is the brightest one: keep the wordmark's corner deep */
+#stage::after{content:'';position:absolute;left:0;top:0;width:min(100%,580px);height:240px;opacity:0;transition:opacity 1.4s ease;
+  background:radial-gradient(ellipse 100% 100% at 0 0,rgba(16,23,26,.88),rgba(16,23,26,.6) 38%,rgba(16,23,26,0) 76%)}
+.end #stage::after{opacity:1}
+.split #stage::after,.flat #stage::after{display:none}
+.nav{position:absolute;z-index:1;left:var(--pad);top:max(22px,env(safe-area-inset-top))}
+.nav img,.bar img{width:clamp(150px,15vw,200px);height:auto;display:block}
+.cap{position:absolute;left:var(--pad);right:var(--pad);bottom:calc(var(--base) + 14px);opacity:0;visibility:hidden;transition:opacity .3s ease,visibility 0s .3s}
+.cap.on{opacity:1;visibility:visible;transition:opacity .2s ease}
+.cap.on a,.cap.on button{pointer-events:auto}
+.say{font-weight:400;font-size:clamp(26px,7.3vw,40px);line-height:1.12;letter-spacing:-.036em;max-width:16em;text-wrap:balance;text-shadow:0 1px 22px rgba(16,23,26,.55)}
+.sub{font-weight:300;font-size:clamp(16.5px,4.4vw,19px);line-height:1.5;letter-spacing:-.012em;max-width:30em;color:rgba(245,240,225,.88);text-shadow:0 1px 16px rgba(16,23,26,.6)}
+.say+.sub,.sub+.say{margin-top:clamp(10px,1.6vh,16px)}
+.w{display:inline-block;opacity:0;transform:translateY(.42em);transition:opacity .25s ease,transform .25s ease}
+.cap.on .w{opacity:1;transform:none;transition:opacity .75s ease,transform 1s var(--out);transition-delay:calc(var(--n)*34ms + 90ms)}
+.cap .sub,.cap .after{opacity:0;transform:translateY(8px);transition:opacity .25s ease,transform .25s ease}
+.cap.on .sub,.cap.on .after{opacity:1;transform:none;transition:opacity .9s ease var(--dl,.5s),transform 1.1s var(--out) var(--dl,.5s)}
+.cap.on .sub+.say .w{transition-delay:calc(var(--n)*34ms + 560ms)}
+.cap .lead{--dl:.1s}
+.cap.close{--dl:.6s;bottom:calc(var(--base) + 6px)}
+.after{margin-top:clamp(16px,2.4vh,26px);--dl:.85s}
+.fine{font-weight:300;font-size:13px;line-height:1.5;color:var(--soft);max-width:32em;margin-top:14px}
+
+/* the opening frame */
+.hero{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .45s ease,visibility 0s .45s}
+.hero.on{opacity:1;visibility:visible;transition:opacity .3s ease}
+.hero.on a,.hero.on button{pointer-events:auto}
+.hero::before{content:'';position:absolute;left:0;right:0;top:0;height:60%;pointer-events:none;
+  background:linear-gradient(90deg,rgba(16,23,26,.42),rgba(16,23,26,0) 80%),linear-gradient(rgba(16,23,26,.6),rgba(16,23,26,.36));
+  -webkit-mask-image:linear-gradient(#000 50%,transparent);mask-image:linear-gradient(#000 50%,transparent)}
+.split .hero::before,.flat .hero::before{display:none}
+.hero-head{position:absolute;left:var(--pad);right:var(--pad);top:clamp(92px,13vh,150px)}
+.role{font-weight:500;font-size:clamp(15px,4vw,17.5px);line-height:1.45;letter-spacing:-.015em;color:var(--ivory);text-shadow:0 1px 14px rgba(16,23,26,.85)}
+.role span{display:block;margin-top:3px;font-weight:400;font-size:.86em;letter-spacing:-.005em;color:rgba(245,240,225,.9)}
+h1{font-weight:600;font-size:clamp(36px,10.6vw,60px);line-height:1.04;letter-spacing:-.045em;margin:clamp(14px,2.2vh,24px) 0 0 -.03em;text-shadow:0 2px 30px rgba(16,23,26,.55)}
+.ln{display:block;overflow:hidden;padding:.06em 0 .14em;margin-bottom:-.16em}
+.ln>span{display:block;transform:translateY(112%);transition:transform 1.25s var(--out)}
+.lit .ln>span{transform:none;transition-delay:.1s}
+.lit .ln:nth-child(2)>span{transition-delay:.22s}
+.fade{opacity:0;transform:translateY(10px);transition:opacity 1s ease,transform 1.2s var(--out)}
+.lit .fade{opacity:1;transform:none}
+.lit .f0{transition-delay:.3s}.lit .f1{transition-delay:0s}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;border:0;border-radius:14px;height:56px;padding:0 28px 0 22px;background:var(--teal);color:var(--ivory);font-family:var(--type);font-weight:500;font-size:17px;letter-spacing:-.015em;text-decoration:none;transition:background .25s,transform .2s var(--out)}
+.btn::before{content:'';flex:none;width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px rgba(184,151,90,.22)}
+.btn:hover{background:var(--emerald)}
+.btn:active{transform:scale(.975)}
+.btn[disabled]{opacity:.55;cursor:default}
+.btn.going[disabled]{opacity:.86}
+.btn.going::before{animation:going 1.15s ease-in-out infinite}
+@keyframes going{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.7);opacity:.5}}
+@media (prefers-reduced-motion:reduce){.btn.going::before{animation:none}}
+
+/* wide screens: the words stand beside the picture instead of on it */
+.split .cap{bottom:auto;top:50%;transform:translateY(-50%);right:clamp(8px,2vw,32px)}
+.split .hero{display:flex;flex-direction:column;justify-content:center;gap:clamp(30px,5vh,48px);padding:0 clamp(8px,2vw,32px) 0 var(--pad)}
+.split .hero-head{position:static}
+.split h1{font-size:clamp(44px,4.4vw,80px)}
+.split .say{font-size:clamp(32px,3.1vw,54px)}
+.split .sub{font-size:clamp(18px,1.4vw,22px)}
+/* a phone held sideways: the same side-by-side layout, set smaller for the short screen and kept clear of the notch */
+.low{--pad:max(26px,calc(env(safe-area-inset-left) + 10px))}
+.low .nav{top:max(14px,env(safe-area-inset-top))}
+.low .nav img,.low .bar img{width:128px}
+.low .hero{gap:18px;padding-top:30px}
+.low .role{font-size:14px}
+.low h1{font-size:clamp(28px,8.6vh,40px);margin-top:10px}
+.low .say{font-size:clamp(21px,6.6vh,29px)}
+.low .sub{font-size:clamp(14px,4vh,16.5px);line-height:1.42}
+.low .btn{height:46px;padding:0 22px 0 18px;font-size:15.5px;border-radius:12px}
+.low .flow-in{padding-top:max(14px,env(safe-area-inset-top));padding-bottom:28px}
+.low .steps{margin-top:14px}
+.low .q{font-size:clamp(20px,6vh,26px)}
+.low .field{margin-top:14px}
+.low .field input{font-size:20px}
+.low .choices{margin-top:12px}
+.low .choice{min-height:44px;font-size:15.5px}
+.low #done h2{font-size:clamp(28px,9vh,40px);margin-top:0}
+@media (min-width:860px){
+  body:not(.split) .cap{bottom:max(40px,6vh);right:38%}
+  body:not(.split) .hero::before{height:70%;background:radial-gradient(120% 100% at 0 0,rgba(16,23,26,.72),rgba(16,23,26,.4) 42%,rgba(16,23,26,0) 72%)}
+  body:not(.split) .say{font-size:clamp(36px,4.8vw,52px)}
+  body:not(.split) h1{font-size:clamp(54px,8vw,88px)}
+}
+
+/* the Tomorrow Line: a teal path across the top with one gold point, where the film has reached */
+.top{position:fixed;left:0;right:0;top:0;z-index:20;pointer-events:none;opacity:0;transition:opacity .6s ease}
+.top.on{opacity:1}
+.top i{display:block;height:2px;background:rgba(10,137,103,.3)}
+.top i b{display:block;height:100%;width:100%;transform:scaleX(0);transform-origin:0 50%;background:var(--emerald)}
+.top u{position:absolute;left:-4px;top:-3px;width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px 2px rgba(184,151,90,.75)}
+
+/* no moving picture: the same words as a plain page */
+body.flat{overflow:auto;height:auto}
+.flat #film,.flat #veil,.flat .top,.flat #stage::before{display:none}
+.flat #stage{position:static;height:auto;pointer-events:auto}
+.flat .cap,.flat .hero,.flat .nav{position:static;opacity:1;visibility:visible;transform:none;padding:clamp(30px,5vh,56px) var(--pad) 0}
+.flat .cap.close{padding-bottom:64px}
+.flat .hero-head{position:static}
+.flat .w,.flat .cap .sub,.flat .cap .after,.flat .ln>span,.flat .fade{opacity:1;transform:none;transition:none}
+
+/* ---- the questions: asked at the table, over the softened room ---- */
+#cover{position:fixed;inset:0;z-index:39;background:var(--night);opacity:0;pointer-events:none;transition:opacity .45s ease}
+#cover.on{opacity:1}
+#flow{position:fixed;inset:0;z-index:40;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;opacity:0;transition:opacity .7s ease;
+  background:linear-gradient(rgba(16,23,26,.72),rgba(16,23,26,.58) 46%,rgba(16,23,26,.82))}
+#flow.on{opacity:1}
+.split #flow{right:var(--fw);background:none}
+.flat #flow{background:var(--night)}
+.flow-in{padding:max(22px,env(safe-area-inset-top)) var(--pad) 48px}
+.flow-in>*{max-width:640px}
+.split .flow-in{padding-right:clamp(24px,4vw,64px)}
+.bar{display:flex;align-items:center;justify-content:space-between;min-height:34px}
+.back{display:inline-flex;align-items:center;gap:6px;border:0;background:transparent;padding:8px 0 8px 10px;font-weight:400;font-size:15px;letter-spacing:-.01em;color:var(--soft)}
+.back svg{width:16px;height:16px}
+.back:hover{color:var(--ivory)}
+.path{position:relative;height:2px;margin-top:22px;background:rgba(245,240,225,.14)}
+.path i{position:absolute;inset:0;transform:scaleX(0);transform-origin:0 50%;background:var(--emerald);transition:transform .9s var(--out)}
+.path u{position:absolute;left:0;top:-3px;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px 2px rgba(184,151,90,.75);transition:left .9s var(--out)}
+.count{display:block;margin-top:10px;text-align:right;font-weight:300;font-size:13.5px;color:var(--soft);font-variant-numeric:tabular-nums}
+.steps{margin-top:clamp(18px,6vh,84px)}
+.step{transition:opacity .2s ease,transform .2s ease}
+.step.out{opacity:0;transform:translateY(calc(var(--d,1)*-12px))}
+.q{display:block;font-weight:400;font-size:clamp(25px,6.7vw,42px);line-height:1.14;letter-spacing:-.036em;color:var(--ivory);text-wrap:balance;text-shadow:0 1px 22px rgba(16,23,26,.5)}
+.r{animation:rise .75s var(--out) both;animation-delay:calc(var(--i,0)*80ms)}
+@keyframes rise{from{opacity:0;transform:translateY(calc(var(--d,1)*22px))}to{opacity:1;transform:none}}
+.hint{font-weight:300;font-size:15.5px;color:var(--soft);margin-top:12px}
+.field{margin-top:clamp(24px,5vh,44px)}
+.field input,.field textarea{width:100%;border:0;border-bottom:1.5px solid rgba(245,240,225,.42);border-radius:0;background:transparent;font:inherit;font-weight:300;font-size:clamp(21px,2.3vw,27px);line-height:1.35;letter-spacing:-.02em;color:var(--ivory);padding:8px 0 12px;caret-color:var(--gold);outline:none;transition:border-color .25s,box-shadow .25s;-webkit-appearance:none;appearance:none}
+.field textarea{resize:none;min-height:104px;font-size:clamp(18px,2vw,22px)}
+.field input:focus,.field textarea:focus{border-bottom-color:var(--emerald);box-shadow:0 1.5px 0 var(--emerald)}
+.field input:-webkit-autofill{-webkit-text-fill-color:var(--ivory);transition:background-color 99999s}
+/* choosing lights a gold point and draws the teal line under the answer */
+.choices{display:grid;grid-template-columns:1fr;margin-top:clamp(20px,4vh,40px);max-width:520px;border-top:1px solid var(--rule)}
+.choices.two{grid-template-columns:1fr 1fr;column-gap:22px;border-top:0}
+.choice{position:relative;display:flex;align-items:center;min-height:58px;padding:10px 12px 10px 36px;border:0;border-bottom:1px solid var(--rule);background:transparent;text-align:left;font-family:var(--type);font-weight:400;font-size:17.5px;letter-spacing:-.015em;color:rgba(245,240,225,.92);transition:color .2s,background .2s}
+.choice::before{content:'';position:absolute;left:9px;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50%;box-shadow:inset 0 0 0 1.5px rgba(245,240,225,.5);transition:background .2s,box-shadow .25s,transform .3s var(--out)}
+.choice::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--emerald);transform:scaleX(0);transform-origin:0 50%;transition:transform .5s var(--out)}
+.choice:hover{color:#fff;background:rgba(245,240,225,.05)}
+.choice[aria-pressed="true"]{color:#fff}
+.choice[aria-pressed="true"]::before{background:var(--gold);box-shadow:0 0 0 5px rgba(184,151,90,.2),0 0 14px 1px rgba(184,151,90,.7);transform:scale(1.1)}
+.choice[aria-pressed="true"]::after{transform:scaleX(1)}
+.err{min-height:24px;margin-top:10px;font-size:15px;color:#EDB7AC}
+.actions{display:flex;align-items:center;gap:8px;margin-top:6px}
+.review-list{margin-top:24px;border-top:1px solid var(--rule)}
+.review-list div{display:grid;grid-template-columns:104px minmax(0,1fr);gap:12px;padding:11px 0;border-bottom:1px solid var(--rule);font-size:15.5px}
+.review-list dt{font-weight:300;color:var(--soft)}
+.review-list dd{overflow-wrap:anywhere;white-space:pre-wrap}
+.notice{margin-top:18px;font-weight:300;font-size:13.5px;line-height:1.55;color:var(--soft)}
+.notice+.notice{margin-top:8px}
+.review-actions{margin-top:6px}
+.demo{margin-top:14px;font-weight:300;font-size:13.5px;color:var(--soft)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.back[disabled]{opacity:.4;cursor:default}
+.shutmsg{margin-top:clamp(18px,6vh,84px)}
+.shut #steps,.shut .path,.shut #count{display:none}
+.err:not(:empty)+.review-actions{margin-top:16px}
+h2[tabindex="-1"]:focus-visible{outline:none}      /* a heading that is only focused so a screen reader reads it */
+/* a phone held upright: the question, its field and its button sit higher, so the button is still in view above the keyboard */
+@media (pointer:coarse) and (max-height:800px) and (orientation:portrait){
+  .steps,.shutmsg{margin-top:16px}
+  .field{margin-top:20px}
+  .field textarea{min-height:78px}
+  .err.none{min-height:0;margin-top:0}
+  .err.none+.actions{margin-top:20px}
+}
+
+/* ---- the ending: the table in the morning, with their name on it ---- */
+#done{position:fixed;inset:0;z-index:41;pointer-events:none;color:var(--ivory);padding:max(22px,env(safe-area-inset-top)) var(--pad) 0}
+#done::before{content:'';position:absolute;z-index:-1;left:0;right:0;top:0;height:56%;pointer-events:none;
+  background:linear-gradient(rgba(16,23,26,.86),rgba(16,23,26,.68) 60%,rgba(16,23,26,0))}
+#done .nav{position:static}
+body:not(.split) #done h2{margin-top:clamp(18px,3vh,44px)}
+body:not(.split) #done p{text-shadow:0 1px 14px rgba(16,23,26,.85),0 0 3px rgba(16,23,26,.5)}
+@media (max-height:700px){body:not(.split) #done h2{font-size:clamp(30px,8.4vw,40px);margin-bottom:10px}body:not(.split) #done p{font-size:15.5px;line-height:1.45}body:not(.split) #done .small{font-size:13.5px;margin-top:6px}}
+#done h2{font-weight:600;font-size:clamp(34px,9.4vw,72px);line-height:1.04;letter-spacing:-.045em;margin:clamp(26px,5vh,60px) 0 clamp(14px,2.4vh,26px) -.03em}
+#done p{max-width:30em;font-weight:300;font-size:clamp(16px,1.3vw,19px);line-height:1.5}
+#done .small{margin-top:8px;font-size:14px;color:var(--soft)}
+#done b{font-weight:500;overflow-wrap:anywhere}
+.split #done{right:var(--fw);display:flex;flex-direction:column;justify-content:center;padding-bottom:10vh}
+.split #done::before{display:none}
+.split #done .nav{position:absolute}
+.flat #done{background:var(--night)}
+
+@media (prefers-reduced-motion:reduce){
+  .r,#grain{animation:none}
+  .path i,.path u,.step,#flow{transition:none}
+}
+</style>
+</head>
+<body>
+<a class="sr" href="#apply" data-apply>Go to the application</a>
+
+<div id="film" aria-hidden="true">
+  <div id="reel">
+    <img class="shot" id="kN" src="img/seat-night-blank.jpg" alt="">
+    <img class="shot" id="kD" src="img/seat-dawn-blank.jpg" alt="">
+    <canvas id="sky"></canvas>
+    <canvas id="set"></canvas>
+    <div id="tags"></div>
+    <i id="vig"></i><i id="grain"></i>
+  </div>
+</div>
+<img id="kC" src="img/seat-talk-blank.jpg" alt="" hidden><img id="kZ" src="img/seat-depth.png" alt="" hidden>
+<img id="kNs" src="img/seat-night-soft.jpg" alt="" hidden><img id="kDs" src="img/seat-dawn-soft.jpg" alt="" hidden>
+
+<div id="veil" aria-hidden="true">
+  <img class="v-mark" src="w4t_wordmark.png" alt="">
+</div>
+
+<main id="site">
+  <div id="stage">
+    <div class="nav fade f0"><img src="w4t_wordmark.png" alt="Wealthy4Tomorrow" width="900" height="183"></div>
+
+    <header class="hero on" data-cap>
+      <div class="hero-head">
+        <p class="role fade f1">Financial Planner @ Chamberwealth<span>Manulife Financial Advisers Pte. Ltd.</span></p>
+        <h1><span class="ln"><span>There’s a seat</span></span><span class="ln"><span>at this table.</span></span></h1>
+      </div>
+    </header>
+
+    <section class="cap" data-cap>
+      <p class="sub lead">A family sits across from you and tells you what they’re worried about.</p>
+      <p class="say">You listen first.</p>
+    </section>
+    <section class="cap" data-cap>
+      <p class="say">Then you help them plan their lives.</p>
+      <p class="sub">What to protect, what to grow, what can wait. Not many jobs put you this close to the decisions that shape someone’s life.</p>
+    </section>
+    <section class="cap" data-cap>
+      <p class="say">You build your own practice here.</p>
+      <p class="sub">Like starting a business, it begins with strong foundations: your skills and your expertise.</p>
+    </section>
+    <section class="cap" data-cap>
+      <p class="say">It’s self-employed, and you’re establishing your own career.</p>
+      <p class="sub">The first stretch asks a lot of you. It’s also where your name starts to mean something.</p>
+    </section>
+    <section class="cap" data-cap>
+      <p class="say">I’m building the next generation of AI-enabled advisers.</p>
+      <p class="sub">I build much of this practice with technology and AI, and I’m looking for curious people who want to work this way.</p>
+    </section>
+    <section class="cap close" data-cap id="apply">
+      <p class="say">If this sounds like you, let’s connect.</p>
+      <div class="after">
+        <button type="button" class="btn" data-apply id="closeApply">Start application</button>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div class="top" id="top"><i><b id="topFill"></b></i><u id="topDot"></u></div>
+
+<div id="cover" aria-hidden="true"></div>
+
+<section id="flow" hidden aria-label="Application">
+  <div class="flow-in">
+    <div class="bar">
+      <img src="w4t_wordmark.png" alt="Wealthy4Tomorrow" width="900" height="183">
+      <button type="button" class="back" id="back">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l-6 6 6 6"/></svg>Back
+      </button>
+    </div>
+    <div class="path" aria-hidden="true"><i id="fill"></i><u id="pathDot"></u></div>
+    <span class="count" id="count" aria-live="polite">1 of 8</span>
+    <form class="steps" id="steps" novalidate autocomplete="on">
+      <input class="hp" type="text" name="website" id="hp" tabindex="-1" autocomplete="off" aria-hidden="true" data-lpignore="true" data-1p-ignore data-bwignore data-form-type="other">
+    </form>
+    <div class="shutmsg" id="shut" hidden>
+      <h2 class="q" tabindex="-1">Applications are paused for now.</h2>
+      <p class="hint">Nothing has been sent. Please come back another day.</p>
+    </div>
+  </div>
+</section>
+
+<section id="done" hidden>
+  <div class="nav"><img src="w4t_wordmark.png" alt="Wealthy4Tomorrow" width="900" height="183"></div>
+  <h2 class="r" style="--i:6">Thank you, <span id="doneName"></span>.</h2>
+  <p class="r" style="--i:8" id="doneLine"></p>
+  <p class="small r" style="--i:9" id="doneSmall"></p>
+  <p class="small r" style="--i:10" id="demoDone" hidden>Preview only. Nothing was sent or saved.</p>
+</section>
+
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<script>
+/* With endpoint empty the page sends nothing anywhere. With it set, Send posts the answers to that one address
+   (the receiving script) and nowhere else. Nothing in the page's own address can change where answers go. */
+const CONFIG = {
+  endpoint: 'https://script.google.com/macros/s/AKfycby-sYlfwB66MaSrgHGhrATI6W3EXnBphI4JAbI5pFSahpUI_x-k0hac6lmdTDQX638Q/exec',
+  // true only once a confirmation email is really sent to each applicant; it switches the wording that promises one
+  confirmEmail: false,
+  // Shown after the notice only when filled, e.g. "For questions about your information, contact …"
+  contactLine: ''
+};
+const SOURCES = {linkedin: 'LinkedIn job post', profile: 'LinkedIn profile or message', instagram: 'Instagram',
+  tiktok: 'TikTok', referral: 'Someone referred me'};
+// The same rule the receiving script applies. Change one and the other must change with it (the tests compare them).
+const EMAIL_RE = /^[^\s@<>,;]+@[^\s@<>,;]+\.[^\s@<>,;]{2,}$/;
+// Typed and pasted text is cleaned here exactly as the receiving script cleans it, so the two never disagree about
+// whether an answer is acceptable: control characters, and invisible marks that can hide or reorder text, are dropped.
+const HIDDEN = /[\u0000-\u0008\u000b-\u001f\u007f-\u009f\u200b\u202a-\u202e\u2060-\u2069\ufeff]/g;
+const tidy = (v, area) => area ? v.replace(/\r\n?/g, '\n').replace(/\t/g, ' ').replace(HIDDEN, '').replace(/\n{4,}/g, '\n\n\n').trim()
+  : v.replace(/[\r\n\t]/g, ' ').replace(HIDDEN, '').replace(/ {2,}/g, ' ').trim();
+const STEPS = [
+  {key: 'name', type: 'text', label: 'Name', q: 'What should I call you?', auto: 'given-name', max: 80, req: 'Enter a name to continue.'},
+  {key: 'email', type: 'email', label: 'Email', q: 'Where should I send my reply?',
+    hint: 'Check the spelling. This is the only way I can reach you.', hintConfirm: 'One email arrives first, to confirm the address is yours.',
+    auto: 'email', max: 120, req: 'Enter your email address to continue.'},
+  {key: 'localStatus', type: 'choice', label: 'Citizen or PR', q: 'Are you a Singapore citizen or Singapore permanent resident?',
+    hint: 'Work-pass sponsorship is not available for this role.', options: ['Yes', 'No'], req: 'Choose Yes or No to continue.'},
+  {key: 'now', type: 'choice', label: 'Right now', q: 'What are you doing at the moment?',
+    options: ['Working in finance or insurance', 'Working in sales or service', 'Running my own business', 'Working in another field',
+      'Studying or recently graduated', 'Between roles'], req: 'Choose one to continue.'},
+  {key: 'exams', type: 'multi', label: 'CMFAS', q: 'Which CMFAS papers have you passed?', hint: 'Tap all that apply.',
+    options: ['M5', 'M9', 'M9A', 'HI', 'M8', 'M8A'], none: 'None yet', req: 'Choose the papers you have passed, or “None yet”.'},
+  {key: 'interest', type: 'area', label: 'Why this', q: 'What draws you to financial planning?',
+    hint: 'Optional. A few lines in your own words.', max: 1500},
+  {key: 'meetWhen', type: 'multi', label: 'Meeting', q: 'When would suit you for a 30-minute meeting?',
+    hint: 'Tap all that suit you. If we go ahead, I will suggest times from these.',
+    options: ['Weekday mornings', 'Weekday afternoons', 'Weekday evenings', 'Saturdays'], none: 'Any of these', req: 'Choose at least one to continue.'},
+  {key: 'questions', type: 'area', label: 'Questions', q: 'What would you like to understand about the role before taking it further?',
+    hint: 'Optional.', max: 1500},
+  {key: 'review', type: 'review'}
+];
+const NOTICE = ['This is a self-employed role under an agency contract with Manulife Financial Advisers Pte. Ltd., based on-site in Singapore.',
+  'Your answers are used for this recruitment process. Jarad reviews applications; Gmail and AI-assisted tools help organise applications and prepare replies.',
+  'Please don’t include NRIC, passport, bank or medical details.'];
+
+const $ = (s) => document.querySelector(s);
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const B = document.body, root = document.documentElement;
+/* Answers are kept in this tab only, for six hours at most, and are gone when the tab is closed or the application
+   is sent. So a reload, or a phone that puts the page to sleep, does not lose what was typed. The entry id is kept
+   with them: the same entry sent twice is saved once. */
+const KEEP = 'w4t-apply', KEEP_MS = 6 * 3600e3;
+const kept = (() => {
+  try {
+    const k = JSON.parse(sessionStorage.getItem(KEEP));
+    return k && typeof k === 'object' && k.data && typeof k.data === 'object' && Date.now() - k.at < KEEP_MS && Date.now() >= k.at ? k : null;
+  } catch (e) { return null; }
+})();
+const hex = (n) => {
+  const b = new Uint8Array(n);
+  if (window.crypto && crypto.getRandomValues) crypto.getRandomValues(b); else for (let i = 0; i < n; i++) b[i] = Math.random() * 256;
+  return [...b].map((x) => x.toString(16).padStart(2, '0')).join('');
+};
+const data = {};
+const ID_RE = /^[a-f0-9-]{16,64}$/;
+let entryId = kept && ID_RE.test(kept.id) ? kept.id : hex(16);
+// What was last sent, and the entry a changed application takes the place of (see post()).
+let tried = kept && typeof kept.tried === 'string' ? kept.tried : '', replaces = kept && ID_RE.test(kept.replaces) ? kept.replaces : '';
+const startedAt = kept && kept.startedAt > 0 && kept.startedAt <= Date.now() ? kept.startedAt : Date.now();
+const source = SOURCES[(new URLSearchParams(location.search).get('from') || '').toLowerCase()] || '';
+let cur = 0, busy = false, mode = 'site', sending = false, sent = false, keepT = 0;
+function keep() {
+  if (sent) return;
+  if (mode === 'flow' && fieldOf(cur)) read(cur);
+  try { sessionStorage.setItem(KEEP, JSON.stringify({id: entryId, tried, replaces, startedAt, at: Date.now(), cur, inFlow: mode === 'flow', data})); } catch (e) {}
+}
+function keepSoon() { clearTimeout(keepT); keepT = setTimeout(keep, 400); }
+function forget() { sent = true; clearTimeout(keepT); try { sessionStorage.removeItem(KEEP); } catch (e) {} }
+addEventListener('pagehide', keep);
+const c01 = (x) => Math.max(0, Math.min(1, x));
+const ss = (x) => x * x * (3 - 2 * x);
+const seg = (v, a, b) => c01((v - a) / (b - a));
+
+/* ---------- the film ---------- */
+/* Photographs of one table (a wide night frame and a matching first-light frame, a close frame of the hands, and
+   softened copies of the wide pair) plus a 3D layer that stands on the photographed table: the practice that gets
+   built there and the AI tools at work. A shader turns night into morning, moves near things against far things,
+   writes the adviser's notes onto the sheet and, later, runs a highlighter over them.
+   The film is a timeline, not a scroll: t runs from 0 to N, it moves on by itself, and a swipe, a scroll, a tap or an
+   arrow key moves it one thought at a time. */
+const N = 6;
+const HOLD = [3200, 4300, 5600, 7000, 7400, 12700];     // how long each thought stays before the film moves on
+const MOVE = [2600, 2200, 2300, 2800, 1900, 2500];     // how long the move from thought i to the next one takes
+const fx = {reveal: 0, lamp: 0, write: 0, seat: 0};
+const IMG = {w: 941, h: 1672}, SUN = [0.755, 0.389], DOLLY = 0.12;
+const filmEl = $('#film'), cv = $('#sky'), setCv = $('#set'), tagsEl = $('#tags'), KN = $('#kN'), KD = $('#kD'), KC = $('#kC'), KZ = $('#kZ'), KNS = $('#kNs'), KDS = $('#kDs');
+let FW = innerWidth, FH = innerHeight, gl = null, U = {}, split = false, inkTex = null;
+const VERT = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+const FRAG = `
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
+precision mediump float;
+#endif
+uniform sampler2D uN,uD,uC,uZ,uNs,uDs,uI;
+uniform vec2 uRes,uA,uB,uA2,uB2,uA3,uB3,uP,uP2,uSun;
+uniform mat3 uH1,uH2;
+uniform float uDawn,uReveal,uLamp,uDolly,uSA,uSB,uMix,uDark,uDim,uWrite,uInk2,uMark;
+const vec3 INK=vec3(.10,.19,.20);
+// the notes on the sheet: H takes a point of the photograph to the square the words were written in;
+// the texture holds the ink in red, in green when each part of a word gets written, and in blue the highlighter's stroke
+float ink(mat3 H,vec2 uv,float wr){
+  vec3 h=H*vec3(uv,1.);vec2 st=h.xy/h.z;
+  if(st.x<0.||st.x>1.||st.y<0.||st.y>1.)return 0.;
+  vec4 t=texture2D(uI,st);
+  return t.r*(1.-smoothstep(wr-.03,wr,t.g));
+}
+vec3 sunOn(vec3 col,vec2 uv,float d,float wide){
+  vec2 dv=(uv-uSun)*vec2(.5628,1.);float dist=dot(dv,dv);
+  float I=smoothstep(.3,.75,d)*(1.-.45*smoothstep(.86,1.,d));
+  return col+I*(exp(-dist/(.0035*wide))*.5+exp(-dist/(.03*wide))*.22)*vec3(1.,.74,.42);
+}
+vec3 room(vec2 s){
+  vec2 uv=uA*s+uB;
+  float z=texture2D(uZ,uv).r;                              // 0 far, 1 near
+  uv+=(z-.45)*(uP+(uv-(uB+uA*.5))*uDolly);                  // near things move more than far things
+  z=texture2D(uZ,uv).r;
+  vec3 n=texture2D(uN,uv).rgb,m=texture2D(uD,uv).rgb;
+  float d=uDawn;
+  // the opening: the window's dusk first, then the lamp over the table
+  float inRoom=smoothstep(.465,.5,uv.y);
+  float warm=smoothstep(.02,.2,n.r-n.b)*inRoom;
+  n*=1.-warm*.93*(1.-uLamp);
+  n*=smoothstep(z*.45,z*.45+.55,uReveal);
+  // morning arrives from far to near: the sky, then the wall and the chairs, then the table, the near chair last
+  float a=mix(0.,.46,z);
+  float k=smoothstep(a,a+.5,d);
+  vec3 col=mix(n,m,k);
+  float sky=1.-smoothstep(.02,.14,z);
+  float bell=smoothstep(.02,.3,d)*(1.-smoothstep(.42,.8,d));
+  col+=sky*bell*exp(-abs(uv.y-.45)/.035)*vec3(.62,.38,.12)*.42;
+  col=mix(col,sunOn(col,uv,d,1.),sky);
+  vec3 h=uH2*vec3(uv,1.);vec2 st=h.xy/h.z;
+  if(st.x>0.&&st.x<1.&&st.y>0.&&st.y<1.){
+    vec4 t=texture2D(uI,st);
+    col=mix(col,col*vec3(1.12,1.,.4)+vec3(.06,.05,0.),t.b*(1.-smoothstep(uMark-.03,uMark,t.g))*.7);
+    col=mix(col,col*INK,t.r*uInk2*.8);
+  }
+  return col;
+}
+vec3 talk(vec2 s){
+  vec2 uv=uA2*s+uB2;
+  float z=smoothstep(.16,.82,uv.y);
+  uv+=(z-.5)*(uP2+(uv-(uB2+uA2*.5))*uDolly);
+  vec3 col=texture2D(uC,uv).rgb;
+  return mix(col,col*INK,ink(uH1,uv,uWrite)*.86);
+}
+vec3 soft(vec2 s){
+  vec2 uv=uA3*s+uB3;
+  vec3 col=mix(texture2D(uNs,uv).rgb,texture2D(uDs,uv).rgb,smoothstep(0.,.9,uDawn));
+  col*=1.-.1*uDawn;
+  return mix(col,sunOn(col,uv,uDawn,1.7),.42);
+}
+vec3 pick(float k,vec2 s){if(k<.5)return room(s);if(k<1.5)return talk(s);return soft(s);}
+void main(){
+  vec2 s=vec2(gl_FragCoord.x/uRes.x,1.-gl_FragCoord.y/uRes.y);
+  vec3 col;
+  // between two shots the picture dips to dark and comes back, so the two are never double-exposed
+  if(uMix<.002) col=pick(uSA,s); else if(uMix>.998) col=pick(uSB,s); else col=mix(pick(uSA,s),pick(uSB,s),uMix);
+  gl_FragColor=vec4(col*(1.-uDark)*uDim,1.);
+}`;
+/* The 3-by-3 map that takes four points onto four others. */
+function homog(s, d) {
+  const A = [];
+  for (let i = 0; i < 4; i++) {
+    const x = s[i][0], y = s[i][1], u = d[i][0], v = d[i][1];
+    A.push([x, y, 1, 0, 0, 0, -u * x, -u * y, u], [0, 0, 0, x, y, 1, -v * x, -v * y, v]);
+  }
+  for (let c = 0; c < 8; c++) {
+    let p = c;
+    for (let r = c + 1; r < 8; r++) if (Math.abs(A[r][c]) > Math.abs(A[p][c])) p = r;
+    const t = A[c]; A[c] = A[p]; A[p] = t;
+    const k = A[c][c];
+    for (let j = c; j < 9; j++) A[c][j] /= k;
+    for (let r = 0; r < 8; r++) if (r !== c) { const f = A[r][c]; if (f) for (let j = c; j < 9; j++) A[r][j] -= f * A[c][j]; }
+  }
+  const h = A.map((r) => r[8]);
+  return [h[0], h[1], h[2], h[3], h[4], h[5], h[6], h[7], 1];
+}
+const via = (h, u, v) => { const w = h[6] * u + h[7] * v + h[8]; return [(h[0] * u + h[1] * v + h[2]) / w, (h[3] * u + h[4] * v + h[5]) / w]; };
+const cols = (h) => new Float32Array([h[0], h[3], h[6], h[1], h[4], h[7], h[2], h[5], h[8]]);
+const UNIT = [[0, 0], [1, 0], [1, 1], [0, 1]], norm = (p) => [p[0] / IMG.w, p[1] / IMG.h];
+// where the notes go: on the close frame, the clear part of the sheet to the right of the pen;
+// on the wide frames, the left half of the same sheet
+const H1 = homog([[487, 950], [838, 948], [922, 1236], [484, 1250]].map(norm), UNIT);
+const SHEET = homog(UNIT, [[205, 1112], [650, 1100], [731, 1304], [140, 1326]].map(norm));
+const H2 = homog([[.07, .1], [.5, .1], [.5, .92], [.07, .92]].map((p) => via(SHEET, p[0], p[1])), UNIT);
+const NOTES = [['Goals', .03, .25], ['Assets', .36, .6], ['Protection', .7, 1]];
+function drawInk() {
+  const c = document.createElement('canvas'); c.width = c.height = 1024;
+  const x = c.getContext('2d'), marks = [];
+  x.fillStyle = '#000'; x.fillRect(0, 0, 1024, 1024);
+  x.font = '400 188px "Nothing You Could Do","Bradley Hand",cursive'; x.textBaseline = 'alphabetic';
+  NOTES.forEach((nt, i) => {
+    const y0 = 30 + i * 325, bx = 52 + i * 16, wd = Math.min(900, x.measureText(nt[0]).width), rot = (-2.4 + i * 1.3) * Math.PI / 180;
+    const g = x.createLinearGradient(bx, 0, bx + wd, 0);
+    g.addColorStop(0, 'rgb(0,' + Math.round(nt[1] * 255) + ',0)'); g.addColorStop(1, 'rgb(0,' + Math.round(nt[2] * 255) + ',0)');
+    x.globalCompositeOperation = 'source-over'; x.fillStyle = g; x.fillRect(0, y0, 1024, 325);
+    x.globalCompositeOperation = 'lighter';
+    x.save(); x.translate(bx, y0 + 236); x.rotate(rot);
+    // the highlighter goes over each word in three passes, so its edge is a little uneven, like a real one
+    x.fillStyle = 'rgb(0,0,150)'; [[-20, -108, 0], [-8, -74, 22], [-16, -40, 6]].forEach((b) => { x.beginPath(); x.roundRect(b[0], b[1], wd + 34 + b[2], 46, 23); x.fill(); });
+    x.fillStyle = '#f00'; x.fillText(nt[0], 0, 0, 900); x.restore();
+    // where the highlighter starts and ends on the sheet (0 to 1 across it, 0 to 1 from its far edge to its near edge)
+    const at = (dx, dy) => { const px = bx + dx * Math.cos(rot) - dy * Math.sin(rot), py = y0 + 236 + dx * Math.sin(rot) + dy * Math.cos(rot); return [.07 + .43 * px / 1024, .1 + .82 * py / 1024]; };
+    marks.push({a: at(-10, -50), b: at(wd + 14, -50), g0: nt[1], g1: nt[2]});
+  });
+  window.W4TNotes = marks;
+  if (!gl) return;
+  gl.activeTexture(gl.TEXTURE6); gl.bindTexture(gl.TEXTURE_2D, inkTex);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, c);
+  gl.generateMipmap(gl.TEXTURE_2D);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+}
+function initGL() {
+  try {
+    gl = cv.getContext('webgl', {antialias: false, alpha: false, powerPreference: 'high-performance'});
+    if (!gl) return false;
+    const sh = (type, src) => { const o = gl.createShader(type); gl.shaderSource(o, src); gl.compileShader(o);
+      if (!gl.getShaderParameter(o, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(o)); return o; };
+    const pr = gl.createProgram();
+    gl.attachShader(pr, sh(gl.VERTEX_SHADER, VERT)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FRAG)); gl.linkProgram(pr);
+    if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(pr));
+    gl.useProgram(pr);
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(pr, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    ['uN', 'uD', 'uC', 'uZ', 'uNs', 'uDs', 'uI', 'uRes', 'uA', 'uB', 'uA2', 'uB2', 'uA3', 'uB3', 'uP', 'uP2', 'uSun', 'uH1', 'uH2', 'uDawn', 'uReveal', 'uLamp',
+      'uDolly', 'uSA', 'uSB', 'uMix', 'uDark', 'uDim', 'uWrite', 'uInk2', 'uMark'].forEach((n) => { U[n] = gl.getUniformLocation(pr, n); });
+    const clamp = () => { gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE); };
+    [KN, KD, KC, KZ, KNS, KDS].forEach((img, i) => {
+      const tex = gl.createTexture();
+      const load = () => { gl.activeTexture(gl.TEXTURE0 + i); gl.bindTexture(gl.TEXTURE_2D, tex); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, img); clamp(); };
+      gl.activeTexture(gl.TEXTURE0 + i); gl.bindTexture(gl.TEXTURE_2D, tex);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, 1, 1, 0, gl.RGB, gl.UNSIGNED_BYTE, new Uint8Array(i === 3 ? [115, 115, 115] : [16, 23, 26]));
+      if (img.complete && img.naturalWidth) load(); else img.addEventListener('load', load);
+    });
+    inkTex = gl.createTexture();
+    gl.activeTexture(gl.TEXTURE6); gl.bindTexture(gl.TEXTURE_2D, inkTex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, 1, 1, 0, gl.RGB, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 0])); clamp();
+    ['uN', 'uD', 'uC', 'uZ', 'uNs', 'uDs', 'uI'].forEach((n, i) => gl.uniform1i(U[n], i));
+    gl.uniform2f(U.uSun, SUN[0], SUN[1]);
+    gl.uniformMatrix3fv(U.uH1, false, cols(H1)); gl.uniformMatrix3fv(U.uH2, false, cols(H2));
+    cv.addEventListener('webglcontextlost', (e) => { e.preventDefault(); gl = null; B.classList.add('nogl'); });
+    return true;
+  } catch (e) { gl = null; return false; }
+}
+/* Where a camera looks: z is how far it has pushed in, (px, py) the point of the photograph it centres on. */
+function look(z, px, py) {
+  const k = Math.max(FW / IMG.w, FH / IMG.h), ax = FW / (IMG.w * k) / z, ay = FH / (IMG.h * k) / z;
+  const cx = Math.max(ax / 2, Math.min(1 - ax / 2, px)), cy = Math.max(ay / 2, Math.min(1 - ay / 2, py));
+  return {ax, ay, bx: cx - ax / 2, by: cy - ay / 2};
+}
+function fit() {
+  // low: a wide but short screen, which is a phone held sideways. It gets the side-by-side layout, set smaller.
+  const wide = innerWidth / innerHeight >= 1.2, low = wide && innerHeight <= 520 && innerWidth >= 560;
+  split = wide && (innerWidth >= 900 || low);
+  B.classList.toggle('split', split); B.classList.toggle('low', split && low);
+  root.style.setProperty('--fw', split ? Math.round(Math.min(innerWidth * (low ? 0.5 : 0.58), innerHeight)) + 'px' : '100vw');
+  const r = filmEl.getBoundingClientRect();
+  FW = r.width || innerWidth; FH = r.height || innerHeight;
+  let dpr = Math.min(devicePixelRatio || 1, 2); dpr *= Math.min(1, Math.sqrt(1.7e6 / (FW * dpr * FH * dpr)));
+  if (gl) {
+    const w = Math.round(FW * dpr), h = Math.round(FH * dpr);
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; gl.viewport(0, 0, w, h); }
+  }
+  if (window.W4TSet) window.W4TSet.fit(FW, FH, dpr);
+}
+/* The cameras along the film: [t, push, x, y]. The wide frame opens the film and closes it; the close frame holds
+   while they listen and then moves onto the sheet as the notes are written; from there the wide camera lifts off the
+   sheet to the practice being built behind it, and at the end pulls back to the whole room at first light. */
+const ROOM = [[0, 1.05, 0.5, 0.58], [0.6, 1.5, 0.47, 0.7], [2.5, 1.5, 0.5, 0.69], [3, 1.32, 0.52, 0.6], [4, 1.24, 0.53, 0.585], [5, 1.25, 0.48, 0.6], [6, 1.06, 0.5, 0.575]];
+const CLOSE = [1.6, 0.53, 0.54];       // the camera on the practice and its nameplate, while the questions are asked
+const TALK = [[0.3, 1, 0.5, 0.5], [1, 1.09, 0.5, 0.54], [2, 1.42, 0.71, 0.655], [2.7, 1.58, 0.72, 0.66]];
+const DAWN = [[0, 0], [2.6, 0], [3, 0.1], [4, 0.62], [5, 0.92], [6, 1]];
+function key(K, t) {
+  for (let i = 1; i < K.length; i++) if (t <= K[i][0]) { const a = K[i - 1], b = K[i], u = seg(t, a[0], b[0]); return a.map((v, j) => v + (b[j] - v) * u); }
+  return K[K.length - 1];
+}
+function shotAt(t, time) {
+  const r = key(ROOM, t), c = key(TALK, t), breathe = RM ? 0 : 0.012 * Math.sin(time * 0.13);
+  const f = {z: r[1] * (1 + breathe) + 0.12 * (1 - ss(c01(fx.reveal))), x: r[2], y: r[3], z2: c[1] * (1 + breathe), x2: c[2], y2: c[3],
+    pan: -0.017 + 0.034 * t / N, pan2: -0.016 + 0.032 * seg(t, 0.5, 2.5), d: key(DAWN, t)[1],
+    sa: 0, sb: 0, mix: 0, dark: 0, dim: 1, tab: 0, st: 0, flow: 0};
+  const cut = (a, b, from, to) => {
+    if (t <= a || t >= b) return false;
+    const u = seg(t, a, b);
+    f.sa = from; f.sb = to; f.mix = ss(seg(u, 0.38, 0.62)); f.dark = 0.82 * Math.sin(u * Math.PI);
+    f.tab = to === 0 ? seg(u, 0.5, 0.85) : 0;
+    return true;
+  };
+  if (!cut(0.36, 0.6, 0, 1) && !cut(2.38, 2.62, 1, 0)) {
+    f.sa = f.sb = t <= 0.5 || t >= 2.5 ? 0 : 1;
+    f.tab = t >= 2.5 ? 1 : 0;        // the 3D layer stands on the wide frame from the third thought on
+  }
+  return f;
+}
+let lastTab = -1, lastLum = -1;
+function paint(f, time) {
+  const sway = RM ? 0 : 1, c = look(f.z, f.x, f.y), c2 = look(f.z2, f.x2, f.y2);
+  const pan = [f.pan + sway * 0.0034 * Math.sin(time * 0.23), sway * 0.002 * Math.sin(time * 0.19 + 1)];
+  // the 3D layer is drawn through the same window onto the photograph, and dims with it
+  const tab = gl ? Math.round(f.tab * 200) / 200 : 0, lum = Math.round((1 - f.dark) * f.dim * 100) / 100;
+  if (tab !== lastTab || lum !== lastLum) { lastTab = tab; lastLum = lum; setCv.style.opacity = tab; tagsEl.style.opacity = tab; setCv.style.filter = lum < 0.995 ? 'brightness(' + lum + ')' : 'none'; }
+  const set = window.W4TSet ? window.W4TSet.frame({vis: tab, d: f.d, st: f.st, time, instant: !!f.instant, view: c, pan, dolly: DOLLY, flow: f.flow}) : null;
+  if (!gl) { KD.style.opacity = ss(seg(f.d, 0.15, 0.85)).toFixed(3); return; }
+  gl.uniform2f(U.uRes, cv.width, cv.height);
+  gl.uniform2f(U.uA, c.ax, c.ay); gl.uniform2f(U.uB, c.bx, c.by);
+  gl.uniform2f(U.uA2, c2.ax, c2.ay); gl.uniform2f(U.uB2, c2.bx, c2.by);
+  gl.uniform2f(U.uA3, c.ax, c.ay); gl.uniform2f(U.uB3, c.bx, c.by);
+  gl.uniform2f(U.uP, pan[0], pan[1]);
+  gl.uniform2f(U.uP2, f.pan2 + sway * 0.003 * Math.sin(time * 0.27), 0);
+  gl.uniform1f(U.uDolly, DOLLY); gl.uniform1f(U.uDawn, f.d);
+  gl.uniform1f(U.uReveal, fx.reveal); gl.uniform1f(U.uLamp, fx.lamp);
+  gl.uniform1f(U.uSA, f.sa); gl.uniform1f(U.uSB, f.sb); gl.uniform1f(U.uMix, f.mix); gl.uniform1f(U.uDark, f.dark); gl.uniform1f(U.uDim, f.dim);
+  gl.uniform1f(U.uWrite, fx.write); gl.uniform1f(U.uInk2, c01(fx.write)); gl.uniform1f(U.uMark, set ? set.mark : 0);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+}
+const EASE = {out: (t) => 1 - Math.pow(1 - t, 3), inout: (t) => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2, in: (t) => t * t * t,
+  sine: (t) => .5 - .5 * Math.cos(Math.PI * t), lin: (t) => t};
+const turn = {};
+function tween(k, to, ms, ease, then) {
+  const from = fx[k], t0 = performance.now(), mine = turn[k] = (turn[k] || 0) + 1;
+  if (RM || ms <= 0) { fx[k] = to; if (then) then(); return; }
+  (function run(now) {
+    if (turn[k] !== mine) return;
+    const t = Math.min(1, Math.max(0, (now - t0) / ms));
+    fx[k] = from + (to - from) * EASE[ease || 'inout'](t);
+    if (t < 1) requestAnimationFrame(run); else if (then) then();
+  })(t0);
+}
+
+/* ---------- the timeline ---------- */
+/* ts is where the film is, tgt the thought it is heading for. The picture travels there on its own clock; the words of
+   a thought come on as the picture arrives and play in at their own speed, so nothing is ever half faded. */
+const CAPS = [...document.querySelectorAll('[data-cap]')], topEl = $('#top');
+document.querySelectorAll('.say').forEach((el) => {
+  el.innerHTML = el.textContent.trim().split(/\s+/).map((w, i) => '<span class="w" style="--n:' + i + '">' + w + '</span>').join(' ');
+});
+let ts = 0, tgt = 0, mv = null, holdT = 0, beginT = 0, flat = false, shown = -2, wrote = false, wasTab = false, tick = 0, endAt = 0, shotK = 0, capTop = 0, capS = 0, capKey = '';
+function go(i) {
+  i = Math.max(0, Math.min(N, i));
+  if (i === tgt) return;
+  clearTimeout(holdT); clearTimeout(beginT);
+  const from = ts, leg = Math.min(N - 1, Math.floor(Math.min(from, i)));
+  tgt = i; mv = {from, to: i, t0: performance.now(), ms: Math.max(900, MOVE[leg] * Math.abs(i - from))};
+}
+function arrive() {
+  clearTimeout(holdT);
+  if (mode === 'site' && tgt < N && !document.hidden) holdT = setTimeout(() => go(tgt + 1), tgt ? HOLD[tgt] : 4200);
+}
+function begin() {          // the title holds for a moment, then the camera starts towards the table by itself
+  clearTimeout(beginT);
+  if (flat || tgt !== 0 || mode !== 'site' || document.hidden) return;
+  beginT = setTimeout(() => go(1), HOLD[0]);
+}
+function step(d) {
+  if (mode !== 'site' || flat || !B.classList.contains('ready')) return;
+  go(tgt + d);
+}
+function stage() {
+  let idx = mv ? (Math.abs(ts - tgt) < 0.34 ? tgt : -1) : tgt;
+  if (!B.classList.contains('ready')) idx = 0;
+  if (idx !== shown) { shown = idx; CAPS.forEach((el, i) => el.classList.toggle('on', i === idx)); B.classList.toggle('end', idx === N); }
+  const tab = ts > 2.5 && ts < 5.5;
+  if (tab !== wasTab) B.classList.toggle('tab', wasTab = tab);
+  const p = ts / N;
+  topEl.classList.toggle('on', ts > 0.12);
+  $('#topFill').style.transform = 'scaleX(' + p.toFixed(4) + ')';
+  $('#topDot').style.transform = 'translate3d(' + (p * innerWidth).toFixed(1) + 'px,0,0)';
+}
+function frame(now) {
+  requestAnimationFrame(frame);
+  if (flat) return;
+  const time = now / 1000;
+  if (mv) {
+    const u = c01((now - mv.t0) / mv.ms);
+    ts = mv.from + (mv.to - mv.from) * EASE.sine(u);
+    if (u >= 1) { ts = mv.to; mv = null; arrive(); }
+  }
+  // the notes are written once the camera is on the sheet, at a writing pace, whatever the viewer does
+  if (tgt >= 2 && ts > 1.7 && !wrote) { wrote = true; tween('write', 1.04, 3800, 'lin'); }
+  else if (tgt < 2 && ts < 1.45 && wrote) { wrote = false; tween('write', 0, 250, 'lin'); }
+  let f;
+  // at the last thought the camera keeps easing in on the table, so the frame never stands still
+  const settle = (f) => { if (!endAt) endAt = now; f.z *= 1 + (RM ? 0 : 0.05 * EASE.out(c01((now - endAt) / 14000))); };
+  if (mode === 'site') {
+    f = shotAt(ts, time);
+    f.st = ts > 5.6 ? 6 : ts > 4.72 ? 5 : ts > 3.72 ? 4 : ts > 2.6 ? 3 : 0;
+    if (ts >= N) settle(f); else endAt = 0;
+    // while the tools are at work, the 3D layer asks for a closer look at them; the camera eases there and back
+    const shot = !RM && window.W4TSet ? window.W4TSet.shot : null;
+    shotK += Math.max(-0.045, Math.min(0.045, (shot ? shot.k : 0) - shotK));
+    // where the words begin, on layouts that set them over the picture (a phone, an upright tablet)
+    if (!split) { const key = shown + '/' + FW + '/' + FH;
+      if (shown >= 0 && key !== capKey) { capKey = key; capTop = CAPS[shown] ? CAPS[shown].getBoundingClientRect().top : 0; if (capTop < FH * 0.25) capTop = FH * 0.72; if (!capS) capS = capTop; }
+      capS += (capTop - capS) * 0.07; }
+    if (shot && shotK > 0.001) {
+      let sz = shot.z, sx = shot.x, sy = shot.y;
+      if (!split) {
+        // come in until the same slice of the table fills the width, travel a little further each way, and stand the
+        // tools just above the words (or in the middle of the clear picture, where that is higher), whatever the screen
+        const k = Math.max(FW / IMG.w, FH / IMG.h), ay = FH / (IMG.h * k) / (sz = FW / (IMG.w * k) / 0.483);
+        sx = 0.3 + 0.42 * (shot.p || 0); sy = Math.min(0.78 + (0.5 - capS / FH) * ay, 0.655 + (0.5 - (64 + capS) / 2 / FH) * ay);
+      }
+      f.z += (sz - f.z) * shotK; f.x += (sx - f.x) * shotK; f.y += (sy - f.y) * shotK; }
+    // on a short upright screen the words reach higher: lift the picture so what stands on the table stays clear of them
+    if (!split && FW < FH && f.st >= 3) f.y = Math.max(f.y, 0.71 + (0.5 - capS / FH) * look(f.z, f.x, f.y).ay);
+    stage();
+  } else if (mode === 'flow') {
+    const s = ss(c01(fx.seat));
+    f = shotAt(N, time); f.st = 6; settle(f);
+    if (split) {
+      // wide screens: the questions stand beside the picture, and the camera moves in on the practice and its nameplate
+      f.z += (CLOSE[0] - f.z) * s; f.x += (CLOSE[1] - f.x) * s; f.y += (CLOSE[2] - f.y) * s; f.flow = s;
+    } else {
+      // phones: the questions are asked over the room, gone soft and dim
+      if (fx.seat >= 1 && (tick++ % 3)) return;
+      f.z += 0.3 * s; f.y += 0.07 * s; f.sa = 0; f.sb = 2; f.mix = s; f.dim = 1 - 0.42 * s; f.tab = 1 - s;
+    }
+  } else {
+    f = shotAt(N, time); f.d = 1; f.st = 6; f.instant = true; f.flow = 1; f.dim = 0.97;
+    if (split) { f.z = CLOSE[0]; f.x = CLOSE[1]; f.y = CLOSE[2]; }
+    else { const zb = FW < 600 ? c01((FW / FH - 0.47) / 0.09) : 0; f.z = 1.08 + 0.18 * zb; f.y = 0.45 - 0.05 * zb; }
+  }
+  paint(f, time);
+}
+/* A swipe, a scroll, a tap or an arrow key moves one thought on (or back); the film cannot be skipped, only moved along. */
+let wheelAt = 0, wacc = 0, armed = true, ty = null, tx = 0, swipedAt = 0;
+addEventListener('wheel', (e) => {
+  if (mode !== 'site' || flat) return;
+  const now = performance.now();
+  if (now - wheelAt > 160) { wacc = 0; armed = true; }
+  wheelAt = now; wacc += e.deltaY;
+  if (armed && Math.abs(wacc) > 36) { armed = false; step(wacc > 0 ? 1 : -1); }
+}, {passive: true});
+addEventListener('touchstart', (e) => { if (mode === 'site' && !flat) { ty = e.touches[0].clientY; tx = e.touches[0].clientX; } }, {passive: true});
+addEventListener('touchend', (e) => {
+  if (ty === null || mode !== 'site' || flat) return;
+  const t = e.changedTouches[0], dy = t.clientY - ty, dx = t.clientX - tx; ty = null;
+  if (Math.abs(dy) > 44 && Math.abs(dy) > Math.abs(dx)) { swipedAt = performance.now(); step(dy < 0 ? 1 : -1); }
+}, {passive: true});
+addEventListener('keydown', (e) => {
+  if (mode !== 'site' || flat || e.target.closest('button,a,input,textarea')) return;
+  if (['ArrowDown', 'PageDown', 'ArrowRight', ' '].includes(e.key)) { e.preventDefault(); step(1); }
+  else if (['ArrowUp', 'PageUp', 'ArrowLeft'].includes(e.key)) { e.preventDefault(); step(-1); }
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { clearTimeout(holdT); clearTimeout(beginT); }
+  else if (mode === 'site' && B.classList.contains('ready') && !mv) { if (tgt === 0) begin(); else arrive(); }
+});
+
+/* ---------- opening ---------- */
+/* Dark, the mark, the window's dusk comes up, the lamp flickers on over the table, then the first line. */
+let opened = false;
+// The 3D layer's script comes from another server. If it cannot be fetched, say so, so that nothing waits for it.
+addEventListener('error', (e) => { if (e.target && e.target.tagName === 'SCRIPT') { window.W4TOff = true; dispatchEvent(new Event('w4toff')); } }, true);
+function lampOn(fast) {
+  if (fast) return tween('lamp', 1, 500, 'out');
+  tween('lamp', 0.55, 70, 'out', () => tween('lamp', 0.12, 110, 'in', () => tween('lamp', 0.8, 90, 'out', () => tween('lamp', 0.5, 120, 'in', () => tween('lamp', 1, 900, 'out')))));
+}
+function open(fast) {
+  if (opened) return; opened = true;
+  B.classList.add('s1', 's3');
+  tween('reveal', 1, fast ? 800 : 3600, 'inout');
+  setTimeout(() => lampOn(fast), fast ? 0 : 1500);
+  setTimeout(() => B.classList.add('lit'), fast ? 0 : 2200);
+  setTimeout(() => { B.classList.add('ready'); setTimeout(begin, 300); }, fast ? 900 : 4300);
+}
+function intro() {
+  if (RM) { fx.reveal = 1; fx.lamp = 1; B.classList.add('lit', 'ready'); opened = true; return; }
+  requestAnimationFrame(() => B.classList.add('s1'));
+  // The mark holds until the 3D layer is built and ready to draw. That is heavy work: under the still mark nobody
+  // sees it, and later it would catch the reveal. Never less than 1.7 s; never more than 4.2 s whatever the
+  // connection; and no wait at all when the layer is not coming (no 3D on this device, or its script failed).
+  { const t0 = performance.now(); let gone = false;
+    const start = () => { if (gone) return; gone = true; setTimeout(() => open(false), Math.max(0, 1700 - (performance.now() - t0))); };
+    if (window.W4TSet || window.W4TOff || B.classList.contains('nogl')) start();
+    else { addEventListener('w4tset', start, {once: true}); addEventListener('w4toff', start, {once: true}); setTimeout(start, 4200); } }
+  ['pointerdown', 'keydown', 'wheel', 'touchmove'].forEach((ev) => addEventListener(ev, () => open(true), {once: true, passive: true}));
+}
+
+/* ---------- questions ---------- */
+const stepsEl = $('#steps');
+function esc(s) { return String(s).replace(/[&<>"]/g, (c) => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c])); }
+function renderSteps() {
+  STEPS.forEach((st, i) => {
+    const el = document.createElement('div');
+    el.className = 'step'; el.hidden = true; el.dataset.i = i;
+    let h = '';
+    if (st.type === 'review') {
+      h = '<h2 class="q r" style="--i:0" tabindex="-1">Ready to send?</h2><dl class="review-list r" style="--i:1" id="reviewList"></dl>' +
+        NOTICE.map((n, k) => '<p class="notice r" style="--i:' + (2 + k) + '">' + esc(n) + '</p>').join('') +
+        (CONFIG.contactLine ? '<p class="notice r" style="--i:5">' + esc(CONFIG.contactLine) + '</p>' : '') +
+        '<p class="err" id="sendErr" role="alert"></p>' +
+        '<div class="review-actions r" style="--i:6"><button type="button" class="btn" id="send">Send application</button>' +
+        (CONFIG.endpoint ? '' : '<p class="demo">Preview only. Nothing is sent or saved.</p>') + '</div>';
+    } else {
+      const id = 'f_' + st.key;
+      h = '<label class="q r" style="--i:0" for="' + id + '" id="q_' + st.key + '">' + esc(st.q) + '</label>' +
+        (st.hint ? '<p class="hint r" style="--i:1" id="h_' + st.key + '">' + esc((CONFIG.confirmEmail && st.hintConfirm) || st.hint) + '</p>' : '');
+      if (st.type === 'choice' || st.type === 'multi') {
+        h += '<div class="choices' + (st.options.every((o) => o.length < 5) ? ' two' : '') + ' r" style="--i:2" role="group" aria-labelledby="q_' + st.key + '">' +
+          st.options.concat(st.none ? [st.none] : []).map((o) => '<button type="button" class="choice" aria-pressed="false" data-v="' + esc(o) + '">' + esc(o) + '</button>').join('') + '</div>';
+      } else if (st.type === 'area') {
+        h += '<div class="field r" style="--i:2"><textarea id="' + id + '" rows="3" maxlength="' + st.max + '"' +
+          (st.hint ? ' aria-describedby="h_' + st.key + '"' : '') + '></textarea></div>';
+      } else {
+        h += '<div class="field r" style="--i:2"><input id="' + id + '" type="' + st.type + '" maxlength="' + st.max + '" autocomplete="' + st.auto + '"' +
+          (st.type === 'email' ? ' inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false"' : ' autocapitalize="words"') +
+          (st.hint ? ' aria-describedby="h_' + st.key + '"' : '') + ' enterkeyhint="next"></div>';
+      }
+      h += '<p class="err' + (st.req ? '' : ' none') + '" role="alert"></p>';      // an optional question never shows a message here
+      if (st.type !== 'choice') {
+        h += '<div class="actions r" style="--i:3"><button type="button" class="btn next">' + (st.req ? 'Next' : 'Skip') + '</button></div>';
+      }
+    }
+    el.innerHTML = h;
+    stepsEl.appendChild(el);
+  });
+}
+function stepEl(i) { return stepsEl.querySelector('.step[data-i="' + i + '"]'); }
+function fieldOf(i) { return stepEl(i).querySelector('input,textarea'); }
+function read(i) {
+  const st = STEPS[i], f = fieldOf(i);
+  if (f) data[st.key] = tidy(f.value, st.type === 'area');
+  return data[st.key] || '';
+}
+function check(i) {
+  const st = STEPS[i], v = read(i);
+  if (st.req && !v) return st.req;
+  if (st.type === 'email' && !EMAIL_RE.test(v)) return 'That email address looks incomplete. Check it and try again.';
+  return '';
+}
+function mark(i) {
+  const n = STEPS.length - 1, p = STEPS[i].type === 'review' ? 1 : (i + 0.5) / n;
+  $('#fill').style.transform = 'scaleX(' + p + ')'; $('#pathDot').style.left = (p * 100) + '%';
+  $('#count').textContent = STEPS[i].type === 'review' ? 'Review' : (i + 1) + ' of ' + n;
+}
+function review() {
+  $('#reviewList').innerHTML = STEPS.filter((s) => s.type !== 'review' && data[s.key])
+    .map((s) => '<div><dt>' + s.label + '</dt><dd>' + esc(data[s.key]) + '</dd></div>').join('');
+}
+function restore() {          // put back what was typed before a reload; true when they were in the questions
+  if (!kept) return false;
+  STEPS.forEach((st, i) => {
+    const v = typeof kept.data[st.key] === 'string' ? kept.data[st.key] : '';
+    if (!v || st.type === 'review') return;
+    if (st.type === 'choice' || st.type === 'multi') {
+      let picks = v.split(', ').filter((p) => st.options.includes(p) || p === st.none);
+      if (st.type === 'choice') picks = picks.slice(0, 1);
+      if (st.none && picks.includes(st.none)) picks = [st.none];
+      [...stepEl(i).querySelectorAll('.choice')].forEach((c) => c.setAttribute('aria-pressed', picks.includes(c.dataset.v) ? 'true' : 'false'));
+      data[st.key] = picks.join(', ');
+    } else {
+      const f = fieldOf(i); f.value = v.slice(0, st.max); data[st.key] = tidy(f.value, st.type === 'area');
+      if (!st.req) stepEl(i).querySelector('.next').textContent = data[st.key] ? 'Next' : 'Skip';
+    }
+  });
+  let far = 0;
+  while (far < STEPS.length - 1 && !check(far)) far++;
+  cur = Math.max(0, Math.min(kept.cur | 0, far));
+  return kept.inFlow === true && Object.keys(data).some((k) => data[k]);
+}
+let autoT = 0;
+function goStep(i, dir) {
+  clearTimeout(autoT);
+  if (busy || sending) return;
+  if (i < 0) return leaveFlow();
+  if (i >= STEPS.length) return;
+  busy = true;
+  const old = stepEl(cur), nw = stepEl(i);
+  root.style.setProperty('--d', dir);
+  old.classList.add('out');
+  setTimeout(() => {
+    old.hidden = true; old.classList.remove('out');
+    cur = i;
+    if (STEPS[i].type === 'review') { review(); $('#sendErr').textContent = ''; }
+    waitOnline = false;
+    nw.hidden = false;
+    sync(i);
+    mark(i);
+    keep();
+    $('#flow').scrollTop = 0;
+    const f = fieldOf(i) || nw.querySelector('h2');
+    if (f) setTimeout(() => f.focus({preventScroll: true}), RM ? 0 : 420);
+    busy = false;
+  }, RM ? 0 : 210);
+}
+function next() {
+  const el = stepEl(cur), msg = check(cur);
+  el.querySelector('.err').textContent = msg;
+  if (msg) { const f = fieldOf(cur); if (f) f.focus(); return; }
+  goStep(cur + 1, 1);
+}
+function sync(i) {
+  const st = STEPS[i], el = stepEl(i), f = fieldOf(i);
+  if (!f) return;
+  el.querySelector('.err').textContent = '';
+  if (!st.req) el.querySelector('.next').textContent = tidy(f.value, st.type === 'area') ? 'Next' : 'Skip';
+  if (f.tagName === 'TEXTAREA') { f.style.height = 'auto'; f.style.height = Math.min(f.scrollHeight, 280) + 'px'; }
+}
+stepsEl.addEventListener('click', (e) => {
+  const b = e.target.closest('button');
+  if (!b) return;
+  if (b.classList.contains('next')) return next();
+  if (b.classList.contains('choice') && STEPS[cur].type === 'multi') {
+    const st = STEPS[cur], on = b.getAttribute('aria-pressed') !== 'true', all = [...b.parentNode.children];
+    if (b.dataset.v === st.none) all.forEach((c) => c.setAttribute('aria-pressed', c === b && on ? 'true' : 'false'));
+    else { b.setAttribute('aria-pressed', on ? 'true' : 'false'); all.forEach((c) => { if (c.dataset.v === st.none) c.setAttribute('aria-pressed', 'false'); }); }
+    data[st.key] = all.filter((c) => c.getAttribute('aria-pressed') === 'true').map((c) => c.dataset.v).join(', ');
+    stepEl(cur).querySelector('.err').textContent = '';
+    keep();
+    return;
+  }
+  if (b.classList.contains('choice')) {
+    [...b.parentNode.children].forEach((c) => c.setAttribute('aria-pressed', c === b ? 'true' : 'false'));
+    data[STEPS[cur].key] = b.dataset.v;
+    stepEl(cur).querySelector('.err').textContent = '';
+    keep();
+    // Move on by itself after a beat: once, and only if they are still on this question. A second tap restarts the
+    // beat instead of adding another, and Back cancels it.
+    clearTimeout(autoT);
+    const from = cur;
+    autoT = setTimeout(() => { if (cur === from && mode === 'flow') next(); }, RM ? 0 : 520);
+    return;
+  }
+  if (b.id === 'send') return send();
+});
+stepsEl.addEventListener('input', () => { sync(cur); keepSoon(); if (STEPS[cur].key === 'name' && window.W4TSet) window.W4TSet.setName(fieldOf(cur).value); });
+addEventListener('w4tset', () => { if (data.name) window.W4TSet.setName(data.name); });      // a name restored before the 3D layer was ready
+stepsEl.addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter' || e.isComposing) return;
+  if (e.target.tagName === 'INPUT') { e.preventDefault(); next(); }
+  if (e.target.tagName === 'TEXTAREA' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); next(); }
+});
+stepsEl.addEventListener('submit', (e) => e.preventDefault());
+$('#back').addEventListener('click', () => { if (sending) return; if (shut) return leaveFlow(); read(cur); goStep(cur - 1, -1); });
+
+/* ---------- into and out of the questions ---------- */
+function enterFlow() {
+  if (mode !== 'site') return;
+  open(true); clearTimeout(holdT); clearTimeout(beginT);
+  const fl = $('#flow');
+  mode = 'flow'; mv = null; ts = tgt = N;
+  B.classList.add('inflow'); topEl.classList.remove('on');
+  if (flat) { $('#site').hidden = true; scrollTo(0, 0); }
+  tween('seat', 1, 1500, 'inout');
+  if (Date.now() - gate.at > 90000) ask();
+  setTimeout(() => {
+    fl.hidden = false;
+    root.style.setProperty('--d', 1);
+    if (STEPS[cur].type === 'review') review();
+    stepEl(cur).hidden = true; void fl.offsetWidth; stepEl(cur).hidden = false;
+    sync(cur); mark(cur); showGate(); keep();
+    requestAnimationFrame(() => fl.classList.add('on'));
+    setTimeout(() => { const f = shut ? $('#shut h2') : fieldOf(cur) || stepEl(cur).querySelector('h2'); if (f) f.focus({preventScroll: true}); }, RM ? 0 : 700);
+  }, RM ? 0 : 650);
+}
+function leaveFlow() {
+  const fl = $('#flow');
+  fl.classList.remove('on');
+  setTimeout(() => { fl.hidden = true; }, RM ? 0 : 600);
+  tween('seat', 0, 1100, 'inout', () => { mode = 'site'; shown = -2; B.classList.remove('inflow'); if (flat) $('#site').hidden = false; showGate(); keep(); });
+}
+
+/* ---------- is the page open? ---------- */
+/* One small question to the receiving script before anyone types: is it taking applications? If it says no, the
+   questions are replaced by a short notice instead of letting someone fill everything in for nothing. Asking also
+   wakes the script, so Send answers sooner. If the question cannot be asked, the questions stay open and Send decides. */
+const pause = (ms) => new Promise((r) => setTimeout(r, ms));
+async function getJson(url, init, ms) {
+  const ac = new AbortController(), t = setTimeout(() => ac.abort(), ms);
+  try {
+    const res = await fetch(url, Object.assign({signal: ac.signal, credentials: 'omit', referrerPolicy: 'no-referrer'}, init));
+    if (!res.ok) throw new Error('status ' + res.status);
+    return await res.json();
+  } finally { clearTimeout(t); }
+}
+const gate = {at: 0, open: true};
+let shut = false;
+async function ask() {
+  if (!CONFIG.endpoint) return;
+  gate.at = Date.now();
+  try {
+    const out = await getJson(CONFIG.endpoint, {cache: 'no-store'}, 9000);
+    if (out && out.service === 'w4t-apply') { gate.open = out.accepting !== false; showGate(); }
+  } catch (e) {}
+}
+function showGate() {
+  const untouched = cur === 0 && !Object.keys(data).some((k) => data[k]) && !fieldOf(0).value;
+  const was = shut;
+  shut = !gate.open && untouched && mode === 'flow';
+  B.classList.toggle('shut', shut); $('#shut').hidden = !shut;
+  if (shut && !was && document.activeElement && document.activeElement !== B) document.activeElement.blur();
+}
+document.addEventListener('click', (e) => {
+  if (e.target.closest('[data-apply]')) { e.preventDefault(); return enterFlow(); }
+  // a tap on the picture moves the film one thought on
+  if (mode === 'site' && !flat && tgt < N && !e.target.closest('button,a,input,textarea,label') && performance.now() - swipedAt > 400) step(1);
+});
+
+/* ---------- sending ---------- */
+/* Up to three tries with the same entry id, so a slow or dropped connection neither loses an application nor saves
+   it twice. What the applicant reads afterwards depends on what actually happened. */
+const TRIES = [12000, 12000, 10000], GAPS = [900, 2200];
+const SAY = {
+  offline: 'You are offline, so this was not sent. Your answers are still here. Stay on this page and it will send when you reconnect.',
+  network: 'This did not go through. Your answers are still here. Check your connection, then tap Send application again.',
+  busy: 'It is busy right now, so this was not sent. Wait a minute, then tap Send application again.',
+  error: 'This did not go through. Your answers are still here. Wait a minute, then tap Send application again.',
+  closed: 'Applications are paused for now, so this was not sent. Please try again another day.',
+  invalid: 'This could not be accepted as it is. Go back, check your answers, then send again.'
+};
+let waitOnline = false;
+async function post(label) {
+  const answers = {};
+  STEPS.forEach((s) => { if (s.type !== 'review') answers[s.key] = data[s.key] || ''; });
+  // An earlier try may have been saved without this page hearing so. If an answer has been changed since, this goes
+  // as a new entry that names the one it replaces; sent under the old id it would be taken for a repeat and the
+  // changed answer (a corrected email, say) would be thrown away.
+  const now = JSON.stringify(answers);
+  if (tried && tried !== now) { replaces = entryId; entryId = hex(16); }
+  tried = now; keep();
+  const payload = {v: 2, id: entryId, replaces, answers, source, website: $('#hp').value.slice(0, 200), elapsedMs: Math.max(0, Date.now() - startedAt)};
+  if (!CONFIG.endpoint) { await pause(700); return 'ok'; }
+  const body = JSON.stringify(payload);
+  let why = 'network';
+  for (let n = 0; n < TRIES.length; n++) {
+    if (n) { label('Trying again…'); await pause(GAPS[n - 1]); }
+    try {
+      const out = await getJson(CONFIG.endpoint, {method: 'POST', headers: {'Content-Type': 'text/plain;charset=utf-8'}, body}, TRIES[n]);
+      if (out && out.ok === true) return 'ok';
+      why = out && ['busy', 'closed', 'invalid'].includes(out.code) ? out.code : 'error';
+      if (why === 'invalid' || why === 'closed') return why;
+    } catch (e) {
+      why = 'network';
+      if (navigator.onLine === false) return 'offline';
+    }
+  }
+  return why;
+}
+async function send() {
+  const btn = $('#send'), err = $('#sendErr');
+  if (sending || sent) return;
+  sending = true; waitOnline = false;
+  btn.disabled = true; $('#back').disabled = true; err.textContent = '';
+  btn.textContent = 'Sending…'; btn.classList.add('going');
+  let why = 'network';
+  try { why = await post((t) => { btn.textContent = t; }); } catch (e) { why = 'network'; }
+  sending = false; $('#back').disabled = false; btn.classList.remove('going');
+  if (why !== 'ok') {
+    btn.disabled = false; btn.textContent = 'Send application';
+    err.textContent = SAY[why];
+    waitOnline = why === 'offline';
+    return;
+  }
+  forget();
+  $('#doneName').textContent = data.name;
+  const mail = document.createElement('b'); mail.textContent = data.email;
+  if (CONFIG.confirmEmail) {
+    $('#doneLine').append('One more step. I have sent an email to ', mail, '. Tap the link in it to confirm the address is yours, and I will reply from there.');
+    $('#doneSmall').textContent = 'Not there in a few minutes? Check your spam folder.';
+  } else {
+    $('#doneLine').append('Your application has reached me. I will reply to ', mail, '.');
+    $('#doneSmall').textContent = 'Not your address? Reload this page and send it again.';
+  }
+  $('#demoDone').hidden = !!CONFIG.endpoint;
+  const fl = $('#flow'), cover = $('#cover');
+  fl.classList.remove('on'); cover.classList.add('on');
+  setTimeout(() => {
+    fl.hidden = true;
+    // the table in the morning, and the name they gave on the nameplate of the practice
+    if (window.W4TSet) window.W4TSet.setName(data.name);
+    mode = 'done';
+    B.classList.add('fin');
+    $('#done').hidden = false;
+    cover.classList.remove('on');
+  }, RM ? 0 : 520);
+}
+addEventListener('online', () => { if (waitOnline && mode === 'flow' && STEPS[cur].type === 'review') send(); });
+
+/* ---------- start ---------- */
+renderSteps();
+const resume = restore();
+flat = RM;
+if (flat) B.classList.add('flat');
+if (!flat && !initGL()) B.classList.add('nogl');
+KN.addEventListener('error', () => { flat = true; B.classList.add('flat'); });
+(() => {      // film grain, laid over the photographs and the 3D set alike
+  const c = document.createElement('canvas'); c.width = c.height = 160;
+  const x = c.getContext('2d'), d = x.createImageData(160, 160);
+  for (let i = 0; i < d.data.length; i += 4) { const v = 128 + (Math.random() - 0.5) * 150; d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255; }
+  x.putImageData(d, 0, 0); $('#grain').style.backgroundImage = 'url(' + c.toDataURL() + ')';
+})();
+fit();
+addEventListener('resize', fit);
+addEventListener('w4tset', fit);
+requestAnimationFrame(frame);
+const fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+const shot = (el) => el.complete ? Promise.resolve() : new Promise((r) => { el.addEventListener('load', r); el.addEventListener('error', r); });
+Promise.race([Promise.all([fontsReady, shot(KN), shot(KD), shot(KC), shot(KZ)]), new Promise((r) => setTimeout(r, 2500))]).then(() => { fit(); intro(); if (resume) enterFlow(); setTimeout(ask, 1200); });
+if (document.fonts && document.fonts.load) document.fonts.load('400 188px "Nothing You Could Do"').then(drawInk, drawInk); else drawInk();
+</script>
+
+<script type="module">
+/* The 3D layer. It is drawn on a clear canvas over the photograph, through a camera solved from the sheet of paper
+   on the table (its four corners give the lens and where the camera stands), so everything here stands on the real
+   table, in the room's own light: the lamp before dawn, then the low sun from the window. On the table: a slim ring
+   that throws up a hologram of a practice (its foundations, the floors that rise on them, a trophy at the top),
+   a nameplate of light, and the AI tools as small characters that land on the table and play with what is on it:
+   the cups, the tablet, the calculator, the sheet of notes.
+   If this script cannot load, the film shows the room and the words without it. */
+import * as THREE from 'three';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {mergeVertices} from 'three/addons/utils/BufferGeometryUtils.js';
+import {LineSegments2} from 'three/addons/lines/LineSegments2.js';
+import {LineSegmentsGeometry} from 'three/addons/lines/LineSegmentsGeometry.js';
+import {LineMaterial} from 'three/addons/lines/LineMaterial.js';
+
+const cv = document.getElementById('set'), tagsEl = document.getElementById('tags'), TYPE = 'Sora,system-ui,sans-serif';
+const c01 = (x) => Math.max(0, Math.min(1, x)), ss = (x) => x * x * (3 - 2 * x), mixn = (a, b, t) => a + (b - a) * t;
+const outCubic = (t) => 1 - Math.pow(1 - t, 3);
+const back = (t) => 1 + 2.70158 * Math.pow(t - 1, 3) + 1.70158 * Math.pow(t - 1, 2);
+const pop = (t) => t <= 0 ? 0 : back(c01(t));
+const rnd = (seed) => { let s = seed; return () => (s = (s * 16807) % 2147483647) / 2147483647; };
+
+/* the photograph's camera: 941 by 1672, looking down across the table. Lengths are metres, taking the sheet as 42 cm
+   wide; the origin is the middle of the sheet, x to the right, y up, z towards the viewer. */
+const PW = 941, PH = 1672, FOV = 71.792861;
+const CAM = [0.9983, 0.003996, 0.058143, 0, 0.013738, 0.953398, -0.301402, 0, -0.056638, 0.301688, 0.951723, 0, -0.020023, 0.572169, 0.821641, 1];
+const SW = 0.42, SD = 0.283425;
+const SUN = [0.921, 0.276, -0.274];                // towards the sun, from the cups' shadows
+const TX = 0.088, TZ = -0.3, YAW = -0.5;            // where the practice stands: between the two cups, behind the sheet
+
+async function build() {
+  /* Building this layer is heavy work: done in one go it holds the page still for about half a second on a phone.
+     So it is done in short turns. turn() hands the page back when a turn has used 5 ms, and picks up again as soon
+     as the page has done what it was waiting to do (draw a frame, answer a tap). */
+  const turn = (() => { const ch = new MessageChannel(); let go = null, t = performance.now();
+    ch.port1.onmessage = () => { const g = go; go = null; if (g) g(); };
+    const f = () => performance.now() - t < 5 ? null : new Promise((r) => { go = () => { t = performance.now(); r(); }; ch.port2.postMessage(0); });
+    f.end = () => { ch.port1.close(); ch.port2.close(); }; return f; })();
+  try { await Promise.race([Promise.all([document.fonts.load('500 110px Sora'), document.fonts.load('400 188px "Nothing You Could Do"')]), new Promise((r) => setTimeout(r, 2500))]); } catch (e) {}
+  const R = new THREE.WebGLRenderer({canvas: cv, alpha: true, antialias: true});
+  R.setClearColor(0x000000, 0);
+  R.outputColorSpace = THREE.SRGBColorSpace;
+  R.toneMapping = THREE.ACESFilmicToneMapping;
+  R.shadowMap.enabled = true; R.shadowMap.type = THREE.PCFShadowMap;
+  await turn();
+  const scene = new THREE.Scene(), pm = new THREE.PMREMGenerator(R);
+  scene.environment = pm.fromScene(new RoomEnvironment(R), 0.04).texture; pm.dispose();
+  await turn();
+  const cam = new THREE.PerspectiveCamera(FOV, PW / PH, 0.05, 12);
+  cam.matrix.fromArray(CAM); cam.matrix.decompose(cam.position, cam.quaternion, cam.scale); cam.updateMatrixWorld(true);
+  const base = cam.clone(); base.updateProjectionMatrix(); base.updateMatrixWorld(true);
+  const AN = R.capabilities.getMaxAnisotropy(), mats = [], lineMats = [];
+  const std = (o, env) => { const m = new THREE.MeshStandardMaterial(o); m.userData.env = env || 1; mats.push(m); return m; };
+  const tex = (w, h, draw, colour) => {
+    const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h);
+    const t = new THREE.CanvasTexture(c); if (colour !== false) t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = AN; return t;
+  };
+  const v3 = new THREE.Vector3(), V = new THREE.Vector3();
+
+  await turn();
+  /* The photograph moves near things against far things (a little, with the camera). Whatever stands on the table
+     has to move with the spot it stands on, so each thing is put where that spot is drawn in this frame. */
+  let depth = null, view = {ax: 1, ay: 1, bx: 0, by: 0}, pan = [0, 0], dolly = 0;
+  const DW = 235, DH = 418, zi = document.getElementById('kZ');
+  const readDepth = () => { try { const c = document.createElement('canvas'); c.width = DW; c.height = DH; const x = c.getContext('2d', {willReadFrequently: true});
+    x.drawImage(zi, 0, 0, DW, DH); depth = x.getImageData(0, 0, DW, DH).data; } catch (e) { depth = null; } };
+  if (zi && zi.complete && zi.naturalWidth) readDepth(); else if (zi) zi.addEventListener('load', readDepth);
+  await turn();
+  const depthAt = (u, v) => depth ? depth[4 * (Math.max(0, Math.min(DH - 1, Math.round(v * DH))) * DW + Math.max(0, Math.min(DW - 1, Math.round(u * DW))))] / 255 : 0.5;
+  function lock(o, x, z) {
+    v3.set(x, 0, z).project(base);
+    const u = (v3.x + 1) / 2, v = (1 - v3.y) / 2, k = depthAt(u, v) - 0.45;
+    const su = u - k * (pan[0] + (u - (view.bx + view.ax / 2)) * dolly), sv = v - k * (pan[1] + (v - (view.by + view.ay / 2)) * dolly);
+    v3.set(su * 2 - 1, 1 - sv * 2, 0.5).unproject(base).sub(base.position);
+    const t = -base.position.y / v3.y;
+    o.position.x = base.position.x + v3.x * t; o.position.z = base.position.z + v3.z * t;
+  }
+
+  await turn();
+  /* lines of light: drawn in order, so a plan can be drawn stroke by stroke */
+  const lmat = (color, width, opacity) => { const m = new LineMaterial({color, linewidth: width, transparent: true, opacity, depthWrite: false}); lineMats.push(m); return m; };
+  const wire = (pts, m) => { const g = new LineSegmentsGeometry(); g.setPositions(pts); const l = new LineSegments2(g, m); l.userData.n = pts.length / 6; l.frustumCulled = false; return l; };
+  const draw = (l, p) => { p = c01(p); l.visible = p > 0.001; l.geometry.instanceCount = Math.max(1, Math.round(l.userData.n * p)); };
+  const stroke = (out, a, b, n) => { for (let i = 0; i < n; i++) { const u = i / n, w = (i + 1) / n; out.push(mixn(a[0], b[0], u), mixn(a[1], b[1], u), mixn(a[2], b[2], u), mixn(a[0], b[0], w), mixn(a[1], b[1], w), mixn(a[2], b[2], w)); } };
+  const rect = (out, w, d, y, n) => { const x = w / 2, z = d / 2; stroke(out, [-x, y, z], [x, y, z], n); stroke(out, [x, y, z], [x, y, -z], n); stroke(out, [x, y, -z], [-x, y, -z], n); stroke(out, [-x, y, -z], [-x, y, z], n); };
+  const arc = (out, r, a0, a1, n, y) => { for (let i = 0; i < n; i++) { const a = a0 + (a1 - a0) * i / n, b = a0 + (a1 - a0) * (i + 1) / n; out.push(r * Math.cos(a), y, r * Math.sin(a), r * Math.cos(b), y, r * Math.sin(b)); } };
+  const glowTex = tex(128, 128, (x) => { const g = x.createRadialGradient(64, 64, 0, 64, 64, 64); g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(0.35, 'rgba(255,255,255,.34)'); g.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = g; x.fillRect(0, 0, 128, 128); });
+  const glow = (color, size, o) => { const s = new THREE.Sprite(new THREE.SpriteMaterial({map: glowTex, color, transparent: true, opacity: o, blending: THREE.AdditiveBlending, depthWrite: false})); s.scale.setScalar(size); return s; };
+  const flat = (w, d, m) => new THREE.Mesh(new THREE.PlaneGeometry(w, d).rotateX(-Math.PI / 2), m);
+  const light = (o) => new THREE.MeshBasicMaterial(Object.assign({transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false}, o));
+
+  await turn();
+  /* shadows on the real table: a clear surface that only takes shadow, fading out towards the lamp */
+  const shadowOn = (side) => { const m = new THREE.ShadowMaterial({opacity: 0, depthWrite: false, side}); m.onBeforeCompile = (s) => {
+    s.vertexShader = s.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vWp;').replace('#include <fog_vertex>', '#include <fog_vertex>\nvWp=(modelMatrix*vec4(transformed,1.)).xyz;');
+    s.fragmentShader = s.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec3 vWp;').replace('opacity * ( 1.0 - getShadowMask() )', 'opacity * ( 1.0 - getShadowMask() ) * smoothstep(-.36,-.08,vWp.x)');
+  }; return m; };
+  const mShadow = shadowOn(THREE.FrontSide), mCupSh = shadowOn(THREE.DoubleSide);
+  const catcher = flat(1.7, 0.735, mShadow); catcher.position.set(0, 0.0005, -0.0675); catcher.receiveShadow = true; catcher.renderOrder = -3; scene.add(catcher);
+  await turn();
+  /* the two cups in the photograph, as shapes that are never drawn: they hide whatever goes behind or inside them, and
+     take the shadows that fall on them. Each: centre x and z, half-width, half-depth, height, the round of the foot */
+  const CUPS = [[-0.1036, -0.335, 0.0336, 0.0206, 0.0755, 0.004], [0.2523, -0.2903, 0.0358, 0.0219, 0.0755, 0.004]];
+  const mHide = new THREE.MeshBasicMaterial({colorWrite: false, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 2});
+  const cups = CUPS.map((c) => { const rin = (c[2] - 0.004) / c[2];
+    const geo = new THREE.LatheGeometry([[1 - c[5] / c[2], 0], [1, c[5]], [1, c[4]], [rin, c[4]], [rin, c[4] - 0.006], [0, c[4] - 0.006]].map((p) => new THREE.Vector2(p[0], p[1])), 64).scale(c[2], 1, c[3]);
+    const g = new THREE.Group(), hide = new THREE.Mesh(geo, mHide), sh = new THREE.Mesh(geo, mCupSh); hide.renderOrder = -5; sh.receiveShadow = true; sh.renderOrder = -3; g.add(hide, sh); scene.add(g); return g; });
+  const blobTex = tex(128, 128, (x) => { const g = x.createRadialGradient(64, 64, 0, 64, 64, 64); g.addColorStop(0, 'rgba(8,6,4,.9)'); g.addColorStop(0.55, 'rgba(8,6,4,.42)'); g.addColorStop(1, 'rgba(8,6,4,0)'); x.fillStyle = g; x.fillRect(0, 0, 128, 128); });
+  const under = (size) => { const m = flat(size, size, new THREE.MeshBasicMaterial({map: blobTex, transparent: true, opacity: 0, depthWrite: false, toneMapped: false})); m.position.y = 0.0012; m.renderOrder = -2; return m; };
+
+  await turn();
+  /* ---- the practice: a hologram, thrown up from a slim ring on the table ---- */
+  const T = new THREE.Group(); T.rotation.y = YAW; scene.add(T);
+  const TEAL = 0x66f4e4, DEEP = 0x22bfae, GOLD = 0xe6c078, WHITE = 0xeafffb;
+  // the ring is a real thing on the table: dark metal, a gold edge, a strip of light
+  const RR = 0.102, E = new THREE.Group(); E.visible = false; T.add(E);
+  const mMetal = std({color: 0x161b1d, roughness: 0.34, metalness: 0.85, side: THREE.DoubleSide}, 2.2), mGoldM = std({color: 0xd2aa60, roughness: 0.24, metalness: 1}, 2.6);
+  const ringM = new THREE.Mesh(new THREE.LatheGeometry([[RR - 0.0072, 0], [RR + 0.0072, 0], [RR + 0.0072, 0.003], [RR + 0.005, 0.0054], [RR - 0.005, 0.0054], [RR - 0.0072, 0.003], [RR - 0.0072, 0]].map((p) => new THREE.Vector2(p[0], p[1])), 96), mMetal);
+  ringM.castShadow = true;
+  const inlay = new THREE.Mesh(new THREE.TorusGeometry(RR + 0.0061, 0.0007, 8, 96).rotateX(Math.PI / 2), mGoldM); inlay.position.y = 0.0046;
+  const mStrip = new THREE.MeshBasicMaterial({color: TEAL, toneMapped: false}), stripCol = new THREE.Color(TEAL);
+  const strip = new THREE.Mesh(new THREE.RingGeometry(RR - 0.0021, RR + 0.0021, 96).rotateX(-Math.PI / 2), mStrip); strip.position.y = 0.0057;
+  E.add(ringM, inlay, strip);
+  const eBlob = under(0.25); eBlob.position.y = 0.0008; T.add(eBlob);
+  const pool = flat(0.5, 0.5, light({map: glowTex, color: DEEP, opacity: 0})); pool.position.y = 0.001; T.add(pool);
+  // the plan, in light on the table: the footprint and its axes, and three rings that turn
+  const PY = 0.0016, hudS = [], hudA = [], hudB = [], hudC = [];
+  rect(hudS, 0.146, 0.11, PY, 8);
+  stroke(hudS, [-0.093, PY, 0], [0.093, PY, 0], 10); stroke(hudS, [0, PY, -0.093], [0, PY, 0.093], 10);
+  [[-1, -1], [1, -1], [1, 1], [-1, 1]].forEach((s) => { const x = s[0] * 0.057, z = s[1] * 0.044; stroke(hudS, [x, PY, z], [x - s[0] * 0.016, PY, z], 2); stroke(hudS, [x, PY, z], [x, PY, z - s[1] * 0.016], 2); });
+  for (let k = 0; k < 3; k++) arc(hudA, 0.1165, k * 2.0944 + 0.2, k * 2.0944 + 1.55, 16, PY);
+  arc(hudB, 0.127, 0, 6.2832, 72, PY);
+  for (let k = 0; k < 48; k++) { const a = k / 48 * 6.2832, r0 = 0.127 - (k % 4 ? 0.0035 : 0.008); hudB.push(r0 * Math.cos(a), PY, r0 * Math.sin(a), 0.127 * Math.cos(a), PY, 0.127 * Math.sin(a)); }
+  for (let k = 0; k < 20; k++) arc(hudC, 0.088, k / 20 * 6.2832, (k + 0.55) / 20 * 6.2832, 2, PY);
+  const mHudS = lmat(TEAL, 1.2, 0), mHudA = lmat(TEAL, 2.1, 0), mHudB = lmat(TEAL, 1.1, 0), mHudC = lmat(GOLD, 1.4, 0);
+  const hS = wire(hudS, mHudS), hA = wire(hudA, mHudA), hB = wire(hudB, mHudB), hC = wire(hudC, mHudC); T.add(hS, hA, hB, hC);
+  // the cone of light the hologram stands in
+  const coneTex = tex(8, 128, (x) => { const g = x.createLinearGradient(0, 128, 0, 0); g.addColorStop(0, 'rgba(255,255,255,.95)'); g.addColorStop(0.22, 'rgba(255,255,255,.3)'); g.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = g; x.fillRect(0, 0, 8, 128); });
+  const cone = new THREE.Mesh(new THREE.CylinderGeometry(0.128, RR, 0.3, 64, 1, true).translate(0, 0.155, 0), light({map: coneTex, color: DEEP, opacity: 0, side: THREE.DoubleSide})); cone.renderOrder = 2; cone.visible = false; T.add(cone);
+  // every part of the practice is the same kind of thing: a dark glass volume, fine lines of light across it, bright edges
+  const lines = (rep) => { const t = tex(4, 64, (x) => { x.fillStyle = '#000'; x.fillRect(0, 0, 4, 64); for (let y = 0; y < 64; y += 8) { x.fillStyle = 'rgba(255,255,255,.95)'; x.fillRect(0, y, 4, 2); x.fillStyle = 'rgba(255,255,255,.28)'; x.fillRect(0, y + 2, 4, 1); } }, false); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(1, rep); return t; };
+  const sk1 = lines(0.75), sk2 = lines(0.5);
+  const mVol = new THREE.MeshBasicMaterial({color: 0x06292d, transparent: true, opacity: 0.5, depthWrite: false, toneMapped: false});
+  const mVolG = new THREE.MeshBasicMaterial({color: 0x2a210f, transparent: true, opacity: 0.5, depthWrite: false, toneMapped: false});
+  const mSkin = light({map: sk1, color: DEEP, opacity: 0.34}), mSkinG = light({map: sk2, color: 0xc0924a, opacity: 0.34});
+  const unit = new THREE.BoxGeometry(1, 1, 1).translate(0, 0.5, 0), edgePts = [], ringPts = [];
+  rect(edgePts, 1, 1, 0, 1); rect(edgePts, 1, 1, 1, 1); [[-1, -1], [1, -1], [1, 1], [-1, 1]].forEach((s) => stroke(edgePts, [s[0] / 2, 0, s[1] / 2], [s[0] / 2, 1, s[1] / 2], 1));
+  rect(ringPts, 1, 1, 0, 1);
+  function block(w, h, d, y, colour, vol, skin) {
+    const g = new THREE.Group(); g.position.y = y; T.add(g);
+    const body = new THREE.Mesh(unit, vol); body.renderOrder = 1; body.visible = false;
+    const sk = new THREE.Mesh(unit, skin); sk.renderOrder = 2; sk.visible = false;
+    const edges = wire(edgePts, lmat(colour, 1.5, 0)); edges.scale.set(w, h, d); edges.renderOrder = 3;
+    const scan = wire(ringPts, lmat(WHITE, 2.6, 0)); scan.scale.set(w + 0.008, 1, d + 0.008); scan.renderOrder = 4;
+    const cap = flat(w, d, light({color: colour, opacity: 0})); cap.renderOrder = 2; cap.visible = false;
+    g.add(body, sk, edges, scan, cap);
+    return {g, body, sk, edges, scan, cap, w, h, d, y, u: 0};
+  }
+  function grow(bl, u, ghost, level) {     // u: how much of it has been printed; ghost: how strongly its outline shows before that
+    const k = ss(u), on = u > 0.002;
+    bl.u = u;
+    bl.body.visible = bl.sk.visible = bl.cap.visible = on;
+    bl.body.scale.set(bl.w, Math.max(0.0004, bl.h * k), bl.d); bl.sk.scale.set(bl.w + 0.0012, Math.max(0.0004, bl.h * k), bl.d + 0.0012);
+    bl.edges.material.opacity = Math.max(ghost * 0.34, k * 0.96) * level; bl.edges.visible = bl.edges.material.opacity > 0.004;
+    bl.scan.visible = on && u < 0.999; bl.scan.position.y = bl.h * k; bl.scan.material.opacity = Math.sqrt(Math.max(0, Math.sin(Math.PI * u)));
+    bl.cap.position.y = bl.h * k; bl.cap.material.opacity = (u < 1 ? 0.55 * Math.sin(Math.PI * u) : 0) + 0.1 * k;
+    return on ? bl.y + bl.h * k : 0;
+  }
+  // the foundations, in gold
+  const slabs = [[0.146, 0.022, 0.11], [0.13, 0.022, 0.096]].map((s, i) => block(s[0], s[1], s[2], 0.008 + i * 0.024, GOLD, mVolG, mSkinG));
+  // the floors, in teal: the upper two set back
+  const FH = 0.0435, GAP = 0.0035, F0 = 0.058, FLOORS = [];
+  for (let i = 0; i < 6; i++) { const setb = i >= 4; FLOORS.push({y: F0 + i * (FH + GAP), w: setb ? 0.092 : 0.114, d: setb ? 0.07 : 0.088}); }
+  const floors = FLOORS.map((f, i) => Object.assign(block(f.w, FH, f.d, f.y, TEAL, mVol, mSkin), {i}));
+  // windows: narrow bays on the two faces towards the camera, added as light, most of them teal and a few gold
+  const WIN = [], wr = rnd(77), dummy = new THREE.Object3D(), wCol = new THREE.Color();
+  const paneTex = tex(64, 128, (x) => { const g = x.createLinearGradient(0, 0, 0, 128); g.addColorStop(0, 'rgba(255,255,255,.55)'); g.addColorStop(1, 'rgba(255,255,255,1)');
+    x.filter = 'blur(3px)'; x.fillStyle = g; x.beginPath(); x.roundRect(9, 9, 46, 110, 7); x.fill(); });
+  const winGeo = new THREE.PlaneGeometry(1, 1), winMat = light({color: 0xffffff, map: paneTex});
+  floors.forEach((fl) => {
+    const list = [];
+    const row = (n, len, place) => { const m = 0.007, gp = 0.0036, w = (len - 2 * m - (n - 1) * gp) / n;
+      for (let k = 0; k < n; k++) list.push(Object.assign(place(-len / 2 + m + w / 2 + k * (w + gp)), {w, floor: fl.i, t0: 0.1 + wr() * 1.7, f: 0.7 + wr() * 1.6, p: wr() * 6.28, lv: 0.5 + wr() * 0.7, on: wr() < 0.68, gold: wr() < 0.16, late: 0})); };
+    row(fl.i >= 4 ? 5 : 6, fl.w, (a) => ({x: a, z: fl.d / 2 + 0.001, ry: 0}));
+    row(fl.i >= 4 ? 3 : 4, fl.d, (a) => ({x: fl.w / 2 + 0.001, z: -a, ry: Math.PI / 2}));
+    const im = new THREE.InstancedMesh(winGeo, winMat, list.length);
+    list.forEach((w, k) => { dummy.position.set(w.x, FH / 2, w.z); dummy.rotation.set(0, w.ry, 0); dummy.scale.set(w.w * 1.2, FH - 0.008, 1); dummy.updateMatrix(); im.setMatrixAt(k, dummy.matrix); im.setColorAt(k, wCol.setRGB(0, 0, 0)); w.k = k; w.im = im; WIN.push(w); });
+    im.visible = false; im.frustumCulled = false; im.renderOrder = 2; fl.g.add(im); fl.wins = im;
+  });
+  WIN.filter((w) => !w.on).filter((w, k) => k % 3 === 0).slice(0, 7).forEach((w, k) => { w.late = 1.4 + k * 2.3; });
+  // a core of gold light up the middle, a ring that keeps sweeping up the floors, a height gauge at the corner
+  const core = new THREE.Mesh(new THREE.CylinderGeometry(0.003, 0.003, 1, 10, 1, true).translate(0, 0.5, 0), light({color: 0xffd58a, opacity: 0})); core.renderOrder = 3; core.visible = false; T.add(core);
+  const coreGlow = glow(0xffc470, 0.1, 0); T.add(coreGlow);
+  const mSweep = lmat(WHITE, 2.2, 0), sweep = wire(ringPts, mSweep); sweep.renderOrder = 4; T.add(sweep);
+  const GX = 0.08, GZ = -0.066, gaugePts = [];
+  stroke(gaugePts, [GX, 0.008, GZ], [GX, 0.36, GZ], 26);
+  for (let i = 0; i <= 6; i++) { const y = F0 + i * (FH + GAP) - GAP / 2; gaugePts.push(GX, y, GZ, GX + 0.007, y, GZ - 0.007); }
+  const mGauge = lmat(TEAL, 1.2, 0), gauge = wire(gaugePts, mGauge); gauge.renderOrder = 3; T.add(gauge);
+  const gMark = glow(GOLD, 0.026, 0); T.add(gMark);
+  // two broken rings that turn around the practice, and specks of light rising through it
+  const orbit = [[0.112, 0.097, 0.42, 0.09], [0.252, 0.081, -0.3, -0.07]].map((o) => { const p = []; arc(p, o[1], 0, 2.2, 22, 0); arc(p, o[1], 3.05, 4.6, 16, 0); arc(p, o[1], 5.15, 5.5, 4, 0);
+    const l = wire(p, lmat(TEAL, 1.5, 0)), g = new THREE.Group(); l.renderOrder = 3; g.position.y = o[0]; g.rotation.x = o[3]; g.add(l); T.add(g); return {l, sp: o[2]}; });
+  const SPN = 44, sr = rnd(31), spark = new Float32Array(SPN * 3), sparkSeed = [];
+  for (let i = 0; i < SPN; i++) sparkSeed.push([sr() * 6.2832, 0.02 + sr() * 0.078, sr(), 0.35 + sr() * 0.8]);
+  const sparkGeo = new THREE.BufferGeometry(); sparkGeo.setAttribute('position', new THREE.BufferAttribute(spark, 3));
+  const mSpark = new THREE.PointsMaterial({map: glowTex, color: TEAL, size: 0.0075, sizeAttenuation: true, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false});
+  const sparks = new THREE.Points(sparkGeo, mSpark); sparks.frustumCulled = false; sparks.renderOrder = 3; T.add(sparks);
+  // the trophy at the top: gold, turning slowly, lifted a little higher by every floor
+  const trophy = new THREE.Group(); trophy.visible = false; T.add(trophy);
+  const mTrophy = std({color: 0xe0a236, roughness: 0.27, metalness: 1, emissive: 0x6a3c04, emissiveIntensity: 0.4, side: THREE.DoubleSide}, 1.7);
+  const tSpin = new THREE.Group(); tSpin.scale.setScalar(1.45); trophy.add(tSpin);
+  tSpin.add(new THREE.Mesh(new THREE.LatheGeometry([[0, 0], [0.0125, 0], [0.0128, 0.0026], [0.0095, 0.0042], [0.0092, 0.0068], [0.0036, 0.0086], [0.0027, 0.0155], [0.0048, 0.0182], [0.0105, 0.0235], [0.0146, 0.0335], [0.016, 0.0465], [0.0149, 0.0468], [0.0134, 0.0345], [0.0096, 0.0262], [0, 0.0238]].map((p) => new THREE.Vector2(p[0], p[1])), 48), mTrophy));
+  [-1, 1].forEach((s) => { const h = new THREE.Mesh(new THREE.TorusGeometry(0.0082, 0.0013, 10, 28, Math.PI * 1.08), mTrophy); h.rotation.z = -s * Math.PI / 2 - (s > 0 ? 0.14 : -0.14 + Math.PI * 0.08); h.position.set(s * 0.0132, 0.0345, 0); tSpin.add(h); });
+  const tGlow = glow(0xffd27a, 0.17, 0); tGlow.position.y = 0.036; trophy.add(tGlow);
+  const haloPts = []; arc(haloPts, 0.038, 0, 4.4, 30, 0); arc(haloPts, 0.038, 4.9, 6.0, 8, 0);
+  const mHalo = lmat(GOLD, 1.5, 0), halo = wire(haloPts, mHalo), haloG = new THREE.Group(); haloG.position.y = 0.036; haloG.rotation.x = 0.32; haloG.add(halo); trophy.add(haloG);
+  const burstPts = []; arc(burstPts, 1, 0, 6.2832, 48, 0);
+  const mBurst = lmat(0xfff0c8, 2.2, 0), burst = wire(burstPts, mBurst); burst.position.y = 0.03; trophy.add(burst);
+  const starTex = tex(64, 64, (x) => { x.translate(32, 32); const g = x.createRadialGradient(0, 0, 0, 0, 0, 30); g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = g;
+    x.beginPath(); for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4, r = i % 2 ? 4 : 30; x.lineTo(Math.cos(a) * r, Math.sin(a) * r); } x.closePath(); x.fill(); });
+  const twinkles = [[0.03, 0.062, 0.006, 0], [-0.034, 0.03, 0.01, 0.37], [0.012, 0.012, 0.03, 0.7]].map((p) => { const s = new THREE.Sprite(new THREE.SpriteMaterial({map: starTex, color: 0xfff1c9, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false})); s.position.set(p[0], p[1], p[2]); s.userData.ph = p[3]; trophy.add(s); return s; });
+
+  await turn();
+  /* the nameplate: a panel of light, held up by a slim bar on the table in front of the practice */
+  const P = new THREE.Group(); P.visible = false; scene.add(P);
+  const pc = document.createElement('canvas'), pe = document.createElement('canvas'); pc.width = pe.width = 1024; pc.height = pe.height = 288;
+  const pMap = new THREE.CanvasTexture(pc), pEm = new THREE.CanvasTexture(pe);
+  pMap.colorSpace = pEm.colorSpace = THREE.SRGBColorSpace; pMap.anisotropy = pEm.anisotropy = AN;
+  const PWD = 0.132, PHT = 0.037;
+  let named = false, caretX = 0, nowT = 0, typedAt = -9, pokeN = 0, lastName = '';
+  const pokes = [-9, -9, -9, -9, -9];        // when each of the last few letters was typed: the characters hop to them
+  function setName(name) {
+    let s = String(name || '').trim();
+    if (s !== lastName && nowT > 0) { typedAt = nowT; pokes[pokeN++ % 5] = nowT; }
+    lastName = s; named = !!s; if (!s) s = 'Your name';
+    if (s.length > 20) s = s.split(/\s+/)[0].slice(0, 20);
+    [pc, pe].forEach((c, k) => {
+      const x = c.getContext('2d'); x.clearRect(0, 0, 1024, 288); x.shadowBlur = 0;
+      if (k) { x.fillStyle = '#000'; x.fillRect(0, 0, 1024, 288); }
+      else {
+        x.fillStyle = 'rgba(5,30,34,.72)'; x.beginPath(); x.roundRect(8, 8, 1008, 272, 22); x.fill();
+        x.strokeStyle = 'rgba(102,244,228,.13)'; x.lineWidth = 2; for (let y = 30; y < 270; y += 12) { x.beginPath(); x.moveTo(24, y); x.lineTo(1000, y); x.stroke(); }
+        x.strokeStyle = 'rgba(102,244,228,.92)'; x.lineWidth = 5; x.beginPath(); x.roundRect(8, 8, 1008, 272, 22); x.stroke();
+        x.strokeStyle = '#e6c078'; x.lineWidth = 8; x.lineCap = 'round'; x.lineJoin = 'round';
+        [[36, 36, 1, 1], [988, 36, -1, 1], [988, 252, -1, -1], [36, 252, 1, -1]].forEach((q) => { x.beginPath(); x.moveTo(q[0] + q[2] * 44, q[1]); x.lineTo(q[0], q[1]); x.lineTo(q[0], q[1] + q[3] * 44); x.stroke(); });
+      }
+      x.textAlign = 'center'; x.textBaseline = 'middle'; try { x.letterSpacing = '-3px'; } catch (e) {}
+      let px = 132; do { px -= 6; x.font = '500 ' + px + 'px ' + TYPE; } while (x.measureText(s).width > 820 && px > 50);
+      if (k) { x.shadowColor = '#e6c078'; x.shadowBlur = 26; }
+      x.fillStyle = k ? (named ? '#b98f47' : '#6d552b') : (named ? '#f3d596' : 'rgba(232,200,134,.74)'); x.fillText(s, 512, 150);
+      caretX = (x.measureText(s).width / 2 + 26) / 1024 * PWD;
+    });
+    pMap.needsUpdate = pEm.needsUpdate = true;
+  }
+  setName('');
+  const mFace = new THREE.MeshBasicMaterial({map: pMap, transparent: true, opacity: 1, depthWrite: false, side: THREE.DoubleSide, toneMapped: false});
+  const mFaceGlow = light({map: pEm, opacity: 0.4});
+  const tilt = new THREE.Group(); tilt.rotation.x = -0.36; tilt.position.y = 0.014;
+  const faceGeo = new THREE.PlaneGeometry(PWD, PHT).translate(0, PHT / 2, 0);
+  const face = new THREE.Mesh(faceGeo, mFace), faceGlow = new THREE.Mesh(faceGeo, mFaceGlow); face.renderOrder = 5; faceGlow.renderOrder = 6; faceGlow.position.z = 0.0004;
+  const caret = new THREE.Mesh(new THREE.PlaneGeometry(0.0022, 0.021), new THREE.MeshBasicMaterial({color: 0xffe2a8, transparent: true, opacity: 0, toneMapped: false}));
+  caret.position.set(0, PHT / 2 + 0.0005, 0.0012); caret.renderOrder = 7;
+  const gleam = glow(0xd8fff8, 0.085, 0); gleam.position.set(0, PHT / 2, 0.008);
+  tilt.add(face, faceGlow, caret, gleam);
+  const bar = new THREE.Mesh(new RoundedBoxGeometry(PWD + 0.006, 0.0046, 0.012, 2, 0.0016).translate(0, 0.0023, 0), mMetal); bar.castShadow = true;
+  const barStrip = new THREE.Mesh(new THREE.PlaneGeometry(PWD - 0.006, 0.0022).rotateX(-Math.PI / 2), mStrip); barStrip.position.y = 0.0048;
+  const fanTex = tex(8, 64, (x) => { const g = x.createLinearGradient(0, 64, 0, 0); g.addColorStop(0, 'rgba(255,255,255,.9)'); g.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = g; x.fillRect(0, 0, 8, 64); });
+  const fan = new THREE.Mesh(new THREE.PlaneGeometry(PWD - 0.004, 0.02).translate(0, 0.01, 0), light({map: fanTex, color: DEEP, opacity: 0.4, side: THREE.DoubleSide})); fan.position.y = 0.005; fan.rotation.x = -0.2;
+  const pBlob = under(0.1); pBlob.scale.set(1.7, 1, 0.5); pBlob.position.y = 0.0008;
+  P.add(tilt, bar, barStrip, fan, pBlob);
+
+  await turn();
+  /* the light */
+  const skyN = new THREE.Color(0x6a84a8), skyD = new THREE.Color(0xffe4c4), gndN = new THREE.Color(0x3a2413), gndD = new THREE.Color(0x77502f);
+  const hemi = new THREE.HemisphereLight(0xffffff, 0x000000, 0.3); scene.add(hemi);
+  const lamp = new THREE.SpotLight(0xffb469, 1, 0, 1.05, 1, 2);
+  lamp.position.set(-0.267, 0.24, -0.127); lamp.target.position.set(-0.02, 0, -0.1); scene.add(lamp, lamp.target);
+  const sun = new THREE.DirectionalLight(0xffc68a, 0);
+  sun.target.position.set(0, 0.1, -0.15); sun.position.set(SUN[0] * 2.6, 0.1 + SUN[1] * 2.6, -0.15 + SUN[2] * 2.6);
+  sun.castShadow = true; sun.shadow.mapSize.set(1024, 1024);
+  Object.assign(sun.shadow.camera, {left: -0.45, right: 0.45, top: 0.42, bottom: -0.42, near: 1.6, far: 3.6}); sun.shadow.camera.updateProjectionMatrix();
+  sun.shadow.bias = -0.0006; sun.shadow.normalBias = 0.0009; sun.shadow.radius = 5;
+  scene.add(sun, sun.target);
+  const rimN = new THREE.Color(0x6f93c8), rimD = new THREE.Color(0xffd6a6);
+  const rim = new THREE.DirectionalLight(0xffffff, 0.3); rim.position.set(-0.2, 0.5, -1.4); scene.add(rim);
+  const front = new THREE.DirectionalLight(0xfff1e2, 0); front.position.set(-0.3, 0.9, 1.2); scene.add(front);     // the room's own bounce, so faces towards the camera are not left in shade
+
+  /* ---- the AI tools: small characters, each modelled here from plain shapes. The soft ones wear a real pile: the same
+     shape drawn again and again, a little larger each time, keeping only the strands, which lean and clump the way
+     fleece does. Strands finer than a pixel blend into an even nap, so the pile stays clean from across the room
+     and resolves into fibres when the camera comes close. ---- */
+  const furTime = {value: 0}, ONE = {value: 1}, FACE0 = new THREE.Vector4(0, 0, 1, 2), furs = [];
+  const furCompile = (t, o) => (s) => {
+    Object.assign(s.uniforms, {uT: {value: t}, uLen: {value: o.len}, uDens: {value: o.dens}, uCurl: {value: o.curl || 0}, uDroop: {value: o.droop || 0},
+      uFace: {value: o.face || FACE0}, uFaceMin: {value: o.faceMin || 0}, uPuff: o.puff || ONE, uTime: furTime});
+    s.vertexShader = s.vertexShader.replace('#include <common>', '#include <common>\nattribute vec3 aDir;uniform float uT,uLen,uTime,uDroop,uPuff;varying vec3 vDir;')
+      .replace('#include <begin_vertex>', '#include <begin_vertex>\nvDir=aDir;float fk=uT*uLen*uPuff;transformed+=normalize(objectNormal)*fk;transformed.y-=fk*uT*uDroop;transformed.x+=sin(uTime*1.6+position.y*70.)*fk*uT*.1;');
+    s.fragmentShader = s.fragmentShader.replace('#include <common>', '#include <common>\nuniform float uT,uDens,uCurl,uFaceMin;uniform vec4 uFace;varying vec3 vDir;' +
+        'float h21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}' +
+        'float vn(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h21(i),h21(i+vec2(1.,0.)),f.x),mix(h21(i+vec2(0.,1.)),h21(i+vec2(1.,1.)),f.x),f.y);}')
+      .replace('#include <color_fragment>', '#include <color_fragment>\n{vec3 fd=normalize(vDir),fa=abs(fd);vec2 fq;float ff;' +
+        'if(fa.x>=fa.y&&fa.x>=fa.z){fq=fd.yz/fa.x;ff=fd.x>0.?0.:1.;}else if(fa.y>=fa.z){fq=fd.xz/fa.y;ff=fd.y>0.?2.:3.;}else{fq=fd.xy/fa.z;ff=fd.z>0.?4.:5.;}' +
+        'vec2 fb=fq*uDens+ff*7.31;float c1=vn(fb*.23+3.7),c2=vn(fb*.23+19.1);' +                       // clumps: neighbouring strands share a length and a lean
+        'vec2 fg=fb+(vec2(c1,c2)-.5)*uCurl*uT*3.;vec2 fi=floor(fg),fr=fract(fg)-.5;float r1=h21(fi),r2=h21(fi+31.7);fr-=(vec2(r1,r2)-.5)*.5;' +
+        'float open=mix(uFaceMin,1.,smoothstep(uFace.w,uFace.w-.16,dot(fd,normalize(uFace.xyz))));' +
+        'float aa=clamp(length(fwidth(fd))*uDens*.8,.002,.7),lod=smoothstep(.28,.62,aa);' +
+        'if(uT>0.){float tt=uT/max((.5+.5*r2)*mix(.68,1.,c1)*open,.001),rad=mix(.54,.2,tt*tt);' +
+        'float near=tt>1.?0.:1.-smoothstep(rad-aa,rad+aa,length(fr));' +
+        'float ta=uT/max(.8*mix(.68,1.,c1)*open,.001),far=.9*clamp(1.-ta*ta,0.,1.);' +
+        'diffuseColor.a=mix(near,far,lod);}' +
+        'diffuseColor.rgb*=mix(.4,1.1,pow(uT,.55))*mix(.9+.2*r1,1.,lod)*mix(.84,1.06,c1);}');
+  };
+  await turn();
+  /* o: len (how long the pile is), n (layers), dens (strands across a side), curl, droop, face (a patch left bare), tint (the sheen) */
+  function fur(geo, colour, o) {
+    const g = new THREE.Group();
+    for (let i = 0; i <= o.n; i++) {
+      const m = new THREE.MeshPhysicalMaterial(Object.assign({roughness: 0.92, metalness: 0, sheen: o.sheen === undefined ? 0.6 : o.sheen, sheenRoughness: 0.5, sheenColor: new THREE.Color(o.tint || 0xffffff)}, colour));
+      m.userData.env = 0.55; mats.push(m);
+      if (i) { m.transparent = true; m.alphaTest = 0.18; }
+      m.onBeforeCompile = furCompile(i / o.n, o);
+      const mesh = new THREE.Mesh(geo, m); mesh.receiveShadow = true; if (!i) mesh.castShadow = true; g.add(mesh);
+    }
+    furs.push(g.children); return g;
+  }
+  await turn();
+  /* a ball pushed into a shape: fn moves each point of a unit ball to where it belongs; colour, if given, paints it */
+  function sculpt(ws, hs, fn, colour) {
+    let g = new THREE.SphereGeometry(1, ws, hs); g.deleteAttribute('uv'); g.deleteAttribute('normal'); g = mergeVertices(g, 1e-4);
+    const p = g.attributes.position, dir = new Float32Array(p.count * 3), col = colour ? new Float32Array(p.count * 3) : null, c = new THREE.Color();
+    for (let i = 0; i < p.count; i++) { V.fromBufferAttribute(p, i).normalize(); dir[i * 3] = V.x; dir[i * 3 + 1] = V.y; dir[i * 3 + 2] = V.z; fn(V); p.setXYZ(i, V.x, V.y, V.z);
+      if (col) { colour(V, c); col[i * 3] = c.r; col[i * 3 + 1] = c.g; col[i * 3 + 2] = c.b; } }
+    g.setAttribute('aDir', new THREE.BufferAttribute(dir, 3)); if (col) g.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    g.computeVertexNormals(); return g;
+  }
+  const squareish = (v, n) => { const k = Math.pow(Math.pow(Math.abs(v.x), n) + Math.pow(Math.abs(v.y), n) + Math.pow(Math.abs(v.z), n), -1 / n); v.multiplyScalar(k); };
+  const sit = (v, y0, soft) => { if (v.y < y0) v.y = y0 + (v.y - y0) * soft; };
+  const phys = (o, env) => { const m = new THREE.MeshPhysicalMaterial(o); m.userData.env = env || 1; mats.push(m); return m; };
+  // eyes are polished beads: they pick up the window and the lamp
+  const mBlack = phys({color: 0x060608, roughness: 0.1, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.04}, 1.8);
+  const mWhite = phys({color: 0xf7f5f0, roughness: 0.25, metalness: 0, clearcoat: 0.7, clearcoatRoughness: 0.08}, 1.1);
+  const mFelt = phys({color: 0x141418, roughness: 1, metalness: 0, sheen: 1, sheenRoughness: 0.45, sheenColor: new THREE.Color(0x50506a)}, 0.6);
+  const mGlint = new THREE.MeshBasicMaterial({color: 0xffffff});
+  const ball = (r, m, x, y, z, sx, sy, sz) => { const b = new THREE.Mesh(new THREE.SphereGeometry(r, 28, 20), m); b.position.set(x, y, z); if (sx) b.scale.set(sx, sy, sz); return b; };
+  const glint = (r, x, y, z) => ball(r, mGlint, x, y, z);
+  function actor(shade) { const g = new THREE.Group(), sq = new THREE.Group(), b = new THREE.Group(); g.add(sq); sq.add(b); g.visible = false; scene.add(g);
+    const u = under(shade); u.visible = false; scene.add(u); return {g, sq, b, under: u, eyes: [], px: 0, pz: 0, ph: 0, s: 1, puff: {value: 1}}; }
+
+  // Clawd: the blocky orange one, on four legs, made the way a printed figure is: satin plastic, laid down in fine layers
+  const CU = 0.054, clawd = actor(0.13); clawd.s = 1.4;
+  await turn();
+  { const lay = tex(16, 256, (x) => { for (let y = 0; y < 256; y++) { const v = Math.round(128 + 60 * Math.sin(y / 256 * Math.PI * 2 * 30)); x.fillStyle = 'rgb(' + v + ',' + v + ',' + v + ')'; x.fillRect(0, y, 16, 1); } }, false);
+    lay.wrapS = lay.wrapT = THREE.RepeatWrapping;
+    const m = phys({color: 0xd65c26, roughness: 0.5, metalness: 0, clearcoat: 0.22, clearcoatRoughness: 0.5, bumpMap: lay, bumpScale: 0.35}, 0.6);
+    const part = (geo, x, y, z) => { const p = new THREE.Mesh(geo, m); p.position.set(x, y, z); p.castShadow = p.receiveShadow = true; clawd.b.add(p); return p; };
+    part(new RoundedBoxGeometry(CU, CU * 0.52, CU * 0.46, 4, CU * 0.032), 0, CU * 0.5, 0);
+    [-1, 1].forEach((s) => { part(new RoundedBoxGeometry(CU * 0.13, CU * 0.2, CU * 0.3, 3, CU * 0.022), s * CU * 0.56, CU * 0.44, 0);
+      const eye = new THREE.Mesh(new RoundedBoxGeometry(CU * 0.08, CU * 0.15, CU * 0.03, 2, CU * 0.01), mBlack); eye.position.set(s * CU * 0.2, CU * 0.57, CU * 0.232); clawd.b.add(eye); clawd.eyes.push(eye); });
+    clawd.legs = [-0.425, -0.19, 0.19, 0.425].map((x) => part(new RoundedBoxGeometry(CU * 0.115, CU * 0.27, CU * 0.44, 3, CU * 0.022).translate(0, -CU * 0.12, 0), x * CU, CU * 0.255, 0));
+  }
+
+  // Dots: four felt shapes: a blue one in a beret, a green one with frog eyes, a yellow one in glasses, a pink heart in sunglasses
+  const dots = [0, 1, 2, 3].map(() => actor(0.075)); dots.forEach((A) => { A.s = 1.5; });
+  await turn();
+  { const lobe = (v, cx, cy, cz, amt, w) => 1 + amt * Math.exp(-((v.x - cx) * (v.x - cx) + (v.y - cy) * (v.y - cy) + (v.z - cz) * (v.z - cz)) / w);
+    const felt = (tint) => ({len: 0.0013, n: 8, dens: 30, curl: 0.3, droop: 0.05, sheen: 0.8, tint});
+    // blue
+    let A = dots[0], geo = sculpt(56, 40, (v) => { const r = lobe(v, -0.55, 0.62, 0.2, 0.2, 0.3) * lobe(v, 0.74, 0.28, 0.15, 0.26, 0.24) * lobe(v, 0.55, -0.5, 0.2, 0.1, 0.3); v.set(v.x * 0.0172 * r, v.y * 0.0135 * r, v.z * 0.0142 * r); sit(v, -0.0105, 0.22); });
+    let body = fur(geo, {color: 0x2460e2}, felt(0x9cc0ff)); body.position.y = 0.011; A.b.add(body);
+    [-1, 1].forEach((s) => { const e = ball(0.0016, mBlack, s * 0.0045 - 0.001, 0.0118, 0.0159, 1, 1.55, 0.6); A.b.add(e); A.eyes.push(e); A.b.add(glint(0.00042, s * 0.0045 - 0.0005, 0.0131, 0.0168)); });
+    const beret = new THREE.Group(); beret.position.set(-0.0035, 0.0238, 0.001); beret.rotation.set(0.1, 0, 0.3);
+    beret.add(ball(0.0125, mFelt, 0, 0, 0, 1, 0.36, 0.9), ball(0.0018, mFelt, 0.001, 0.0048, 0, 1, 1, 1)); beret.children[0].castShadow = true; A.b.add(beret);
+    await turn();
+    // green
+    A = dots[1]; geo = sculpt(52, 38, (v) => { v.set(v.x * 0.0148, v.y * 0.0128, v.z * 0.0134); sit(v, -0.0102, 0.22); });
+    body = fur(geo, {color: 0x74c632}, felt(0xd6ff9a)); body.position.y = 0.0106; A.b.add(body);
+    const bump = sculpt(26, 18, (v) => { v.multiplyScalar(0.0058); });
+    [-1, 1].forEach((s) => { const bm = fur(bump, {color: 0x74c632}, {len: 0.0011, n: 6, dens: 12, curl: 0.3, sheen: 0.8, tint: 0xd6ff9a}); bm.position.set(s * 0.0064, 0.0222, 0.0035); A.b.add(bm);
+      const w = ball(0.0047, mWhite, s * 0.0064, 0.0231, 0.0066); const p = ball(0.0024, mBlack, s * 0.0062, 0.0234, 0.0098, 1, 1, 0.7); A.b.add(w, p, glint(0.0006, s * 0.0062 + 0.0008, 0.0244, 0.0112)); A.eyes.push(p); });
+    await turn();
+    // yellow
+    A = dots[2]; geo = sculpt(52, 40, (v) => { const s = (v.y + 1) / 2, tp = 1 - 0.56 * Math.pow(s, 1.25); v.set(v.x * 0.0186 * tp, v.y * 0.0165, v.z * 0.0146 * tp); sit(v, -0.0122, 0.2); });
+    body = fur(geo, {color: 0xf5ad18}, felt(0xffe9a0)); body.position.y = 0.0126; A.b.add(body);
+    const mRim = phys({color: 0x0b0b0d, roughness: 0.3, metalness: 0, clearcoat: 0.6, clearcoatRoughness: 0.2}, 1.2);
+    [-1, 1].forEach((s) => { const r = new THREE.Mesh(new THREE.TorusGeometry(0.0043, 0.00058, 10, 40), mRim); r.position.set(s * 0.005, 0.0128, 0.0138); r.rotation.y = s * 0.32; r.castShadow = true; A.b.add(r);
+      const lid = new THREE.Mesh(new THREE.TorusGeometry(0.0019, 0.00045, 8, 18, Math.PI), mRim); lid.position.set(s * 0.005, 0.0138, 0.0134); lid.rotation.set(0, s * 0.32, Math.PI); A.b.add(lid); });
+    const bridge = new THREE.Mesh(new THREE.BoxGeometry(0.0022, 0.0005, 0.0005), mRim); bridge.position.set(0, 0.0134, 0.0146); A.b.add(bridge);
+    await turn();
+    // pink
+    A = dots[3];
+    const heart = (hx, hy, hz) => { let lo = 0, hi = 2.2; for (let i = 0; i < 34; i++) { const r = (lo + hi) / 2, q = r * r * (hx * hx + 2.25 * hy * hy + hz * hz) - 1; if (q * q * q - Math.pow(r, 5) * (hx * hx + 0.1125 * hy * hy) * hz * hz * hz > 0) hi = r; else lo = r; } return lo; };
+    geo = sculpt(60, 44, (v) => { const r = heart(v.x, v.z, v.y) * 0.0128; v.set(v.x * r, v.y * r, v.z * r * 1.3); sit(v, -0.0094, 0.18); });
+    body = fur(geo, {color: 0xee2f8e}, felt(0xffb0dc)); body.position.y = 0.0098; body.rotation.z = -0.1; A.b.add(body);
+    [-1, 1].forEach((s) => { const l = new THREE.Mesh(new THREE.CylinderGeometry(0.0046, 0.0046, 0.0009, 36).rotateX(Math.PI / 2), mBlack); l.position.set(s * 0.0056 - 0.0004, 0.0128, 0.012); l.rotation.y = s * 0.28; A.b.add(l); });
+    const br2 = new THREE.Mesh(new THREE.BoxGeometry(0.0034, 0.0007, 0.0006), mBlack); br2.position.set(-0.0004, 0.0136, 0.013); A.b.add(br2);
+  }
+
+  // Muse: tall, pale pink fleece, with a smooth face, two bead eyes and arms that wave
+  const muse = actor(0.1); muse.s = 1.25;
+  await turn();
+  { const col = {color: 0xe0b6a8}, tint = 0xfff0e8;
+    const geo = sculpt(84, 64, (v) => { const y = v.y; squareish(v, 2.7); const wide = 1 + 0.1 * c01(-y * 1.3) - 0.05 * c01(y); v.set(v.x * 0.0262 * wide, v.y * 0.039, v.z * 0.0225 * wide); });
+    const body = fur(geo, col, {len: 0.0044, n: 26, dens: 27, curl: 0.9, droop: 0.3, face: new THREE.Vector4(0, 0.415, 0.91, 0.9), tint}); body.position.y = 0.05; muse.b.add(body);
+    await turn();
+    const legGeo = sculpt(30, 22, (v) => { v.set(v.x * 0.0105, v.y * 0.0105, v.z * 0.0115); });
+    [-1, 1].forEach((s) => { const leg = fur(legGeo, col, {len: 0.003, n: 12, dens: 10, curl: 0.9, droop: 0.2, tint}); leg.position.set(s * 0.0118, 0.0105, 0.002); muse.b.add(leg); });
+    const armGeo = sculpt(30, 28, (v) => { v.set(v.x * 0.0078, v.y * 0.0185 - 0.0155, v.z * 0.0078); });
+    const arm = (s) => { const g = new THREE.Group(); g.position.set(s * 0.0258, 0.064, 0.001); g.add(fur(armGeo, col, {len: 0.0034, n: 14, dens: 9, curl: 0.9, droop: 0.3, tint})); const hand = new THREE.Object3D(); hand.position.y = -0.034; g.add(hand); g.userData.hand = hand; muse.b.add(g); return g; };
+    muse.armL = arm(-1); muse.armR = arm(1);
+    await turn();
+    const zf = 0.0238, mSkinF = phys({color: 0xeccbbd, roughness: 0.62, metalness: 0, sheen: 0.5, sheenRoughness: 0.6, sheenColor: new THREE.Color(0xffe6dc)}, 0.6);
+    const patch = new THREE.Mesh(sculpt(48, 32, (v) => { squareish(v, 2.6); v.set(v.x * 0.0172, v.y * 0.0138, v.z * 0.0044); }), mSkinF); patch.position.set(0, 0.066, zf); patch.rotation.x = -0.07; patch.receiveShadow = true; muse.b.add(patch);
+    [-1, 1].forEach((s) => { const e = ball(0.0021, mBlack, s * 0.0078, 0.0668, zf + 0.0036); muse.b.add(e); muse.eyes.push(e);
+      muse.b.add(glint(0.0006, s * 0.0078 + 0.0007, 0.0676, zf + 0.0054));
+      const blush = new THREE.Mesh(new THREE.CircleGeometry(0.0028, 28), new THREE.MeshBasicMaterial({color: 0xf0a09e, transparent: true, opacity: 0.5, depthWrite: false})); blush.position.set(s * 0.0122, 0.0632, zf + 0.0033); blush.rotation.y = s * 0.3; muse.b.add(blush); });
+    const smile = new THREE.Mesh(new THREE.TorusGeometry(0.0021, 0.00042, 8, 20, Math.PI), mBlack); smile.rotation.z = Math.PI; smile.position.set(0, 0.0646, zf + 0.0042); muse.b.add(smile);
+  }
+
+  // Gemini: a round, long-haired blue monster with ridged horns, banded in colour towards its feet, a star in each eye
+  const gem = actor(0.14); gem.s = 1.4;
+  await turn();
+  { const GRAD = [[0, 0x35a2cf], [0.09, 0xea5874], [0.22, 0xf2ae3c], [0.38, 0x58c888], [0.54, 0x5c9bee], [1, 0x4d83e4]].map((s) => [s[0], new THREE.Color(s[1])]);
+    const gradAt = (t, out) => { t = c01(t); for (let i = 1; i < GRAD.length; i++) if (t <= GRAD[i][0]) return out.copy(GRAD[i - 1][1]).lerp(GRAD[i][1], (t - GRAD[i - 1][0]) / (GRAD[i][0] - GRAD[i - 1][0])); return out.copy(GRAD[GRAD.length - 1][1]); };
+    const o = {color: 0xffffff, vertexColors: true}, puff = gem.puff, tint = 0xe2ecff;
+    const geo = sculpt(84, 64, (v) => { const s = (1 - v.y) / 2, pear = 0.8 + 0.3 * ss(s); v.set(v.x * 0.031 * pear, v.y * 0.034, v.z * 0.028 * pear); sit(v, -0.031, 0.25); }, (p, c) => gradAt((p.y + 0.036) / 0.07, c));
+    const body = fur(geo, o, {len: 0.0078, n: 40, dens: 22, curl: 0.6, droop: 0.7, face: new THREE.Vector4(0, 0.35, 0.94, 0.86), faceMin: 0.42, puff, tint}); body.position.y = 0.036; gem.b.add(body);
+    await turn();
+    const armGeo = sculpt(30, 28, (v) => { v.set(v.x * 0.0086, v.y * 0.0165 - 0.0135, v.z * 0.0086); }, (p, c) => gradAt((0.041 + p.y) / 0.07, c));
+    const mClaw = phys({color: 0x33333e, roughness: 0.3, metalness: 0, clearcoat: 0.5, clearcoatRoughness: 0.2}, 1.2);
+    const arm = (s) => { const g = new THREE.Group(); g.position.set(s * 0.0305, 0.041, 0.003); g.add(fur(armGeo, o, {len: 0.0052, n: 14, dens: 8, curl: 0.6, droop: 0.7, puff, tint}));
+      [-1, 0, 1].forEach((k) => { const cl = new THREE.Mesh(new THREE.ConeGeometry(0.0019, 0.0046, 16), mClaw); cl.position.set(k * 0.0036, -0.0328 + Math.abs(k) * 0.001, 0.0044); cl.rotation.set(Math.PI - 0.3, 0, k * 0.2); g.add(cl); });
+      const hand = new THREE.Object3D(); hand.position.y = -0.035; g.add(hand); g.userData.hand = hand; gem.b.add(g); return g; };
+    gem.armL = arm(-1); gem.armR = arm(1);
+    await turn();
+    const footGeo = sculpt(26, 18, (v) => { v.set(v.x * 0.0092, v.y * 0.006, v.z * 0.0112); }, (p, c) => c.copy(GRAD[0][1]));
+    [-1, 1].forEach((s) => { const f = fur(footGeo, o, {len: 0.003, n: 8, dens: 8, curl: 0.5, droop: 0.5, tint}); f.position.set(s * 0.0128, 0.0058, 0.014); gem.b.add(f);
+      [-1, 0, 1].forEach((k) => gem.b.add(ball(0.002, mClaw, s * 0.0128 + k * 0.0042, 0.0026, 0.0272 - Math.abs(k) * 0.0014, 1, 0.8, 1.1))); });
+    await turn();
+    // horns: eight tapering rings each, leaning out and curling back in
+    const mHorn = phys({color: 0x567fd8, roughness: 0.4, metalness: 0, clearcoat: 0.35, clearcoatRoughness: 0.3}, 1);
+    [-1, 1].forEach((s) => { let parent = new THREE.Group(); parent.position.set(s * 0.0185, 0.0625, 0); parent.rotation.z = -s * 0.95; gem.b.add(parent);
+      for (let i = 0; i < 8; i++) { const r0 = 0.0068 * (1 - i * 0.108), r1 = 0.0068 * (1 - (i + 1) * 0.108) * 0.95, L = 0.0036;
+        const seg = new THREE.Mesh(new THREE.CylinderGeometry(Math.max(0.0006, r1), r0, L, 24).translate(0, L / 2, 0), mHorn); seg.castShadow = seg.receiveShadow = true; parent.add(seg);
+        const next = new THREE.Group(); next.position.y = L * 0.93; next.rotation.z = s * 0.215; parent.add(next); parent = next; } });
+    await turn();
+    // eyes
+    const mMouthLid = phys({color: 0x283058, roughness: 0.5, metalness: 0}, 1);
+    const irisTex = tex(256, 256, (x) => { x.translate(128, 128);
+      for (let i = 0; i < 120; i++) { x.fillStyle = 'hsl(' + ((i / 120 * 360 + 200) % 360) + ',92%,55%)'; x.beginPath(); x.moveTo(0, 0); x.arc(0, 0, 124, i / 120 * 6.2832, (i + 1.5) / 120 * 6.2832); x.closePath(); x.fill(); }
+      const g = x.createRadialGradient(0, 0, 24, 0, 0, 124); g.addColorStop(0, 'rgba(16,18,42,1)'); g.addColorStop(0.5, 'rgba(16,18,42,.86)'); g.addColorStop(0.82, 'rgba(16,18,42,0)'); x.fillStyle = g; x.beginPath(); x.arc(0, 0, 124, 0, 6.2832); x.fill();
+      x.strokeStyle = 'rgba(34,38,74,.9)'; x.lineWidth = 7; x.beginPath(); x.arc(0, 0, 120, 0, 6.2832); x.stroke();
+      x.fillStyle = '#fff'; x.beginPath(); for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4 - Math.PI / 2, r = i % 2 ? 17 : 84; x.lineTo(Math.cos(a) * r, Math.sin(a) * r); } x.closePath(); x.fill();
+      x.beginPath(); x.arc(48, 54, 11, 0, 6.2832); x.fill(); });
+    const mIris = phys({map: irisTex, roughness: 0.18, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.05}, 1.4);
+    [-1, 1].forEach((s) => { const e = new THREE.Group(); e.position.set(s * 0.0122, 0.0492, 0.0232); e.rotation.set(-0.1, s * 0.22, 0);
+      e.add(ball(0.0092, mWhite, 0, 0, 0, 1, 1, 0.6)); const iris = new THREE.Mesh(new THREE.CircleGeometry(0.0066, 48), mIris); iris.position.z = 0.0057; e.add(iris); gem.b.add(e); gem.eyes.push(e); });
+    // eyelids, the colour of its coat, for the moment it blinks
+    const mLid = phys({color: 0x5a94ea, roughness: 0.85, metalness: 0, sheen: 0.7, sheenRoughness: 0.5, sheenColor: new THREE.Color(0xe2ecff)}, 0.6); gem.lids = [];
+    gem.eyes.forEach((e) => { const l = new THREE.Group(); l.position.copy(e.position); l.rotation.copy(e.rotation); l.add(ball(0.0096, mLid, 0, 0, 0, 1, 1, 0.62));
+      const seam = new THREE.Mesh(new THREE.TorusGeometry(0.0062, 0.00042, 8, 28, Math.PI * 0.7), mMouthLid); seam.rotation.z = Math.PI * 1.15; seam.position.set(0, 0.0026, 0.0058); l.add(seam); l.visible = false; gem.b.add(l); gem.lids.push(l); });
+    // a small mouth with two teeth, sitting on the tips of the fur
+    const mMouth = phys({color: 0x283058, roughness: 0.5, metalness: 0}, 1), zm = 0.0322;
+    [-1, 1].forEach((s) => { const m = new THREE.Mesh(new THREE.TorusGeometry(0.0019, 0.00048, 8, 18, Math.PI), mMouth); m.rotation.z = Math.PI; m.position.set(s * 0.0019, 0.0388, zm); gem.b.add(m);
+      const t = new THREE.Mesh(new THREE.ConeGeometry(0.00095, 0.0024, 14), mWhite); t.rotation.z = Math.PI; t.position.set(s * 0.0042, 0.0374, zm); gem.b.add(t); });
+  }
+  await turn();
+  /* where each one stands and plays, and when (seconds into this part of the film) */
+  const CL = [-0.03, -0.068], CQ = [-0.03, -0.06], REST = innerWidth < 600 ? [0.062, 0.016] : [0.008, 0.043];   // Clawd: where it lands, where it waits during the questions, how far past the last word it stops
+  const YEL = [-0.172, -0.122, 0.25], HIDE = [-0.1094, -0.392], BLUE = [-0.112, -0.252, 0.15], GRN = [0.013, -0.25, 0.1], MU = [-0.048, -0.2], GE = [0.215, -0.09];
+  const TKS = [2.75, 3.45, 4.15], KT = [5.9, 6.2, 6.5, 6.8], PKP = 7.05;      // when each line on the tablet is ticked, when each key of the calculator is pressed, when the pink one comes up out of its cup
+  const MK0 = 7.8, MKD = 3.0, S6 = 8.5, CH = 11.0;                             // the notes are marked from MK0, for MKD; the sixth floor starts at S6; they all cheer at CH
+  dots[3].noBlob = true;
+  const gQ = new THREE.Quaternion(), gQ2 = new THREE.Quaternion(), gAx = new THREE.Vector3(), gVt = new THREE.Vector3(), UPV = new THREE.Vector3(0, 1, 0);
+  // the thread of light from a character to what it is working on
+  const thread = (colour) => { const tm = lmat(colour, 1.6, 0), l = wire(new Array(18 * 6).fill(0), tm); l.visible = false; l.renderOrder = 6; scene.add(l); const bead = glow(0xffe2a0, 0.022, 0); scene.add(bead);
+    return {l, tm, bead, w: 0, buf: new Float32Array(18 * 6), a: new THREE.Vector3(), b: new THREE.Vector3()}; };
+  const tMuse = thread(TEAL), tGem = thread(TEAL);
+  // a flash where a box on the tablet is ticked, and the rings of light that lift the green one
+  const tickFx = glow(0xd8fff8, 0.05, 0); tickFx.visible = false; scene.add(tickFx);
+  const liftRings = [0, 1, 2].map(() => { const l = wire(burstPts, lmat(TEAL, 1.6, 0)); l.renderOrder = 6; l.visible = false; scene.add(l); return l; });
+
+  // the tablet's screen wakes up, and a short list on it gets ticked off, one box at a time
+  const TAB = [[-0.3109, 0.0903, -0.1788], [-0.1723, 0.0909, -0.2374], [-0.1325, 0.02, -0.1656], [-0.2668, 0.02, -0.1096]], TB = [-0.2, -0.14];
+  const tabC = [0, 1, 2].map((j) => (TAB[0][j] + TAB[1][j] + TAB[2][j] + TAB[3][j]) / 4);
+  const tabGeo = new THREE.BufferGeometry();
+  tabGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(TAB.flatMap((p) => [tabC[0] + (p[0] - tabC[0]) * 0.95 - TB[0], tabC[1] + (p[1] - tabC[1]) * 0.95, tabC[2] + (p[2] - tabC[2]) * 0.95 - TB[1]])), 3));
+  tabGeo.setAttribute('uv', new THREE.BufferAttribute(new Float32Array([0, 1, 1, 1, 1, 0, 0, 0]), 2)); tabGeo.setIndex([0, 3, 2, 0, 2, 1]);
+  const tabAt = (u, v, j) => mixn(mixn(TAB[0][j], TAB[1][j], u), mixn(TAB[3][j], TAB[2][j], u), v);      // a point on the screen: u across, v down
+  const tc = document.createElement('canvas'); tc.width = 512; tc.height = 352;
+  const tMap = new THREE.CanvasTexture(tc); tMap.colorSpace = THREE.SRGBColorSpace; tMap.anisotropy = AN;
+  const mTab = new THREE.MeshBasicMaterial({map: tMap, transparent: true, opacity: 0, toneMapped: false, side: THREE.DoubleSide, depthWrite: false});
+  const tablet = new THREE.Mesh(tabGeo, mTab); tablet.frustumCulled = false; tablet.renderOrder = -1; scene.add(tablet);
+  const TU = 0.86;                  // how far across the screen the boxes stand
+  let tabKey = '', calcKey = -1;
+  function drawTab(rows) {          // rows: for each line of the list, how much of it is written and how far its box is ticked
+    const x = tc.getContext('2d'); x.fillStyle = '#f4efe7'; x.fillRect(0, 0, 512, 352);
+    x.fillStyle = '#0b6f62'; x.beginPath(); x.roundRect(40, 38, 150, 16, 8); x.fill();
+    x.fillStyle = 'rgba(45,52,54,.16)'; x.beginPath(); x.roundRect(40, 68, 250, 8, 4); x.fill();
+    [300, 250, 326].forEach((w, i) => {
+      const y = 132 + i * 68, k = rows[i][0], tk = rows[i][1], bx = 512 * TU - 21;
+      x.strokeStyle = 'rgba(45,52,54,.3)'; x.lineWidth = 3; x.beginPath(); x.roundRect(bx, y - 21, 42, 42, 11); x.stroke();
+      x.fillStyle = 'rgba(45,52,54,.22)'; x.beginPath(); x.roundRect(40, y - 7, w, 14, 7); x.fill();
+      if (k > 0) { x.fillStyle = 'rgba(45,52,54,.82)'; x.beginPath(); x.roundRect(40, y - 7, Math.max(14, w * k), 14, 7); x.fill(); }
+      if (tk > 0) { x.fillStyle = '#0b6f62'; x.beginPath(); x.roundRect(bx, y - 21, 42, 42, 11); x.fill();
+        x.strokeStyle = '#f4efe7'; x.lineWidth = 5.5; x.lineCap = 'round'; x.lineJoin = 'round'; x.beginPath(); x.moveTo(bx + 10, y + 1); x.lineTo(bx + 10 + 8 * c01(tk * 2), y + 1 + 8 * c01(tk * 2));
+        if (tk > 0.5) x.lineTo(bx + 18 + 14 * (tk * 2 - 1), y + 9 - 18 * (tk * 2 - 1)); x.stroke(); }
+    });
+    tMap.needsUpdate = true;
+  }
+  drawTab([[0, 0], [0, 0], [0, 0]]);
+  // where the yellow one has to be, at the top of its jump, for its head to meet each box as the camera sees it: [x, height, z, then the box itself]
+  const TKP = [0, 1, 2].map((i) => { const v = (132 + 68 * i) / 352, B = [0, 1, 2].map((j) => tabAt(TU, v, j)), C = base.position, pz = B[2] + 0.05, t = (pz - C.z) / (B[2] - C.z);
+    return [C.x + t * (B[0] - C.x), Math.max(0.012, C.y + t * (B[1] - C.y) - 0.041), pz, B[0], B[1], B[2]]; });
+
+  await turn();
+  /* the calculator in the photograph: its display lights and counts as its keys are pressed. The figures mean nothing */
+  const CALC = [[0.3484, 0.02, -0.1995], [0.4202, 0.02, -0.1615], [0.4042, 0.02, -0.1344], [0.331, 0.02, -0.1716]], CB = [0.376, -0.167];
+  const KEYS = [[0.324, -0.1109], [0.3091, -0.1184], [0.3116, -0.0939], [0.2967, -0.1014]];
+  const calcGeo = new THREE.BufferGeometry();
+  calcGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(CALC.flatMap((p) => [p[0] - CB[0], p[1], p[2] - CB[1]])), 3));
+  calcGeo.setAttribute('uv', new THREE.BufferAttribute(new Float32Array([0, 1, 1, 1, 1, 0, 0, 0]), 2)); calcGeo.setIndex([0, 3, 2, 0, 2, 1]);
+  const cc = document.createElement('canvas'); cc.width = 384; cc.height = 144;
+  const cMap = new THREE.CanvasTexture(cc); cMap.colorSpace = THREE.SRGBColorSpace; cMap.anisotropy = AN;
+  const calc = new THREE.Mesh(calcGeo, light({map: cMap, opacity: 0, side: THREE.DoubleSide})); calc.frustumCulled = false; calc.renderOrder = 4; scene.add(calc);
+  const SEG = {'1': 'bc', '2': 'abged', '8': 'abcdefg'}, BAR = {a: [0.14, 0, 0.72, 0.115], g: [0.14, 0.4425, 0.72, 0.115], d: [0.14, 0.885, 0.72, 0.115], f: [0, 0.06, 0.2, 0.41], b: [0.8, 0.06, 0.2, 0.41], e: [0, 0.53, 0.2, 0.41], c: [0.8, 0.53, 0.2, 0.41]};
+  function drawCalc(n) {            // n: how many keys have been pressed
+    const x = cc.getContext('2d'), txt = '128'.slice(0, Math.min(3, n)), dw = 54, dh = 96, y0 = 24;
+    x.fillStyle = '#000'; x.fillRect(0, 0, 384, 144);
+    for (let k = 0; k < 3; k++) { const ox = 384 - 28 - (k + 1) * dw - k * 22, ch = txt[txt.length - 1 - k];
+      'abcdefg'.split('').forEach((sg) => { const r = BAR[sg], on = ch && SEG[ch].indexOf(sg) >= 0; x.fillStyle = on ? '#9dfcef' : 'rgba(102,244,228,.1)';
+        x.beginPath(); x.roundRect(ox + r[0] * dw, y0 + r[1] * dh, r[2] * dw, r[3] * dh, 5); x.fill(); }); }
+    if (n > 3) { x.strokeStyle = '#ffd98a'; x.lineWidth = 13; x.lineCap = 'round'; x.lineJoin = 'round'; x.beginPath(); x.moveTo(36, 76); x.lineTo(58, 100); x.lineTo(100, 44); x.stroke(); }
+    cMap.needsUpdate = true;
+  }
+  drawCalc(0);
+
+  await turn();
+  /* small signs of life at first light: steam over the two cups, dust in the sun */
+  const puffTex = tex(96, 96, (x) => { const g = x.createRadialGradient(48, 48, 0, 48, 48, 48); g.addColorStop(0, 'rgba(255,250,240,.85)'); g.addColorStop(0.5, 'rgba(255,250,240,.3)'); g.addColorStop(1, 'rgba(255,250,240,0)'); x.fillStyle = g; x.fillRect(0, 0, 96, 96); });
+  const puffs = [], bursts = [], puff = () => { const s = new THREE.Sprite(new THREE.SpriteMaterial({map: puffTex, transparent: true, opacity: 0, depthWrite: false})); s.visible = false; scene.add(s); return s; };
+  CUPS.forEach((c, j) => { for (let i = 0; i < 6; i++) { const s = puff(); s.userData = {j, ph: i / 6 + j * 0.37, sw: 1.3 + i * 0.7}; puffs.push(s); } });
+  for (let i = 0; i < 7; i++) bursts.push(puff());
+  const MN = 64, mr = rnd(9), mote = new Float32Array(MN * 3), moteSeed = [];
+  for (let i = 0; i < MN; i++) moteSeed.push([-0.42 + mr() * 0.9, 0.03 + mr() * 0.4, -0.42 + mr() * 0.62, mr() * 6.28, 0.3 + mr() * 0.7]);
+  const moteGeo = new THREE.BufferGeometry(); moteGeo.setAttribute('position', new THREE.BufferAttribute(mote, 3));
+  const mMote = new THREE.PointsMaterial({map: glowTex, color: 0xffd9a0, size: 0.0085, sizeAttenuation: true, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false});
+  const motes = new THREE.Points(moteGeo, mMote); motes.frustumCulled = false; scene.add(motes);
+
+  await turn();
+  /* the words that point at the practice */
+  const TAGS = [
+    {text: 'Skills', side: 'tl', at: [-0.046, 0.019, 0.055], len: 46},
+    {text: 'Expertise', side: 'tr', at: [0.065, 0.043, 0.0], len: 46},
+    {text: 'Clients who trust you', side: 'tl', at: [-0.04, F0 + (FH + GAP) * 1.5, 0.044], len: 40},
+    {text: 'Your own hours', side: 'tr', at: [0.057, F0 + (FH + GAP) * 3.5, 0.0], len: 46}
+  ].map((t) => {
+    const el = document.createElement('div'); el.className = 'tag ' + t.side; el.style.setProperty('--len', t.len + 'px');
+    el.innerHTML = '<b></b><i></i><span>' + t.text + '</span>'; tagsEl.appendChild(el);
+    return Object.assign(t, {el, on: false, v: new THREE.Vector3(...t.at)});
+  });
+
+  await turn();
+  /* how finely this layer is drawn. It is drawn finer than the screen and scaled down, which is what keeps fur and
+     small faces clean. Not every machine can afford all of it, so the work comes in steps: each step down draws
+     fewer pixels, fewer layers of fur and a smaller shadow. The top step is finer than any screen and is kept for
+     recordings (?q=0); a computer starts one below it, at its screen's own sharpness, and a phone lower down. Any
+     machine that cannot hold a smooth frame rate moves down a step at a time until it can.
+     px: the most pixels drawn; over: how much finer than the screen; cap: the finest allowed; fur: the share of
+     the fur's layers that are drawn; sm: the size of the shadow. */
+  const RUNGS = [
+    {px: 6.2e6, over: 1.5, cap: 3, fur: 1, sm: 4096},
+    {px: 4.5e6, over: 1, cap: 2.5, fur: 0.62, sm: 4096},
+    {px: 2.6e6, over: 1, cap: 2, fur: 0.5, sm: 2048},
+    {px: 1.5e6, over: 1, cap: 2, fur: 0.36, sm: 1024},
+    {px: 1.0e6, over: 1, cap: 1.5, fur: 0.26, sm: 1024},
+    {px: 0.6e6, over: 1, cap: 1.25, fur: 0.2, sm: 512}];
+  const PHONE = innerWidth < 600, TOUCH = matchMedia('(pointer: coarse)').matches, AUTO = !!navigator.webdriver, perf = {ms: 0};
+  const ASK = new URLSearchParams(location.search).get('q'), FIXED = ASK !== null && ASK !== '' && !isNaN(+ASK);      // ?q=3 holds one step, for testing
+  let W = 2, Hh = 2, rung = FIXED ? +ASK : PHONE ? 3 : TOUCH ? 2 : 1, pxr = 1, gT = 0, gN = 0, gSum = 0, slow = 0, probe = null, paced = false;
+  function fit(w, h) {
+    W = w; Hh = h; const q = RUNGS[rung];
+    pxr = Math.min(q.cap, (devicePixelRatio || 1) * q.over, Math.sqrt(q.px / Math.max(1, w * h)));
+    R.setPixelRatio(pxr); R.setSize(w, h, false); lineMats.forEach((m) => m.resolution.set(w, h));
+  }
+  function setRung(k) {
+    rung = Math.max(0, Math.min(RUNGS.length - 1, Math.round(k))); const q = RUNGS[rung];
+    // fewer layers of fur: keep the skin and the outermost layer, and spread the rest evenly between them
+    furs.forEach((f) => { const n = f.length - 1, m = Math.min(n, Math.max(3, Math.round(n * q.fur)));
+      f.forEach((mesh, i) => { mesh.visible = !i || Math.round(Math.round(i * m / n) * n / m) === i; }); });
+    if (sun.shadow.mapSize.x !== q.sm) { sun.shadow.mapSize.set(q.sm, q.sm); if (sun.shadow.map) { sun.shadow.map.dispose(); sun.shadow.map = null; } }
+    fit(W, Hh);
+  }
+  setRung(rung);
+
+  await turn();
+  /* Each part of the film has its own clock, in seconds. A clock runs while the film is at or past that part and
+     its earlier part has finished building; going back, it runs down quickly, so things un-build instead of vanishing. */
+  const LEN = {3: 4.6, 4: 5.4, 5: 11.9, 6: 30}, clk = {3: 0, 4: 0, 5: 0, 6: 0};
+  let last = -1;
+  function clocks(st, now, instant) {
+    const dt = last < 0 ? 0 : Math.min(0.1, Math.max(0, now - last)); last = now;
+    if (instant) { [3, 4, 5, 6].forEach((k) => { clk[k] = LEN[k]; }); return; }
+    const run = (k, go) => { clk[k] = go ? Math.min(LEN[k], clk[k] + dt) : Math.max(0, clk[k] - dt * 6); };
+    run(3, st >= 3); run(4, st >= 4 && clk[3] > 3.7); run(5, st >= 5 && clk[4] > 4.4); run(6, st >= 6);
+    if (st < 5 && clk[5] > 0 && clk[5] < 0.02) clk[5] = 0;
+  }
+  const out = {mark: 0, shot: {k: 0, z: 1, x: 0.5, y: 0.5}};
+  const notes = () => window.W4TNotes || [];
+  const curve = (a, b, u, o) => { const w = 1 - u, lift = 0.03 + a.distanceTo(b) * 0.2;
+    o[0] = w * w * a.x + 2 * w * u * (a.x + b.x) / 2 + u * u * b.x; o[1] = w * w * a.y + 2 * w * u * ((a.y + b.y) / 2 + lift) + u * u * b.y; o[2] = w * w * a.z + 2 * w * u * (a.z + b.z) / 2 + u * u * b.z; return o; };
+  const tmp = [0, 0, 0], tmp2 = [0, 0, 0];
+  function runThread(th, work, now, ph) {
+    th.w += (work - th.w) * 0.16; th.l.visible = th.w > 0.02; th.tm.opacity = 0.75 * th.w;
+    if (th.l.visible) {
+      for (let j = 0; j < 18; j++) { curve(th.a, th.b, j / 18, tmp); curve(th.a, th.b, (j + 1) / 18, tmp2); th.buf.set(tmp, j * 6); th.buf.set(tmp2, j * 6 + 3); }
+      const seg = th.l.geometry.attributes.instanceStart.data; seg.array.set(th.buf); seg.needsUpdate = true;
+      curve(th.a, th.b, (now * 1.3 + ph) % 1, tmp); th.bead.position.set(tmp[0], tmp[1], tmp[2]);
+    }
+    th.bead.material.opacity = th.l.visible ? 0.95 * th.w : 0;
+  }
+  await turn();
+  /* a light coming on: it catches twice before it holds */
+  const catchOn = (t) => t <= 0 ? 0 : t < 0.1 ? 0.7 : t < 0.18 ? 0.12 : t < 0.3 ? 0.85 : t < 0.36 ? 0.3 : 1;
+  await turn();
+  /* a hop that lands at t0: a crouch, the jump, and the squash as it lands. Gives [height, squash] */
+  const hop = (t, t0, dur, h) => { const u = (t - (t0 - dur)) / dur; if (u > 0 && u < 1) return [h * Math.sin(Math.PI * u), 1 + 0.1 * Math.sin(Math.PI * u)];
+    const v = (t - t0) / 0.14; if (v >= 0 && v < 1) return [0, 1 - 0.24 * Math.sin(Math.PI * v)];
+    const w = (t - (t0 - dur - 0.12)) / 0.12; if (w > 0 && w <= 1) return [0, 1 - 0.14 * Math.sin(Math.PI * w)]; return [0, 1]; };
+  const HOP0 = [0, 1];
+  const blink = (now, ph) => ((now * 0.27 + ph) % 1) > 0.957 ? 0.12 : 1;
+  const pulse = (ph, len) => ss(c01(ph / 0.03)) * (1 - ss(c01((ph - len) / 0.03)));
+
+  function frame(s) {
+    const now = s.time; nowT = now;
+    clocks(s.st, now, s.instant);
+    const a = clk[3], b = clk[4], c = clk[5], e = clk[6];
+    const mark = c01((c - MK0) / MKD) * 1.04;
+    out.mark = mark;
+    if (!(s.vis > 0.001)) { TAGS.forEach((t) => { if (t.on) { t.on = false; t.el.classList.remove('on'); } }); return out; }
+    view = s.view; pan = s.pan; dolly = s.dolly;
+    cam.setViewOffset(PW, PH, view.bx * PW, view.by * PH, view.ax * PW, view.ay * PH);
+    const d = c01(s.d), sunUp = ss(c01((d - 0.2) / 0.6)), flow = s.flow || 0;
+    lamp.intensity = 0.62 * mixn(1, 0.22, d); sun.intensity = 3.4 * sunUp; mShadow.opacity = mCupSh.opacity = 0.46 * sunUp;
+    hemi.intensity = mixn(0.3, 0.95, d); hemi.color.copy(skyN).lerp(skyD, d); hemi.groundColor.copy(gndN).lerp(gndD, d);
+    rim.intensity = mixn(0.35, 1.25, d); rim.color.copy(rimN).lerp(rimD, d); front.intensity = 0.9 * d;
+    const env = mixn(0.2, 0.72, d); for (const m of mats) m.envMapIntensity = env * m.userData.env;
+    lock(T, TX, TZ); lock(P, TX - 0.008, TZ + 0.128); cups.forEach((g, j) => lock(g, CUPS[j][0], CUPS[j][1])); lock(calc, CB[0], CB[1]); lock(tablet, TB[0], TB[1]);
+
+    // the plan in light, the ring, and the light coming on
+    const day = mixn(1, 0.78, d), power = catchOn(a - 1.0), live = power * (0.95 + 0.05 * Math.sin(now * 23) * Math.sin(now * 1.7));
+    draw(hS, ss(c01(a / 1.3))); draw(hB, ss(c01((a - 0.15) / 1.2))); draw(hA, ss(c01((a - 0.5) / 0.9))); draw(hC, ss(c01((a - 0.8) / 0.8)));
+    mHudS.opacity = 0.5 * day; mHudB.opacity = 0.62 * day; mHudA.opacity = 0.9 * day * (0.35 + 0.65 * power); mHudC.opacity = 0.85 * day;
+    hA.rotation.y = now * 0.22; hB.rotation.y = -now * 0.07; hC.rotation.y = now * 0.36;
+    const ek = outCubic(c01((a - 0.45) / 0.6)); E.visible = ek > 0.002; E.scale.set(1, Math.max(0.002, ek), 1); eBlob.material.opacity = 0.4 * ek;
+    mStrip.color.copy(stripCol).multiplyScalar(0.12 + 1.05 * live);
+    cone.visible = power > 0.01; cone.material.opacity = 0.2 * live * mixn(1, 0.7, d);
+    pool.material.opacity = 0.2 * live * mixn(1, 0.45, d);
+    mVol.opacity = mVolG.opacity = mixn(0.34, 0.6, d); sk1.offset.y = sk2.offset.y = -now * 0.11;
+    mSkin.opacity = mSkinG.opacity = 0.36 * live;
+
+    // the foundations, then the outline of everything still to be built, then the floors themselves
+    let top = 0;
+    slabs.forEach((bl, i) => { top = Math.max(top, grow(bl, c01((a - 1.15 - i * 0.8) / 0.9), 0, live)); });
+    let lit = 0;
+    floors.forEach((fl) => {
+      const i = fl.i, u = i < 5 ? c01((b - 0.2 - i * 0.62) / 0.8) : c01((c - S6) / 1.3);
+      const gk = i < 5 ? ss(c01((a - 2.85 - i * 0.17) / 0.5)) : ss(c01((c - (S6 - 1.5)) / 0.8));
+      top = Math.max(top, grow(fl, u, gk, live));
+      lit += ss(c01((i < 5 ? b - (0.9 + i * 0.62) : c - (S6 + 1.2)) / 0.7));
+    });
+    // windows: each lights a little after its floor is finished
+    const sweepAt = ((now * 0.16) % 1) * 12 - 3;
+    WIN.forEach((w) => {
+      const since = w.floor < 5 ? b - (1.0 + w.floor * 0.62) : c - (S6 + 1.3);
+      let v = w.on ? ss(c01((since - w.t0) / 0.5)) : w.late ? ss(c01((e - w.late) / 0.8)) : 0;
+      v *= w.lv * (0.84 + 0.16 * Math.sin(now * w.f + w.p)) * live;
+      const sw = Math.exp(-Math.pow(w.floor - sweepAt, 2) / 0.7) * 0.5, ripple = c > S6 + 1.4 && c < S6 + 3.2 ? Math.exp(-Math.pow(w.floor - (c - S6 - 1.4) * 4, 2) / 0.8) : 0;
+      const q = v + ripple * 0.6;
+      if (w.gold) w.im.setColorAt(w.k, wCol.setRGB(1.0 * q + 0.3 * sw, 0.72 * q + 0.3 * sw, 0.3 * q + 0.24 * sw));
+      else w.im.setColorAt(w.k, wCol.setRGB(0.22 * q + 0.2 * sw, 0.95 * q + 0.4 * sw, 0.86 * q + 0.38 * sw));
+    });
+    floors.forEach((fl) => { fl.wins.visible = fl.u > 0.97; fl.wins.instanceColor.needsUpdate = true; });
+    // the core, the sweep, the gauge, the turning rings, the rising specks
+    const tall = Math.max(0.001, top);
+    core.visible = top > 0.01; core.scale.y = tall; core.material.opacity = 0.5 * live;
+    coreGlow.position.y = tall / 2; coreGlow.scale.set(0.05, tall * 1.1, 1); coreGlow.material.opacity = top > 0.01 ? 0.16 * live * mixn(1, 0.6, d) : 0;
+    const sph = (now * 0.19) % 1, sy = F0 + sph * Math.max(0, top - F0), sf = FLOORS[Math.max(0, Math.min(5, Math.floor((sy - F0) / (FH + GAP))))];
+    sweep.visible = top > F0 + 0.03; sweep.position.y = sy; sweep.scale.set(sf.w + 0.012, 1, sf.d + 0.012); mSweep.opacity = 0.75 * Math.sin(Math.PI * sph) * live;
+    draw(gauge, (a - 2.7) / 1.1); mGauge.opacity = 0.75 * day * live;
+    gMark.position.set(GX, tall, GZ); gMark.material.opacity = a > 3.2 ? 0.95 * live : 0;
+    orbit.forEach((o, i) => { const k = ss(c01((i ? b - 2.6 : a - 3.3) / 0.8)); o.l.visible = k > 0.01; o.l.material.opacity = 0.7 * k * day * live; o.l.rotation.y = now * o.sp; });
+    mSpark.opacity = 0.85 * live * c01(top / 0.05); sparks.visible = mSpark.opacity > 0.01;
+    if (sparks.visible) { for (let i = 0; i < SPN; i++) { const p = sparkSeed[i], y = (p[2] + now * 0.035 * p[3]) % 1, an = p[0] + now * 0.3 * p[3];
+      spark[i * 3] = p[1] * Math.cos(an); spark[i * 3 + 1] = 0.008 + y * (tall + 0.03); spark[i * 3 + 2] = p[1] * Math.sin(an); } sparkGeo.attributes.position.needsUpdate = true; }
+    // the trophy: it arrives when the fifth floor stands, and every floor after that lifts it higher
+    const tr = b - 3.7, tk = pop(tr / 0.6); trophy.visible = tk > 0.002; trophy.scale.setScalar(Math.max(0.002, tk));
+    trophy.position.y = top + 0.011 + 0.0035 * Math.sin(now * 1.3);
+    tSpin.rotation.y = now * 0.55 + (1 - outCubic(c01(tr / 1.4))) * 7; tSpin.rotation.z = 0.05 * Math.sin(now * 0.7);
+    mTrophy.emissiveIntensity = mixn(0.6, 0.2, d) + 0.5 * Math.max(0, 1 - tr / 1.2);
+    tGlow.material.opacity = (0.36 + 0.3 * Math.max(0, 1 - tr / 1.2)) * tk * mixn(1, 0.38, d);
+    halo.rotation.y = -now * 0.8; mHalo.opacity = 0.85 * c01(tk);
+    const bu = c01(tr / 0.9), bu2 = c01((c - (S6 + 1.25)) / 0.9), bb = bu > 0 && bu < 1 ? bu : bu2 > 0 && bu2 < 1 ? bu2 : 0;
+    burst.visible = bb > 0; burst.scale.setScalar(0.02 + 0.13 * outCubic(bb)); mBurst.opacity = 0.9 * (1 - bb);
+    twinkles.forEach((t) => { const ph = (now * 0.42 + t.userData.ph) % 1, k = ph < 0.3 ? Math.sin(Math.PI * ph / 0.3) : 0; t.material.opacity = 0.95 * k * c01(tk); t.scale.setScalar(0.012 + 0.03 * k); t.material.rotation = now * 0.6; });
+    // the nameplate
+    const pk = pop((b - 4.0) / 0.6), pOn = catchOn(b - 4.05); P.visible = pk > 0.002; P.scale.setScalar(Math.max(0.002, pk));
+    const gsw = c01((b - 4.5) / 0.8), glint = (now * 0.11 + 0.4) % 1;
+    gleam.position.x = mixn(-PWD / 2, PWD / 2, gsw < 1 ? gsw : glint * 3 - 1);
+    gleam.material.opacity = (gsw > 0 && gsw < 1 ? Math.sin(gsw * Math.PI) * 0.7 : e > 1 && glint < 0.34 ? Math.sin(glint / 0.34 * Math.PI) * 0.4 : 0);
+    mFace.opacity = pOn * (0.96 + 0.04 * Math.sin(now * 19)); mFaceGlow.opacity = pOn * (0.3 + 0.35 * ss(c01((b - 4.4) / 0.9)) + 0.35 * flow);
+    fan.material.opacity = 0.42 * pOn * mixn(1, 0.7, d);
+    caret.position.x = named ? caretX - 0.004 : caretX; caret.material.opacity = ((e > 0.8 || flow > 0.5) && (now * 1.6) % 1 < 0.55) ? 0.95 : 0;
+
+    // ---- the characters ----
+    furTime.value = now;
+    const still = c >= LEN[5] - 0.05, q = ss(flow), glance = c01(1 - (now - typedAt) / 1.5);
+    const cheerAt = (k) => hop(c, CH + 0.08 * k, 0.36, 0.024), poke = (k) => hop(now, pokes[k] + 0.42, 0.3, 0.02);
+    const idle = (ph) => still ? hop(((now * 0.13 + ph) % 1) * 7.7, 0.62, 0.36, 0.014) : HOP0;
+    const bump = (t, t0, dur) => { const u = (t - t0) / dur; return u > 0 && u < 1 ? Math.sin(Math.PI * u) : 0; };
+    /* a character on its spot: it drops in, lands with a bounce, and is squashed and stretched from its feet.
+       tk2 is the time since its cue, up how far it is off the floor, floor the height of what it stands on */
+    const stand = (A, tk2, x, z, up, squash, floor) => {
+      const show = tk2 > 0; A.g.visible = show; A.under.visible = show && !A.noBlob; if (!show) return false;
+      const fall = c01(tk2 / 0.5), tb = tk2 - 0.5; let y = 0.4 * (1 - fall * fall), sq = 1;
+      if (tb > 0 && tb < 0.32) y = 0.018 * Math.sin(Math.PI * tb / 0.32);
+      if (tb > 0 && tb < 0.14) sq = 1 - 0.3 * Math.sin(Math.PI * tb / 0.14); else if (tb > 0.32 && tb < 0.46) sq = 1 - 0.12 * Math.sin(Math.PI * (tb - 0.32) / 0.14);
+      sq *= squash; y += up + (floor || 0);
+      lock(A.g, x, z); A.g.position.y = y;
+      const k = c01(tk2 / 0.2) * A.s, wd = 1 + (1 - sq) * 0.7; A.sq.scale.set(k * wd, k * sq, k * wd);
+      const near = c01(1 - y / 0.12);
+      A.under.position.x = A.g.position.x - 0.004; A.under.position.z = A.g.position.z + 0.002; A.under.scale.setScalar(1.35 - 0.45 * near); A.under.material.opacity = 0.55 * near * c01(tk2 / 0.2) * (0.5 + 0.5 * sunUp);
+      return true;
+    };
+
+    // Clawd lands on the sheet, runs along its top edge to see what the others are up to, then comes back to the notes
+    // and runs along each word as it is marked
+    const ns = notes();
+    { let x = CL[0], z = CL[1], up = 0;
+      const dash = ss(c01((c - 3.7) / 1.7)) * (1 - ss(c01((c - 6.95) / 0.9)));
+      x += 0.135 * dash; z -= 0.01 * dash;
+      if (ns.length) {
+        const pt = (n, u) => [(mixn(n.a[0], n.b[0], u) - 0.5) * SW + 0.034, (mixn(n.a[1], n.b[1], u) - 0.5) * SD + 0.016];
+        let p = pt(ns[0], 0); const first = ss(c01((c - (MK0 - 0.8)) / 0.75));
+        p = [mixn(x, p[0], first), mixn(z, p[1], first)];
+        if (mark > 0) for (let i = 0; i < ns.length; i++) { const n = ns[i];
+          if (mark >= n.g0 && mark <= n.g1) p = pt(n, (mark - n.g0) / (n.g1 - n.g0));
+          else if (mark > n.g1) { p = pt(n, 1); const m = ns[i + 1];
+            if (m && mark < m.g0) { const v = (mark - n.g1) / (m.g0 - n.g1), w = pt(m, 0), ev = ss(v); p = [mixn(p[0], w[0], ev), mixn(p[1], w[1], ev)]; up = 0.036 * Math.sin(Math.PI * v); }
+            else if (!m) { const rest = ss(c01((c - (MK0 + MKD + 0.15)) / 0.7)); p = [p[0] + REST[0] * rest, p[1] + REST[1] * rest]; } } }
+        x = p[0]; z = p[1];
+      }
+      const eq = hop(c, KT[3] + 0.58, 0.3, 0.018), cheer = cheerAt(0), pk = poke(4);
+      x = mixn(x, CQ[0], q); z = mixn(z, CQ[1], q);
+      if (stand(clawd, c - 0.15, x, z, up + eq[0] + cheer[0] + pk[0], eq[1] * cheer[1] * pk[1])) {
+        const dx = clawd.g.position.x - clawd.px, dz = clawd.g.position.z - clawd.pz, dist = Math.min(0.02, Math.hypot(dx, dz)), run = c01(dist / 0.0005);
+        clawd.px = clawd.g.position.x; clawd.pz = clawd.g.position.z; clawd.ph += dist * 340;
+        clawd.legs.forEach((leg, i) => { leg.position.y = CU * 0.255 + CU * 0.08 * run * Math.max(0, Math.sin(clawd.ph + (i % 2) * Math.PI)); });
+        clawd.b.position.y = CU * 0.025 * run * Math.abs(Math.sin(clawd.ph)) + CU * 0.012 * (1 - run) * Math.sin(now * 2.1);
+        clawd.b.rotation.set(-0.1, mixn(0.16 * Math.sin(now * 0.55) + 0.35 * ss(c01((c - 5.3) / 0.5)) * (1 - ss(c01((c - 6.9) / 0.4))), 0.3 * Math.sign(dx), run), 0.07 * run * Math.sin(clawd.ph));
+        const bl = blink(now, 0.1); clawd.eyes.forEach((ey) => { ey.scale.y = bl; });
+      }
+    }
+
+    // the tablet wakes. The yellow one jumps at each box on its list and heads it, and the box is ticked
+    const tOn = ss(c01((c - 1.7) / 0.6)); mTab.opacity = 0.96 * tOn; mTab.color.setScalar(mixn(0.78, 0.9, d)); tablet.visible = tOn > 0.002;
+    { const rows = TKS.map((t) => [c01((c - (t - 0.62)) / 0.5), c01((c - t) / 0.22)]), key = rows.map((r) => Math.round(r[0] * 12) + ':' + Math.round(r[1] * 8)).join();
+      if (key !== tabKey) { tabKey = key; drawTab(rows); }
+      const A = dots[2]; let x = YEL[0], z = YEL[1], up = 0, sq = 1, tip = 0, fl = 0, fi = 0;
+      TKS.forEach((t, i) => { const P = TKP[i], r = (c - (t - 0.3)) / 0.3, f = (c - t) / 0.26;
+        if (r > 0 && f < 1) { const h = f < 0 ? Math.sin(Math.PI / 2 * r) : Math.cos(Math.PI / 2 * f); x = mixn(YEL[0], P[0], h); z = mixn(YEL[1], P[2], h); up = P[1] * h; sq = Math.abs(c - t) < 0.05 ? 0.84 : 1 + 0.1 * h; tip = h; }
+        const w = bump(c, t - 0.44, 0.14); if (w) sq = 1 - 0.18 * w;
+        const l = bump(c, t + 0.26, 0.16); if (l) sq = 1 - 0.24 * l;
+        const u = (c - t) / 0.34; if (u > 0 && u < 1) { fl = 1 - u; fi = i; } });
+      const ch = cheerAt(2), pk = poke(0), id = idle(0.46);
+      up += ch[0] + pk[0] + id[0]; sq *= ch[1] * pk[1] * id[1] * (1 + 0.02 * Math.sin(now * 1.9 + 2.6));
+      if (stand(A, c - 0.45, x, z, up, sq)) A.b.rotation.set(-0.12 - 0.3 * tip, YEL[2] * (1 - tip) + 0.16 * Math.sin(now * 0.6 + 3.4) * (1 - tip) - 0.4 * tip, 0.05 * Math.sin(now * 0.9 + 4.2));
+      tickFx.visible = fl > 0;
+      if (fl > 0) { tickFx.position.set(tablet.position.x + TKP[fi][3] - TB[0], TKP[fi][4], tablet.position.z + TKP[fi][5] - TB[1] + 0.004); tickFx.material.opacity = 0.9 * fl; tickFx.scale.setScalar(0.03 + 0.06 * (1 - fl)); }
+    }
+
+    // the blue one comes down behind the left cup, jumps three times to see over its rim, then clears it in one leap
+    { const A = dots[0]; let x = HIDE[0], z = HIDE[1], up = 0, sq = 1, turn = 0;
+      [[2.35, 0.036], [2.9, 0.05], [3.45, 0.062]].forEach((j) => { const h = hop(c, j[0] + 0.21, 0.42, j[1]); up += h[0]; sq *= h[1]; });
+      const lp = c01((c - 4.3) / 0.58);
+      if (lp > 0) { const e = ss(lp); x = mixn(HIDE[0], BLUE[0], e); z = mixn(HIDE[1], BLUE[1], e); up = 0.125 * Math.sin(Math.PI * lp); turn = Math.PI * 2 * ss(c01((lp - 0.12) / 0.76)); sq = 1 + 0.12 * Math.sin(Math.PI * lp); }
+      const w = bump(c, 4.12, 0.18), l = bump(c, 4.88, 0.18); if (w) sq = 1 - 0.22 * w; if (l) sq = 1 - 0.3 * l;
+      const ch = cheerAt(1), pk = poke(1), id = idle(0);
+      up += ch[0] + pk[0] + id[0]; sq *= ch[1] * pk[1] * id[1] * (1 + 0.02 * Math.sin(now * 1.9));
+      if (stand(A, c - 1.0, x, z, up, sq)) { const cy = 0.0125;
+        A.b.rotation.set(-0.12 + turn, lp < 1 ? 0.1 : BLUE[2] + 0.5 * ss(c01((c - 5.0) / 0.4)) * (1 - ss(c01((c - 6.4) / 0.6))) + 0.16 * Math.sin(now * 0.6), 0.05 * Math.sin(now * 0.9));
+        A.b.position.set(0, cy * (1 - Math.cos(turn)), -cy * Math.sin(turn));
+        const bl = blink(now, 0.3); A.eyes.forEach((ey) => { ey.scale.y = 1.55 * bl; }); }
+    }
+
+    // the green one sits on the ring of light, and the light picks it up and turns it over
+    { const A = dots[1], lift = ss(c01((c - 4.5) / 0.85)) * (1 - ss(c01((c - 6.9) / 0.6))), roll = Math.PI * 2 * ss(c01((c - 5.15) / 1.5));
+      const ch = cheerAt(2.5), pk = poke(2), id = idle(0.23), sq = (1 - 0.2 * bump(c, 4.3, 0.2)) * (1 - 0.26 * bump(c, 7.5, 0.18)) * ch[1] * pk[1] * id[1] * (1 + 0.02 * Math.sin(now * 1.9 + 1.3));
+      if (stand(A, c - 1.25, GRN[0], GRN[1], lift * (0.066 + 0.005 * Math.sin(now * 2.3)) + ch[0] + pk[0] + id[0], sq, 0.0045)) { const cy = 0.0118;
+        A.b.rotation.set(-0.12, GRN[2] + 0.2 * Math.sin(now * 0.6 + 1.7) + 0.7 * lift * Math.sin(now * 0.9), roll + 0.05 * Math.sin(now * 0.9 + 2.1));
+        A.b.position.set(cy * Math.sin(roll), cy * (1 - Math.cos(roll)), 0);
+        const bl = blink(now, 0.7); A.eyes.forEach((ey) => { ey.scale.y = bl; }); }
+      liftRings.forEach((l, k) => { const ph = (now * 0.9 + k / 3) % 1; l.visible = lift > 0.02;
+        if (l.visible) { l.position.set(A.g.position.x, 0.01 + ph * (A.g.position.y + 0.04), A.g.position.z); l.scale.setScalar(0.034 - 0.008 * ph); l.material.opacity = 0.9 * lift * Math.sin(Math.PI * ph); } });
+    }
+
+    // the pink one drops into the right cup and floats in the steam. It sinks to its sunglasses while the sums are done, and comes up with the answer
+    { const A = dots[3], dip = ss(c01((c - 5.3) / 0.5)) * (1 - c01((c - PKP) / 0.1)), jump = hop(c, PKP + 0.42, 0.4, 0.036), ch = cheerAt(3), pk = poke(3), id = idle(0.71);
+      if (stand(A, c - 1.5, CUPS[1][0], CUPS[1][1], 0.0022 * Math.sin(now * 1.7) - 0.0125 * dip + jump[0] + ch[0] + pk[0] + id[0], jump[1] * ch[1] * pk[1] * id[1], CUPS[1][4] - 0.012))
+        A.b.rotation.set(-0.16, -0.12 + 0.34 * Math.sin(now * 0.33), 0.07 * Math.sin(now * 1.1) + 0.12 * dip);
+    }
+
+    // Muse waves hello, watches the list being ticked, starts when the blue one lands beside her, then lifts both arms to bring the next floor up
+    const conduct = ss(c01((c - (S6 - 0.35)) / 0.5)) * (1 - ss(c01((c - (S6 + 1.5)) / 0.5)));
+    v3.set(0, FLOORS[5].y + FH * ss(c01((c - S6) / 1.3)), 0); T.localToWorld(v3); const fx6 = v3.x, fy6 = v3.y, fz6 = v3.z;
+    { const hello = ss(c01((c - 1.9) / 0.3)) * (1 - ss(c01((c - 2.95) / 0.3))), again = still ? pulse((now * 0.085 + 0.1) % 1, 0.17) : 0, wave = Math.max(hello, again);
+      const watch = ss(c01((c - 3.05) / 0.5)) * (1 - ss(c01((c - 4.75) / 0.3))), clap = Math.max(bump(c, TKS[1] + 0.02, 0.5), bump(c, TKS[2] + 0.02, 0.5));
+      const whoa = ss(c01((c - 4.84) / 0.12)) * (1 - ss(c01((c - 5.5) / 0.45))), start = hop(c, 5.27, 0.3, 0.024), joy = cheerAt(4), pk = hop(now, typedAt + 0.5, 0.3, 0.012), armsUp = Math.max(whoa, clap);
+      if (stand(muse, c - 0.75, MU[0], MU[1], start[0] + joy[0] + pk[0], start[1] * joy[1] * pk[1] * (1 + 0.014 * Math.sin(now * 1.5)))) {
+        muse.b.rotation.set(-0.1, 0.12 - 0.62 * watch - 0.4 * whoa + 0.55 * conduct + 0.5 * glance * (1 - conduct) + 0.05 * Math.sin(now * 0.4), 0.03 * Math.sin(now * 0.8) + 0.05 * wave * Math.sin(now * 7) + 0.1 * whoa);
+        muse.armR.rotation.z = mixn(mixn(mixn(0.2, 2.5 + 0.34 * Math.sin(now * 7), wave), 2.35, armsUp), 2.0 + 0.16 * Math.sin(now * 3.1), conduct);
+        muse.armL.rotation.z = -mixn(mixn(0.2 + 0.05 * Math.sin(now * 1.1), 2.35, armsUp), 2.75 + 0.12 * Math.sin(now * 3.1 + 1), conduct);
+        const bl = blink(now, 0.55); muse.eyes.forEach((ey) => { ey.scale.y = bl; });
+        muse.armR.userData.hand.getWorldPosition(tMuse.a);
+      }
+      tMuse.b.set(fx6, fy6, fz6); runThread(tMuse, muse.g.visible && conduct > 0.6 ? 1 : 0, now, 0.2);
+    }
+
+    // Gemini leans over the calculator and presses its keys, one claw at a time; the display lights, and the answer makes its fur stand on end
+    { const calcing = ss(c01((c - (KT[0] - 1.2)) / 0.6)) * (1 - ss(c01((c - (KT[3] + 0.4)) / 0.45))), won = c - (KT[3] + 0.1);
+      let kx = KEYS[0][0], kz = KEYS[0][1], press = 0;
+      KT.forEach((t, i) => { if (i) { const m = ss(c01((c - (KT[i - 1] + 0.08)) / 0.15)); kx = mixn(kx, KEYS[i][0], m); kz = mixn(kz, KEYS[i][1], m); } press = Math.max(press, bump(c, t - 0.09, 0.18)); });
+      const kn = KT.reduce((n, t) => n + (c >= t ? 1 : 0), 0); if (kn !== calcKey) { calcKey = kn; drawCalc(kn); }
+      calc.material.opacity = 0.95 * catchOn(c - (KT[0] - 0.95)) * (0.95 + 0.05 * Math.sin(now * 17)) * mixn(1, 0.9, d) * (1 + 0.5 * bump(c, KT[3], 0.5));
+      gem.puff.value = 1 + (won > 0 ? 0.42 * c01(won / 0.09) * Math.exp(-won * 2) : 0);
+      const proud = hop(c, KT[3] + 1.0, 0.32, 0.028), joy = cheerAt(5), joy2 = idle(0.5), pk = hop(now, typedAt + 0.62, 0.3, 0.012), S = gem.s;
+      const L = Math.max(0.15, Math.min(0.5, 0.2 + (Math.hypot(kx - GE[0], kz - GE[1]) - 0.085) * 9)), tipUp = 0.03 * Math.sin(L) * S * calcing;
+      if (stand(gem, c - 1.0, GE[0], GE[1], tipUp + proud[0] + joy[0] + joy2[0] + pk[0], proud[1] * joy[1] * joy2[1] * pk[1] * (1 + 0.016 * Math.sin(now * 1.7 + 1) * (1 - calcing)))) {
+        // it keeps its face to the room and leans its whole body towards the key; the arm does the rest of the reaching
+        const tx = calc.position.x + kx - CB[0], tz = calc.position.z + kz - CB[1], yawK = Math.atan2(gem.g.position.z - tz, tx - gem.g.position.x);
+        const up2 = Math.max(conduct, c01(won / 0.15) * (1 - c01((won - 0.6) / 0.4)));
+        gem.b.rotation.set(-0.1 * (1 - calcing), -0.1 - 0.5 * conduct - 0.45 * glance * (1 - conduct) + 0.06 * Math.sin(now * 0.45 + 2), 0.03 * Math.sin(now * 0.9 + 1));
+        let reach = 0, swing = 0, len = 1;
+        if (calcing > 0) {
+          gem.b.quaternion.slerp(gQ.setFromAxisAngle(gAx.set(-Math.sin(yawK), 0, -Math.cos(yawK)), L).multiply(gQ2.setFromAxisAngle(UPV, 0.3 * yawK - 0.08)), calcing);
+          gem.b.updateWorldMatrix(true, false);
+          gem.b.worldToLocal(gVt.set(tx, 0.0175 + 0.008 * (1 - press), tz)).sub(gem.armR.position);
+          const gl = gVt.length(); reach = Math.acos(Math.max(-1, Math.min(1, -gVt.y / gl))); swing = Math.atan2(-gVt.z, gVt.x); len = Math.max(0.8, Math.min(1.35, gl / 0.035));
+        }
+        gem.armR.rotation.set(0, swing * calcing, mixn(mixn(0.26 + 0.06 * Math.sin(now * 1.3 + 2), 2.8 + 0.12 * Math.sin(now * 3.3 + 1), up2), reach, calcing));
+        gem.armR.scale.y = mixn(1, len, calcing);
+        gem.armL.rotation.z = -mixn(mixn(0.26 + 0.06 * Math.sin(now * 1.3), 2.1 + 0.16 * Math.sin(now * 3.3), up2), 0.7, calcing);
+        const shut = blink(now, 0.8) < 1; gem.eyes.forEach((ey) => { ey.visible = !shut; }); gem.lids.forEach((l) => { l.visible = shut; });
+        gem.armL.userData.hand.getWorldPosition(tGem.a);
+      }
+      tGem.b.set(fx6, fy6, fz6); runThread(tGem, gem.g.visible && conduct > 0.6 ? 1 : 0, now, 0.7);
+    }
+
+    // steam over the cups, a burst of it when the pink one lands in its cup and when it comes back up, and dust in the sun
+    const life = sunUp * ss(c01((b - 1) / 2));
+    puffs.forEach((p) => { const u = (now * 0.19 + p.userData.ph) % 1, j = p.userData.j, g = cups[j].position;
+      p.position.set(g.x + Math.sin(now * 0.8 + p.userData.sw) * 0.014 * u, CUPS[j][4] + 0.016 + u * 0.15, g.z); p.scale.setScalar(0.03 + 0.075 * u);
+      p.material.opacity = Math.sin(Math.PI * u) * 0.17 * life; p.visible = life > 0.01; });
+    bursts.forEach((p, i) => { let u = -1; [2.0, PKP + 0.04].forEach((t) => { const v = (c - t - i * 0.025) / 0.9; if (v > 0 && v < 1) u = v; });
+      p.visible = u > 0;
+      if (u > 0) { const an = i * 2.4, g = cups[1].position, o = outCubic(u);
+        p.position.set(g.x + Math.cos(an) * (0.012 + 0.03 * o), CUPS[1][4] + 0.008 + 0.065 * o, g.z + Math.sin(an) * 0.012 * o); p.scale.setScalar(0.022 + 0.055 * o); p.material.opacity = 0.4 * Math.sin(Math.PI * Math.sqrt(u)) * (0.45 + 0.55 * sunUp); } });
+    mMote.opacity = 0.6 * life; motes.visible = life > 0.01;
+    if (motes.visible) { for (let i = 0; i < MN; i++) { const m = moteSeed[i], t = now * 0.05 * m[4];
+      mote[i * 3] = m[0] + Math.sin(t * 3 + m[3]) * 0.03; mote[i * 3 + 1] = 0.03 + ((m[1] + t * 0.3) % 0.42); mote[i * 3 + 2] = m[2] + Math.cos(t * 2.2 + m[3]) * 0.03; }
+      moteGeo.attributes.position.needsUpdate = true; }
+
+    // the camera this part of the film asks for: in close on the left of the table, across to the right, and back out
+    { const sIn = ss(c01((c - 1.3) / 1.2)), sPan = ss(c01((c - 4.5) / 1.25)), sOut = ss(c01((c - 7.15) / 1.3)), sh = out.shot;
+      sh.k = s.st === 5 && !s.instant ? sIn * (1 - sOut) : 0; sh.p = sPan; sh.z = mixn(2.0, 2.0, sPan); sh.x = mixn(0.37, 0.675, sPan); sh.y = mixn(0.6, 0.612, sPan); }
+
+    R.render(scene, cam);
+    { const real = performance.now(), dt = real - gT; gT = real;
+      if (dt > 0 && dt < 250 && !(PHONE && flow > 0.01)) { gSum += dt; gN++; }
+      if (gN >= 30) { perf.ms = gSum / gN; gN = gSum = 0;
+        // slow twice running, or badly slow once: move down a step. A phone saving power draws 30 frames a second
+        // whatever it is given: if two steps down leave it at that same steady pace, go back up and stay there.
+        slow = perf.ms > 38 ? 2 : perf.ms > 20 ? slow + 1 : 0;
+        if (!AUTO && !FIXED && !paced && slow >= 2) { slow = 0; const at30 = (ms) => ms > 30 && ms < 37, was = rung;
+          if (probe && rung - probe.rung >= 2 && at30(perf.ms) && at30(probe.ms)) { paced = true; setRung(probe.rung); }
+          else if (rung < RUNGS.length - 1) { if (!probe || perf.ms < probe.ms * 0.9) probe = {ms: perf.ms, rung}; setRung(rung + 1); }
+          if (rung !== was) console.warn('The 3D layer is at step ' + rung + (paced ? ' and staying there.' : ' to keep up.')); } } }
+
+    // the labels follow the practice
+    const want = [a > 1.95 && b < 0.5, a > 2.75 && b < 0.5, b > 1.9, b > 3.3], quiet = s.st >= 5 || flow > 0.01 || s.st < 3;
+    TAGS.forEach((t, i) => {
+      const on = want[i] && !quiet;
+      if (on !== t.on) { t.on = on; t.el.classList.toggle('on', on); }
+      v3.copy(t.v); T.localToWorld(v3); v3.project(cam);
+      t.el.style.transform = 'translate3d(' + ((v3.x + 1) / 2 * W).toFixed(1) + 'px,' + ((1 - v3.y) / 2 * Hh).toFixed(1) + 'px,0)';
+    });
+    return out;
+  }
+  /* Before this layer is first shown, everything it will ever draw is made ready: the program that shades each
+     material, the shapes and pictures the graphics chip holds, the shadow. Left to the moment a thing first appears,
+     that work falls on one frame of the film and the picture catches. Here it is done a piece at a time: first the
+     programs are all started (the chip builds them in the background where it can), then each thing is drawn once
+     with all of its parts showing. Those drawings are for the graphics chip, not for the eye, and the canvas may
+     already be on show (the layer arriving late into a film that is playing, or a reload in the middle of the
+     questions on a wide screen), so the canvas is kept out of sight until they are done and wiped. */
+  { const kids = scene.children.filter((o) => !o.isLight), seen = kids.map((o) => o.visible), shown = cv.style.visibility;
+    cv.style.visibility = 'hidden';
+    try {
+      for (const o of kids) { R.compile(o, cam, scene); await turn(); }
+      await Promise.race([R.compileAsync(scene, cam), new Promise((r) => setTimeout(r, 2500))]);
+      for (const o of kids) {
+        const was = []; kids.forEach((k) => { k.visible = false; });
+        o.traverse((c) => { was.push(c, c.visible, c.frustumCulled); c.visible = true; c.frustumCulled = false; });
+        try { R.render(scene, cam); } finally { for (let i = 0; i < was.length; i += 3) { was[i].visible = was[i + 1]; was[i].frustumCulled = was[i + 2]; } }
+        await turn();
+      }
+    } catch (e) { console.warn('The 3D layer could not be prepared ahead of time; each thing will be prepared as it appears.', e); }
+    try { kids.forEach((k, i) => { k.visible = seen[i]; }); R.clear(); } finally { cv.style.visibility = shown; turn.end(); }
+  }
+  window.W4TSet = {fit, frame, setName, shot: out.shot, stat: () => ({ms: perf.ms, rung, paced, pxr, clock: clk[5]})};
+  dispatchEvent(new Event('w4tset'));
+}
+build().catch((e) => { console.warn('The 3D layer did not load; the film plays without it.', e); window.W4TOff = true; dispatchEvent(new Event('w4toff')); });
+</script>
+</body>
+</html>
