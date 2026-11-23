@@ -1764,7 +1764,8 @@ async function build() {
     {px: 0.6e6, over: 1, cap: 1.25, fur: 0.2, sm: 512}];
   const PHONE = innerWidth < 600, TOUCH = matchMedia('(pointer: coarse)').matches, AUTO = !!navigator.webdriver, perf = {ms: 0};
   const ASK = new URLSearchParams(location.search).get('q'), FIXED = ASK !== null && ASK !== '' && !isNaN(+ASK);      // ?q=3 holds one step, for testing
-  let W = 2, Hh = 2, rung = FIXED ? +ASK : PHONE ? 3 : TOUCH ? 2 : 1, pxr = 1, gT = 0, gN = 0, gSum = 0, slow = 0, probe = null, paced = false;
+  let W = 2, Hh = 2, rung = FIXED ? +ASK : PHONE ? 3 : TOUCH ? 2 : 1, pxr = 1, gT = 0, gN = 0, gSum = 0, slow = 0, probe = null, paced = false, lullT = 0, scr = 0;
+  const lull = [];
   function fit(w, h) {
     W = w; Hh = h; const q = RUNGS[rung];
     pxr = Math.min(q.cap, (devicePixelRatio || 1) * q.over, Math.sqrt(q.px / Math.max(1, w * h)));
@@ -1824,7 +1825,16 @@ async function build() {
     const a = clk[3], b = clk[4], c = clk[5], e = clk[6];
     const mark = c01((c - MK0) / MKD) * 1.04;
     out.mark = mark;
-    if (!(s.vis > 0.001)) { TAGS.forEach((t) => { if (t.on) { t.on = false; t.el.classList.remove('on'); } }); return out; }
+    if (!(s.vis > 0.001)) {
+      // While this layer is not being drawn the page's work is light, so the gap between frames is the screen's own pace.
+      const real = performance.now();
+      if (lullT && real - lullT < 250) { lull.push(real - lullT); if (lull.length > 60) lull.shift(); }
+      lullT = real;
+      TAGS.forEach((t) => { if (t.on) { t.on = false; t.el.classList.remove('on'); } }); return out; }
+    if (lullT) { lullT = 0;        // about to be drawn: settle what that pace was, from the last second or two
+      if (lull.length >= 30) { const g = lull.slice().sort((x, y) => x - y);
+        scr = g[g.length >> 1]; paced = g.filter((x) => x > 29 && x < 38).length >= g.length * 0.8; }
+      lull.length = 0; }
     view = s.view; pan = s.pan; dolly = s.dolly;
     cam.setViewOffset(PW, PH, view.bx * PW, view.by * PH, view.ax * PW, view.ay * PH);
     const d = c01(s.d), sunUp = ss(c01((d - 0.2) / 0.6)), flow = s.flow || 0;
@@ -2065,13 +2075,16 @@ async function build() {
     { const real = performance.now(), dt = real - gT; gT = real;
       if (dt > 0 && dt < 250 && !(PHONE && flow > 0.01)) { gSum += dt; gN++; }
       if (gN >= 30) { perf.ms = gSum / gN; gN = gSum = 0;
-        // slow twice running, or badly slow once: move down a step. A phone saving power draws 30 frames a second
-        // whatever it is given: if two steps down leave it at that same steady pace, go back up and stay there.
-        slow = perf.ms > 38 ? 2 : perf.ms > 20 ? slow + 1 : 0;
-        if (!AUTO && !FIXED && !paced && slow >= 2) { slow = 0; const at30 = (ms) => ms > 30 && ms < 37, was = rung;
-          if (probe && rung - probe.rung >= 2 && at30(perf.ms) && at30(probe.ms)) { paced = true; setRung(probe.rung); }
+        // Slow twice running, or badly slow once: move down a step. Slow is judged against the screen's own pace.
+        // A phone or laptop saving power is held to 30 frames a second whatever the page does (paced, read before
+        // this layer was first drawn): there, only a pace worse than that counts, and the film keeps its detail.
+        slow = perf.ms > (paced ? 50 : 38) ? 2 : perf.ms > (paced ? 38 : 20) ? slow + 1 : 0;
+        if (!AUTO && !FIXED && slow >= 2) { slow = 0; const at30 = (ms) => ms > 30 && ms < 37, was = rung;
+          // The pace could not be read first (the layer was drawn from its first moment): if two steps down leave it
+          // at the same steady 30, it was the screen all along. Go back up and stay there.
+          if (!paced && probe && rung - probe.rung >= 2 && at30(perf.ms) && at30(probe.ms)) { paced = true; setRung(probe.rung); }
           else if (rung < RUNGS.length - 1) { if (!probe || perf.ms < probe.ms * 0.9) probe = {ms: perf.ms, rung}; setRung(rung + 1); }
-          if (rung !== was) console.warn('The 3D layer is at step ' + rung + (paced ? ' and staying there.' : ' to keep up.')); } } }
+          if (rung !== was) console.warn('The 3D layer is at step ' + rung + (rung < was ? ' and staying there.' : ' to keep up.')); } } }
 
     // the labels follow the practice
     const want = [a > 1.95 && b < 0.5, a > 2.75 && b < 0.5, b > 1.9, b > 3.3], quiet = s.st >= 5 || flow > 0.01 || s.st < 3;
@@ -2104,7 +2117,7 @@ async function build() {
     } catch (e) { console.warn('The 3D layer could not be prepared ahead of time; each thing will be prepared as it appears.', e); }
     try { kids.forEach((k, i) => { k.visible = seen[i]; }); R.clear(); } finally { cv.style.visibility = shown; turn.end(); }
   }
-  window.W4TSet = {fit, frame, setName, shot: out.shot, stat: () => ({ms: perf.ms, rung, paced, pxr, clock: clk[5]})};
+  window.W4TSet = {fit, frame, setName, shot: out.shot, stat: () => ({ms: perf.ms, rung, paced, pace: scr, pxr, clock: clk[5]})};
   dispatchEvent(new Event('w4tset'));
 }
 build().catch((e) => { console.warn('The 3D layer did not load; the film plays without it.', e); window.W4TOff = true; dispatchEvent(new Event('w4toff')); });
