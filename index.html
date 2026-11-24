@@ -290,10 +290,55 @@ body:not(.split) #done p{text-shadow:0 1px 14px rgba(16,23,26,.85),0 0 3px rgba(
 .split #done::before{display:none}
 .split #done .nav{position:absolute}
 .flat #done{background:var(--night)}
+#doneTimes span{display:block}
+#done.long::before{height:72%;background:linear-gradient(rgba(16,23,26,.88),rgba(16,23,26,.74) 68%,rgba(16,23,26,0))}
+@media (max-height:600px){body:not(.split) #doneTimes{display:none}}   /* a very short phone: the words end above the model */
+
+/* ---- their own page: opened from the link in the email ---- */
+#mine{position:fixed;inset:0;z-index:40;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;opacity:0;transition:opacity .5s ease;
+  background:linear-gradient(rgba(16,23,26,.72),rgba(16,23,26,.58) 46%,rgba(16,23,26,.82))}
+#mine.on{opacity:1}
+.own #stage,.own .top{display:none}                 /* opened from the link: the film's words are never shown, not even while they would fade */
+/* booked: the table in the morning below, the words on the shade at the top */
+#mine.bright{background:linear-gradient(rgba(16,23,26,.9),rgba(16,23,26,.74) 42%,rgba(16,23,26,0) 70%)}
+.split #mine,.split #mine.bright{right:var(--fw);background:none}
+.flat #mine,.flat #mine.bright{background:var(--night)}
+/* booked on a phone: the two buttons sit at the foot of the screen, so the words end above the model */
+body:not(.split):not(.flat) #mine.bright{background:linear-gradient(rgba(16,23,26,.9),rgba(16,23,26,.76) 38%,rgba(16,23,26,0) 60%)}
+body:not(.split):not(.flat) #mine .actfoot::before{content:'';position:absolute;z-index:-1;left:calc(-1*var(--pad));right:calc(-1*var(--pad));top:-44px;
+  bottom:calc(-2px - max(16px,env(safe-area-inset-bottom)));pointer-events:none;background:linear-gradient(rgba(16,23,26,0),rgba(16,23,26,.94) 44px)}
+body:not(.split):not(.flat) #mine .actfoot{position:fixed;z-index:2;left:var(--pad);right:var(--pad);bottom:max(16px,env(safe-area-inset-bottom))}
+body:not(.split):not(.flat) #mine .actfoot .actions{margin-top:6px;--d:0}     /* fades in where it stands: it never starts below the screen */
+@media (max-height:600px){     /* a very short phone: tighter, so the words still end above the model */
+  body:not(.split):not(.flat) #mine.bright .q{font-size:23px}
+  body:not(.split):not(.flat) #mine.bright .hint{font-size:14.5px;margin-top:8px}
+  body:not(.split):not(.flat) #mine.bright .eyebrow{margin-bottom:6px}
+}
+#mine.bright .hint{color:rgba(245,240,225,.92);text-shadow:0 1px 14px rgba(16,23,26,.85),0 0 3px rgba(16,23,26,.5)}
+.eyebrow{font-weight:500;font-size:14.5px;letter-spacing:.01em;color:#D9B87A;margin-bottom:10px;text-shadow:0 1px 12px rgba(16,23,26,.8)}
+#mine .choice b{margin-left:auto;padding-left:12px;font-weight:500;white-space:nowrap}
+@media (max-width:400px){#mine .choice{font-size:15.5px}}       /* the longest day and time stay on one line on a small phone */
+#mine .q .at{display:block}                         /* booked: the day on one line, the time on the next */
+#mine .err:empty{min-height:0;margin-top:0}
+#mine .actions{flex-wrap:wrap;gap:6px 20px;margin-top:22px}
+#mine .foot .actions{margin-top:6px}
+#mine .foot{--d:0}                                  /* the bar fades in where it stands: it never starts below the screen */
+#mine .review-list{margin-bottom:8px}
+#mine .field{margin-top:22px}                       /* their mobile number, asked once, under the times */
+#mine .field label{display:block;font-weight:300;font-size:15.5px;color:var(--soft)}
+#mine .field input{font-size:20px;padding:6px 0 10px}
+#mine .field + .foot{margin-top:22px}
+.btn.line{background:transparent;box-shadow:inset 0 0 0 1.5px rgba(245,240,225,.6)}
+.btn.line:hover{background:rgba(245,240,225,.1)}
+.more{display:inline-flex;align-items:center;min-height:44px;border:0;background:transparent;padding:6px 0;font-family:var(--type);font-weight:400;font-size:15.5px;letter-spacing:-.01em;
+  color:rgba(245,240,225,.86);text-decoration:underline;text-underline-offset:5px;text-decoration-color:rgba(245,240,225,.4)}
+.more:hover{color:#fff}
+.more[disabled]{opacity:.5;cursor:default}
+.mores{display:flex;flex-wrap:wrap;gap:0 26px;margin-top:8px}
 
 @media (prefers-reduced-motion:reduce){
   .r,#grain{animation:none}
-  .path i,.path u,.step,#flow{transition:none}
+  .path i,.path u,.step,#flow,#mine{transition:none}
 }
 </style>
 </head>
@@ -385,8 +430,16 @@ body:not(.split) #done p{text-shadow:0 1px 14px rgba(16,23,26,.85),0 0 3px rgba(
   <div class="nav"><img src="w4t_wordmark.png" alt="Wealthy4Tomorrow" width="900" height="183"></div>
   <h2 class="r" style="--i:6">Thank you, <span id="doneName"></span>.</h2>
   <p class="r" style="--i:8" id="doneLine"></p>
-  <p class="small r" style="--i:9" id="doneSmall"></p>
+  <p class="small r" style="--i:9" id="doneTimes" hidden></p>
+  <p class="small r" style="--i:10" id="doneSmall"></p>
   <p class="small r" style="--i:10" id="demoDone" hidden>Preview only. Nothing was sent or saved.</p>
+</section>
+
+<section id="mine" hidden aria-label="Your meeting">
+  <div class="flow-in">
+    <div class="bar"><img src="w4t_wordmark.png" alt="Wealthy4Tomorrow" width="900" height="183"></div>
+    <div class="steps" id="mineBody"></div>
+  </div>
 </section>
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
@@ -809,7 +862,7 @@ function frame(now) {
     // on a short upright screen the words reach higher: lift the picture so what stands on the table stays clear of them
     if (!split && FW < FH && f.st >= 3) f.y = Math.max(f.y, 0.71 + (0.5 - capS / FH) * look(f.z, f.x, f.y).ay);
     stage();
-  } else if (mode === 'flow') {
+  } else if (mode === 'flow' || mode === 'mine') {
     const s = ss(c01(fx.seat));
     f = shotAt(N, time); f.st = 6; settle(f);
     if (split) {
@@ -1093,8 +1146,13 @@ async function ask() {
   gate.at = Date.now();
   try {
     const out = await getJson(CONFIG.endpoint, {cache: 'no-store'}, 9000);
-    if (out && out.service === 'w4t-apply') { gate.open = out.accepting !== false; showGate(); }
+    if (out && out.service === 'w4t-apply') { gate.open = out.accepting !== false; showGate(); if (out.book === true) bookHints(); }
   } catch (e) {}
+}
+function bookHints() {
+  const set = (key, text) => { const el = $('#h_' + key); if (el) el.textContent = text; };
+  set('email', 'Check the spelling. Your link to choose a meeting time goes here.');
+  set('meetWhen', 'Tap all that suit you. The times I offer come from these.');
 }
 function showGate() {
   const untouched = cur === 0 && !Object.keys(data).some((k) => data[k]) && !fieldOf(0).value;
@@ -1121,7 +1179,7 @@ const SAY = {
   closed: 'Applications are paused for now, so this was not sent. Please try again another day.',
   invalid: 'This could not be accepted as it is. Go back, check your answers, then send again.'
 };
-let waitOnline = false;
+let waitOnline = false, reply = null;
 async function post(label) {
   const answers = {};
   STEPS.forEach((s) => { if (s.type !== 'review') answers[s.key] = data[s.key] || ''; });
@@ -1139,7 +1197,7 @@ async function post(label) {
     if (n) { label('Trying again…'); await pause(GAPS[n - 1]); }
     try {
       const out = await getJson(CONFIG.endpoint, {method: 'POST', headers: {'Content-Type': 'text/plain;charset=utf-8'}, body}, TRIES[n]);
-      if (out && out.ok === true) return 'ok';
+      if (out && out.ok === true) { reply = out; return 'ok'; }
       why = out && ['busy', 'closed', 'invalid'].includes(out.code) ? out.code : 'error';
       if (why === 'invalid' || why === 'closed') return why;
     } catch (e) {
@@ -1167,7 +1225,15 @@ async function send() {
   forget();
   $('#doneName').textContent = data.name;
   const mail = document.createElement('b'); mail.textContent = data.email;
-  if (CONFIG.confirmEmail) {
+  if (reply && reply.mail === 'sent') {
+    // the script has emailed them their link; the times are what is open at this moment, and nothing is held
+    $('#doneLine').append('I’ve sent an email to ', mail, '. Open it to pick a time for us to meet.');
+    if (Array.isArray(reply.times) && reply.times.length) {
+      const el = $('#doneTimes'); el.hidden = false; el.append('Some of the times I’m free:'); $('#done').classList.add('long');
+      reply.times.slice(0, 3).forEach((t) => { const line = document.createElement('span'); line.textContent = String(t.day) + ', ' + String(t.at); el.append(line); });
+    }
+    $('#doneSmall').textContent = 'If you don’t see it in a few minutes, check your spam folder.';
+  } else if (CONFIG.confirmEmail) {
     $('#doneLine').append('One more step. I have sent an email to ', mail, '. Tap the link in it to confirm the address is yours, and I will reply from there.');
     $('#doneSmall').textContent = 'Not there in a few minutes? Check your spam folder.';
   } else {
@@ -1189,6 +1255,215 @@ async function send() {
 }
 addEventListener('online', () => { if (waitOnline && mode === 'flow' && STEPS[cur].type === 'review') send(); });
 
+/* ---------- their own page ---------- */
+/* Opened from the link in the email (…#c= and a key) the page is one applicant's own: no film, their open times,
+   then their meeting, which the same link lets them move or cancel. …#o= and the owner's key is Jarad's view of one
+   applicant. The receiving script decides everything; this only shows what it answers. */
+const LINK = /^#(c|o)=([a-f0-9]{32})$/.exec(location.hash);
+const mine = LINK ? {owner: LINK[1] === 'o', key: LINK[2], v: null, pick: '', page: 0, moving: false, confirm: '', busy: false, bright: false, plate: '', first: null, phone: ''} : null;
+const mineEl = $('#mine'), mineBody = $('#mineBody');
+addEventListener('hashchange', () => { if (/^#(c|o)=[a-f0-9]{32}$/.test(location.hash)) location.reload(); });
+addEventListener('w4tset', () => { if (mine && mine.plate) window.W4TSet.setName(mine.plate); });
+const MSAY = {
+  none: 'Please pick a time first.',
+  phone: 'Please add your Singapore mobile number so I can text you.',
+  taken: 'Sorry, someone just took that time. Here are some others.',
+  have: 'You already have a meeting booked with me. Use the link in my other email to see or change it.',
+  movedOn: 'They have just moved it, so nothing was changed.',
+  calendar: 'I can’t reach my calendar right now, so nothing has changed. Please try again in a few minutes.',
+  busy: 'The page is busy right now. Please wait a minute and try again.',
+  network: 'That didn’t go through. Please check your connection and try again.',
+  error: 'That didn’t go through. Please wait a minute and try again.'
+};
+// One question to the receiving script. A dropped connection is tried once more: every request here is safe to repeat.
+async function say(body) {
+  if (!CONFIG.endpoint) return {ok: false, code: 'gone'};
+  for (let n = 0; n < 2; n++) {
+    try {
+      const out = await getJson(CONFIG.endpoint, {method: 'POST', headers: {'Content-Type': 'text/plain;charset=utf-8'}, body: JSON.stringify(body)}, 15000);
+      if (out && typeof out === 'object') return out;
+    } catch (e) { if (navigator.onLine === false) break; }
+    if (!n) await pause(900);
+  }
+  return {ok: false, code: 'network'};
+}
+const mineBars = 'IntersectionObserver' in window ? new IntersectionObserver((es) => es.forEach((e) =>
+  e.target.previousElementSibling.classList.toggle('stuck', !e.isIntersecting && e.boundingClientRect.top > 0)), {root: mineEl}) : null;
+function mineHtml(msg) {
+  const v = mine.v, h = [];
+  let n = 0, bright = false;
+  const i = () => ' style="--i:' + (n++) + '"';
+  const when = (m) => esc(m.day) + ', ' + esc(m.at);
+  const head = (q, hint, eyebrow) => {
+    if (eyebrow) h.push('<p class="eyebrow r"' + i() + '>' + eyebrow + '</p>');
+    h.push('<h2 class="q r"' + i() + ' tabindex="-1">' + q + '</h2>');
+    if (hint) h.push('<p class="hint r"' + i() + '>' + hint + '</p>');
+  };
+  const acts = (inner) => h.push('<p class="err" role="alert">' + esc(msg || '') + '</p><div class="actions r"' + i() + '>' + inner + '</div>');
+  const btn = (what, label, cls) => '<button type="button" class="' + (cls || 'btn') + '" data-do="' + what + '">' + label + '</button>';
+  const times = () => {
+    h.push('<div class="choices r"' + i() + ' role="group" aria-label="Open times">' + v.times.map((t) => '<button type="button" class="choice" aria-pressed="' +
+      (t.t === mine.pick) + '" data-t="' + esc(t.t) + '"><span>' + esc(t.day) + '</span><b>' + esc(t.at) + '</b></button>').join('') + '</div>');
+    const links = (v.more ? btn('more', 'Show other times', 'more') : '') + (mine.page ? btn('first', 'Back to the first few', 'more') : '');
+    if (links) h.push('<div class="mores r"' + i() + '>' + links + '</div>');
+    if (v.phone && !mine.moving) h.push('<div class="field r"' + i() + '><label for="minePhone">Your mobile number, so I can text you the day before</label>' +
+      '<input id="minePhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" value="' + esc(mine.phone) + '"></div>');
+    h.push('<div class="foot r"' + i() + '><p class="err" role="alert">' + esc(msg || '') + '</p><div class="actions">' + btn('book', 'Book this time') +
+      (mine.moving ? btn('keep', 'Keep my time', 'more') : '') + '</div></div><i class="barmark" aria-hidden="true"></i>');
+  };
+  if (!v) head('One moment.');
+  else if (v.owner) {
+    const first = esc(String(v.name || '').split(' ')[0]);
+    if (mine.confirm === 'ask' && v.meeting) {
+      head('Ask ' + first + ' for another time?', 'They get one email with their link, and ' + when(v.meeting) + ' is freed in your calendar.');
+      acts(btn('ask2', 'Yes, ask them') + btn('keep', 'Keep it', 'more'));
+    } else {
+      head(esc(v.name), v.stage === 'booked' && v.meeting ? when(v.meeting) + ', Singapore time.' : v.stage === 'asked' ? 'You asked for another time. They have not chosen yet.'
+        : v.stage === 'cancelled' ? 'They cancelled their meeting.' : 'They have not chosen a time yet.', 'Applicant ' + esc(v.ref));
+      if (/failed/.test(v.note || '')) h.push('<p class="hint r"' + i() + '>' + esc(v.note) + '</p>');
+      h.push('<dl class="review-list r"' + i() + '>' + [['Email', v.email]].concat(Array.isArray(v.answers) ? v.answers : []).filter((a) => a[1])
+        .map((a) => '<div><dt>' + esc(a[0]) + '</dt><dd>' + esc(a[1]) + '</dd></div>').join('') + '</dl>');
+      const tel = String(v.mobile || '').replace(/\D/g, '');
+      if (v.stage === 'booked') acts(btn('ask', 'Ask for another time', 'btn line') +
+        (tel ? '<a class="more" target="_blank" rel="noopener noreferrer" href="https://wa.me/65' + tel + '">Text them on WhatsApp</a>' : ''));
+    }
+  } else if (!v.stage) {
+    if (v.code === 'gone' || v.code === 'invalid') head('This link doesn’t work anymore.', 'If you applied, please use the link in my latest email.');
+    else if (v.code === 'closed') head('I’m not taking bookings right now.', 'Please check back in a few days.');
+    else { head('The page didn’t load.', navigator.onLine === false ? 'You seem to be offline.' : 'Please check your connection and try again.'); acts(btn('load', 'Try again')); }
+  } else if (v.stage === 'past') head('This meeting time has passed.', 'If you’d like to arrange another, just reply to my email.');
+  else if (v.stage === 'booked' && mine.confirm === 'drop') {
+    bright = true;
+    head('Cancel our meeting?', when(v.meeting));
+    acts(btn('drop2', 'Yes, cancel it', 'btn line') + btn('keep', 'Keep it', 'more'));
+  } else if (v.stage === 'booked' && !(mine.moving && v.times)) {
+    bright = true;
+    const notes = [];
+    if (v.invite) notes.push('The invite is in your email.');
+    if (v.asked) notes.push('I’ll answer your question when we meet.');
+    if (!v.left) notes.push('If you need to change it again, just reply to my email.');
+    head(esc(v.meeting.day) + ', <span class="at">' + esc(v.meeting.at) + '</span>', (v.place ? 'See you at ' + esc(v.place) + '.' : 'See you then.') + ' I’ll text you the day before.', 'You’re booked' + (v.first ? ', ' + esc(v.first) : '') + '.');
+    if (notes.length) h.push('<p class="hint r"' + i() + '>' + notes.join(' ') + '</p>');
+    const wa = String(v.wa || '').replace(/\D/g, '');
+    h.push('<div class="actfoot">');
+    acts((v.left ? btn('move', 'Reschedule', 'btn line') : '') + btn('drop', 'I can’t make it', 'more') +
+      (wa ? '<a class="more" target="_blank" rel="noopener noreferrer" href="https://wa.me/' + wa + '">Message me on WhatsApp</a>' : ''));
+    h.push('</div>');
+  } else if (v.stage === 'cancelled' && !(v.times && v.times.length)) {
+    head('Your meeting is cancelled.', 'If you’d like to arrange another time, just reply to my email.');
+  } else if (v.times && !v.times.length) {
+    if (mine.moving) { head('I don’t have any other free times right now.', 'Your meeting stays on ' + when(v.meeting) + '.'); acts(btn('keep', 'Keep my time')); }
+    else if (v.wait) { head('I can’t load my free times right now.', 'Please try again in a few minutes.'); acts(btn('load', 'Try again')); }
+    else head('I don’t have a free time in the next two weeks.', 'Reply to my email and we’ll work something out.');
+  } else {
+    if (v.stage === 'booked') head('Pick a new time.', 'Your meeting stays on ' + when(v.meeting) + ' until you book a new one.');
+    else if (v.stage === 'asked') head('Sorry, I need to move our meeting.', 'Could you pick another time that works for you?');
+    else if (v.stage === 'cancelled') head('Your meeting is cancelled.', 'If you’d still like to meet, you can pick another time below.');
+    else head('Pick a time that suits you.', 'We’ll meet for about ' + esc(v.minutes) + ' minutes' + (v.place ? ' at ' + esc(v.place) : '') + '. All times are in Singapore time.');
+    if (v.times) times();
+  }
+  return {html: h.join(''), bright};
+}
+function mineDraw(msg) {
+  const out = mineHtml(msg), v = mine.v || {};
+  const put = () => {
+    mineBody.innerHTML = out.html;
+    mode = out.bright ? 'done' : 'mine'; mine.bright = out.bright;
+    B.classList.toggle('fin', out.bright); mineEl.classList.toggle('bright', out.bright);
+    mine.plate = String(v.owner ? v.name || '' : v.first || '');
+    if (mine.plate && window.W4TSet) window.W4TSet.setName(mine.plate);
+    if (mineBars) { mineBars.disconnect(); mineBody.querySelectorAll('.barmark').forEach((m) => mineBars.observe(m)); }
+    mineEl.scrollTop = 0;
+    const f = mineBody.querySelector('h2');
+    if (f && mine.v) setTimeout(() => f.focus({preventScroll: true}), RM ? 0 : 320);
+  };
+  // from the softened room to the morning table and back, the picture changes behind a short dark beat
+  if (out.bright === mine.bright || RM || !mineEl.classList.contains('on')) return put();
+  const cover = $('#cover');
+  mine.busy = true; mineEl.classList.remove('on'); cover.classList.add('on');
+  setTimeout(() => { put(); mineEl.classList.add('on'); cover.classList.remove('on'); mine.busy = false; }, 520);
+}
+function mineErr(text) { const e = mineBody.querySelector('.err'); if (e) e.textContent = text; else mineDraw(text); }
+async function mineCall(body, btn, label) {
+  if (mine.busy) return null;
+  mine.busy = true;
+  const old = btn ? btn.textContent : '';
+  if (btn) { btn.disabled = true; btn.classList.add('going'); if (label) btn.textContent = label; }
+  const out = await say(Object.assign({key: mine.key}, body));
+  mine.busy = false;
+  if (btn && btn.isConnected) { btn.disabled = false; btn.classList.remove('going'); btn.textContent = old; }
+  return out;
+}
+// An answer that shows their page (or says there is no page any more) becomes what is drawn; anything else is a
+// passing fault, said in a line on the view they already have.
+function mineTake(out) {
+  if (out.stage || out.owner) { mine.v = out; return 'view'; }
+  if (['gone', 'closed', 'invalid'].includes(out.code)) { mine.v = out; mine.moving = false; mine.confirm = ''; return 'over'; }
+  return '';
+}
+async function mineLoad(first) {
+  mine.v = null; mine.pick = ''; mine.page = 0; mine.moving = false; mine.confirm = '';
+  if (!first) mineDraw();
+  const out = await (first || mineCall({do: mine.owner ? 'owner' : 'open'}));
+  mine.v = out && typeof out === 'object' ? out : {ok: false, code: 'network'};
+  mineDraw();
+}
+async function mineTimes(page, btn, moving) {
+  const out = await mineCall({do: 'times', page}, btn);
+  if (!out) return;
+  const got = mineTake(out);
+  if (got === 'view' && out.ok) { mine.page = page; mine.pick = ''; if (moving) mine.moving = true; return mineDraw(); }
+  if (got) return mineDraw();
+  mineErr(MSAY[out.code] || MSAY.error);
+}
+async function mineBook(btn) {
+  if (!mine.pick) return mineErr(MSAY.none);
+  const box = $('#minePhone');
+  // the same rule as the script: eight digits starting 8 or 9, with or without +65
+  if (box && !/^(65)?[89]\d{7}$/.test(mine.phone.replace(/[\s().+-]/g, ''))) { mineErr(MSAY.phone); box.focus(); return; }
+  const out = await mineCall(box ? {do: 'book', t: mine.pick, phone: mine.phone} : {do: 'book', t: mine.pick}, btn, 'Booking…');
+  if (!out) return;
+  const got = mineTake(out);
+  if (got === 'view') {
+    mine.pick = ''; mine.page = 0;
+    if (out.ok || out.code === 'limit') mine.moving = false;
+    return mineDraw(out.ok ? '' : out.code === 'taken' ? MSAY.taken : out.code === 'phone' ? MSAY.phone : '');
+  }
+  if (got) return mineDraw();
+  mineErr(MSAY[out.code] || MSAY.error);
+}
+async function mineAct(what, btn) {          // cancel (theirs), ask (the owner's)
+  // the owner's ask names the time he is looking at: if they have moved it since, the script changes nothing
+  const seen = what === 'ask' && mine.v && mine.v.meeting ? mine.v.meeting.t : '';
+  const out = await mineCall(seen ? {do: what, t: seen} : {do: what}, btn);
+  if (!out) return;
+  const got = mineTake(out);
+  if (got === 'view' && out.ok) { mine.confirm = ''; mine.moving = false; mine.pick = ''; mine.page = 0; }
+  if (got) return mineDraw(what === 'ask' && out.ok && out.stage === 'booked' ? MSAY.movedOn : '');
+  mineErr(MSAY[out.code] || MSAY.error);
+}
+mineBody.addEventListener('input', (e) => { if (e.target.id === 'minePhone') { mine.phone = e.target.value; mineErr(''); } });
+mineBody.addEventListener('click', (e) => {
+  const b = e.target.closest('button');
+  if (!b || mine.busy) return;
+  if (b.dataset.t) {
+    mine.pick = b.dataset.t;
+    [...b.parentNode.children].forEach((c) => c.setAttribute('aria-pressed', c === b ? 'true' : 'false'));
+    mineErr('');
+    return;
+  }
+  const what = b.dataset.do;
+  if (what === 'load') return mineLoad();
+  if (what === 'more') return mineTimes(mine.page + 1, b, mine.moving);
+  if (what === 'first') return mineTimes(0, b, mine.moving);
+  if (what === 'book') return mineBook(b);
+  if (what === 'move') return mineTimes(0, b, true);
+  if (what === 'keep') { mine.moving = false; mine.confirm = ''; mine.pick = ''; mine.page = 0; return mineDraw(); }
+  if (what === 'drop' || what === 'ask') { mine.confirm = what; return mineDraw(); }
+  if (what === 'drop2') return mineAct('cancel', b);
+  if (what === 'ask2') return mineAct('ask', b);
+});
+
 /* ---------- start ---------- */
 renderSteps();
 const resume = restore();
@@ -1202,13 +1477,26 @@ KN.addEventListener('error', () => { flat = true; B.classList.add('flat'); });
   for (let i = 0; i < d.data.length; i += 4) { const v = 128 + (Math.random() - 0.5) * 150; d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255; }
   x.putImageData(d, 0, 0); $('#grain').style.backgroundImage = 'url(' + c.toDataURL() + ')';
 })();
+if (mine) {      // opened from the link in the email: no film; the room is already at the table, and the script is asked at once
+  mode = 'mine'; fx.seat = 1; fx.write = 1.04; wrote = true; ts = tgt = N;
+  B.classList.add('inflow', 'own');
+  if (flat) $('#site').hidden = true;
+  mineEl.hidden = false;
+  mineDraw();
+  mine.first = say({do: mine.owner ? 'owner' : 'open', key: mine.key});
+}
 fit();
 addEventListener('resize', fit);
 addEventListener('w4tset', fit);
 requestAnimationFrame(frame);
 const fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
 const shot = (el) => el.complete ? Promise.resolve() : new Promise((r) => { el.addEventListener('load', r); el.addEventListener('error', r); });
-Promise.race([Promise.all([fontsReady, shot(KN), shot(KD), shot(KC), shot(KZ)]), new Promise((r) => setTimeout(r, 2500))]).then(() => { fit(); intro(); if (resume) enterFlow(); setTimeout(ask, 1200); });
+Promise.race([Promise.all([fontsReady, shot(KN), shot(KD), shot(KC), shot(KZ)]), new Promise((r) => setTimeout(r, 2500))]).then(() => {
+  fit(); intro();
+  if (mine) { open(true); requestAnimationFrame(() => mineEl.classList.add('on')); return mineLoad(mine.first); }
+  if (resume) enterFlow();
+  setTimeout(ask, 1200);
+});
 if (document.fonts && document.fonts.load) document.fonts.load('400 188px "Nothing You Could Do"').then(drawInk, drawInk); else drawInk();
 </script>
 
