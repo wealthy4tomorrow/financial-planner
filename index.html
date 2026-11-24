@@ -1266,7 +1266,7 @@ addEventListener('hashchange', () => { if (/^#(c|o)=[a-f0-9]{32}$/.test(location
 addEventListener('w4tset', () => { if (mine && mine.plate) window.W4TSet.setName(mine.plate); });
 const MSAY = {
   none: 'Please pick a time first.',
-  phone: 'Please add your Singapore mobile number so I can text you.',
+  phone: 'Please add your Singapore mobile number so I can reach you.',
   taken: 'Sorry, someone just took that time. Here are some others.',
   have: 'You already have a meeting booked with me. Use the link in my other email to see or change it.',
   movedOn: 'They have just moved it, so nothing was changed.',
@@ -1306,7 +1306,7 @@ function mineHtml(msg) {
       (t.t === mine.pick) + '" data-t="' + esc(t.t) + '"><span>' + esc(t.day) + '</span><b>' + esc(t.at) + '</b></button>').join('') + '</div>');
     const links = (v.more ? btn('more', 'Show other times', 'more') : '') + (mine.page ? btn('first', 'Back to the first few', 'more') : '');
     if (links) h.push('<div class="mores r"' + i() + '>' + links + '</div>');
-    if (v.phone && !mine.moving) h.push('<div class="field r"' + i() + '><label for="minePhone">Your mobile number, so I can text you the day before</label>' +
+    if (v.phone && !mine.moving) h.push('<div class="field r"' + i() + '><label for="minePhone">Your mobile number, so I can confirm the details with you</label>' +
       '<input id="minePhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" value="' + esc(mine.phone) + '"></div>');
     h.push('<div class="foot r"' + i() + '><p class="err" role="alert">' + esc(msg || '') + '</p><div class="actions">' + btn('book', 'Book this time') +
       (mine.moving ? btn('keep', 'Keep my time', 'more') : '') + '</div></div><i class="barmark" aria-hidden="true"></i>');
@@ -1342,7 +1342,7 @@ function mineHtml(msg) {
     if (v.invite) notes.push('The invite is in your email.');
     if (v.asked) notes.push('I’ll answer your question when we meet.');
     if (!v.left) notes.push('If you need to change it again, just reply to my email.');
-    head(esc(v.meeting.day) + ', <span class="at">' + esc(v.meeting.at) + '</span>', (v.place ? 'See you at ' + esc(v.place) + '.' : 'See you then.') + ' I’ll text you the day before.', 'You’re booked' + (v.first ? ', ' + esc(v.first) : '') + '.');
+    head(esc(v.meeting.day) + ', <span class="at">' + esc(v.meeting.at) + '</span>', (v.place ? 'See you at ' + esc(v.place) + '. I’ll contact you soon to confirm.' : 'I’ll contact you soon to confirm the details.'), 'You’re booked' + (v.first ? ', ' + esc(v.first) : '') + '.');
     if (notes.length) h.push('<p class="hint r"' + i() + '>' + notes.join(' ') + '</p>');
     const wa = String(v.wa || '').replace(/\D/g, '');
     h.push('<div class="actfoot">');
