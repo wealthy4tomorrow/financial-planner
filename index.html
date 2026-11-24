@@ -21,7 +21,7 @@
   --ivory:#F5F0E1;--slate:#4F646A;--grey:#D8D2C7;--clay:#8F4D44;
   --type:'Sora',system-ui,-apple-system,'Segoe UI',sans-serif;
   --soft:rgba(245,240,225,.72);--rule:rgba(245,240,225,.16);
-  --pad:clamp(22px,5.6vw,72px);--fw:100vw;--base:max(22px,env(safe-area-inset-bottom));
+  --pad:clamp(22px,5.6vw,72px);--fw:100vw;--base:max(22px,env(safe-area-inset-bottom));--lift:clamp(64px,14svh,132px);
   --out:cubic-bezier(.16,1,.3,1);--inout:cubic-bezier(.77,0,.18,1);
   color-scheme:dark;
 }
@@ -66,10 +66,10 @@ button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:tra
 #grain{position:absolute;inset:-60px;pointer-events:none;opacity:.2;mix-blend-mode:overlay;background-size:160px 160px;animation:grain .56s steps(1) infinite}
 @keyframes grain{0%{transform:translate(0,0)}14%{transform:translate(-31px,17px)}28%{transform:translate(23px,-41px)}42%{transform:translate(-13px,-23px)}57%{transform:translate(37px,29px)}71%{transform:translate(-43px,7px)}85%{transform:translate(11px,43px)}}
 /* the words sit low, like subtitles, on the shadow at the foot of the picture */
-#film::after{content:'';position:absolute;z-index:1;left:0;right:0;bottom:0;height:52%;pointer-events:none;transition:height .8s ease,opacity .8s ease;
+#film::after{content:'';position:absolute;z-index:1;left:0;right:0;bottom:0;height:calc(52% + var(--lift) - 14px);pointer-events:none;transition:height .8s ease,opacity .8s ease;
   background:linear-gradient(rgba(16,23,26,0),rgba(16,23,26,.3) 30%,rgba(16,23,26,.8) 70%,rgba(16,23,26,.92))}
-.tab #film::after{height:40%;background:linear-gradient(rgba(16,23,26,0),rgba(16,23,26,.6) 27%,rgba(16,23,26,.86) 62%,rgba(16,23,26,.94))}
-.end #film::after{height:54%;transition:height .5s ease}
+.tab #film::after{height:calc(40% + var(--lift) - 14px);background:linear-gradient(rgba(16,23,26,0),rgba(16,23,26,.6) 27%,rgba(16,23,26,.86) 62%,rgba(16,23,26,.94))}
+.end #film::after{height:calc(54% + var(--lift) - 14px);transition:height .5s ease}
 .inflow #film::after,.fin #film::after{opacity:0}
 .split #film::after{display:none}
 #film::before{content:'';position:absolute;z-index:1;left:-1px;top:0;bottom:0;width:22%;pointer-events:none;display:none;
@@ -98,7 +98,7 @@ button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:tra
 .split #stage::after,.flat #stage::after{display:none}
 .nav{position:absolute;z-index:1;left:var(--pad);top:max(22px,env(safe-area-inset-top))}
 .nav img,.bar img{width:clamp(150px,15vw,200px);height:auto;display:block}
-.cap{position:absolute;left:var(--pad);right:var(--pad);bottom:calc(var(--base) + 14px);opacity:0;visibility:hidden;transition:opacity .3s ease,visibility 0s .3s}
+.cap{position:absolute;left:var(--pad);right:var(--pad);bottom:calc(var(--base) + var(--lift));opacity:0;visibility:hidden;transition:opacity .3s ease,visibility 0s .3s}
 .cap.on{opacity:1;visibility:visible;transition:opacity .2s ease}
 .cap.on a,.cap.on button{pointer-events:auto}
 .say{font-weight:400;font-size:clamp(26px,7.3vw,40px);line-height:1.12;letter-spacing:-.036em;max-width:16em;text-wrap:balance;text-shadow:0 1px 22px rgba(16,23,26,.55)}
@@ -110,7 +110,13 @@ button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:tra
 .cap.on .sub,.cap.on .after{opacity:1;transform:none;transition:opacity .9s ease var(--dl,.5s),transform 1.1s var(--out) var(--dl,.5s)}
 .cap.on .sub+.say .w{transition-delay:calc(var(--n)*34ms + 560ms)}
 .cap .lead{--dl:.1s}
-.cap.close{--dl:.6s;bottom:calc(var(--base) + 6px)}
+.cap.close{--dl:.6s;bottom:calc(var(--base) + var(--lift) - 8px)}
+/* each set of words brings its own shade, already deep at its first line, so the picture behind a tall heading (the
+   handwriting on the paper) stays quiet now that the words sit higher; it comes and goes with the words */
+.cap{isolation:isolate}
+.cap::before{content:'';position:absolute;z-index:-1;left:calc(-1*var(--pad));right:calc(-1*var(--pad));top:-72px;
+  bottom:calc(-1*(var(--base) + var(--lift)));pointer-events:none;background:linear-gradient(rgba(16,23,26,0),rgba(16,23,26,.5) 72px,rgba(16,23,26,.55))}
+.split .cap::before,.flat .cap::before{display:none}
 .after{margin-top:clamp(16px,2.4vh,26px);--dl:.85s}
 .fine{font-weight:300;font-size:13px;line-height:1.5;color:var(--soft);max-width:32em;margin-top:14px}
 
@@ -170,6 +176,8 @@ h1{font-weight:600;font-size:clamp(36px,10.6vw,60px);line-height:1.04;letter-spa
 .low .choice{min-height:44px;font-size:15.5px}
 .low #done h2{font-size:clamp(28px,9vh,40px);margin-top:0}
 @media (min-width:860px){
+  body:not(.split){--lift:14px}
+  body:not(.split) .cap::before{display:none}
   body:not(.split) .cap{bottom:max(40px,6vh);right:38%}
   body:not(.split) .hero::before{height:70%;background:radial-gradient(120% 100% at 0 0,rgba(16,23,26,.72),rgba(16,23,26,.4) 42%,rgba(16,23,26,0) 72%)}
   body:not(.split) .say{font-size:clamp(36px,4.8vw,52px)}
@@ -195,7 +203,7 @@ body.flat{overflow:auto;height:auto}
 /* ---- the questions: asked at the table, over the softened room ---- */
 #cover{position:fixed;inset:0;z-index:39;background:var(--night);opacity:0;pointer-events:none;transition:opacity .45s ease}
 #cover.on{opacity:1}
-#flow{position:fixed;inset:0;z-index:40;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;opacity:0;transition:opacity .7s ease;
+#flow{position:fixed;inset:0;z-index:40;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;opacity:0;transition:opacity .7s ease;
   background:linear-gradient(rgba(16,23,26,.72),rgba(16,23,26,.58) 46%,rgba(16,23,26,.82))}
 #flow.on{opacity:1}
 .split #flow{right:var(--fw);background:none}
@@ -242,6 +250,14 @@ body.flat{overflow:auto;height:auto}
 .notice{margin-top:18px;font-weight:300;font-size:13.5px;line-height:1.55;color:var(--soft)}
 .notice+.notice{margin-top:8px}
 .review-actions{margin-top:6px}
+/* Next, Skip or Send, with its message: when a step runs longer than the screen it waits at the foot of the screen on
+   a dark band (.stuck, set by the script while its own place is out of sight below), and settles back at the end */
+.foot{position:sticky;z-index:2;bottom:max(16px,env(safe-area-inset-bottom))}
+.foot::before{content:'';position:absolute;z-index:-1;left:calc(-1*var(--pad));right:calc(-1*var(--pad));top:-28px;
+  bottom:calc(-2px - max(16px,env(safe-area-inset-bottom)));pointer-events:none;opacity:0;transition:opacity .25s ease;
+  background:linear-gradient(rgba(16,23,26,0),rgba(16,23,26,.96) 28px)}
+.foot.stuck::before{opacity:1}
+.barmark{display:block;height:1px;margin-top:-1px}
 .demo{margin-top:14px;font-weight:300;font-size:13.5px;color:var(--soft)}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 .back[disabled]{opacity:.4;cursor:default}
@@ -409,7 +425,7 @@ const STEPS = [
     hint: 'Optional. A few lines in your own words.', max: 1500},
   {key: 'meetWhen', type: 'multi', label: 'Meeting', q: 'When would suit you for a 30-minute meeting?',
     hint: 'Tap all that suit you. If we go ahead, I will suggest times from these.',
-    options: ['Weekday mornings', 'Weekday afternoons', 'Weekday evenings', 'Saturdays'], none: 'Any of these', req: 'Choose at least one to continue.'},
+    options: ['Weekday mornings', 'Weekday afternoons', 'Weekday evenings', 'Saturdays', 'Sundays'], none: 'Any of these', req: 'Choose at least one to continue.'},
   {key: 'questions', type: 'area', label: 'Questions', q: 'What would you like to understand about the role before taking it further?',
     hint: 'Optional.', max: 1500},
   {key: 'review', type: 'review'}
@@ -875,12 +891,14 @@ function renderSteps() {
     el.className = 'step'; el.hidden = true; el.dataset.i = i;
     let h = '';
     if (st.type === 'review') {
-      h = '<h2 class="q r" style="--i:0" tabindex="-1">Ready to send?</h2><dl class="review-list r" style="--i:1" id="reviewList"></dl>' +
-        NOTICE.map((n, k) => '<p class="notice r" style="--i:' + (2 + k) + '">' + esc(n) + '</p>').join('') +
-        (CONFIG.contactLine ? '<p class="notice r" style="--i:5">' + esc(CONFIG.contactLine) + '</p>' : '') +
-        '<p class="err" id="sendErr" role="alert"></p>' +
-        '<div class="review-actions r" style="--i:6"><button type="button" class="btn" id="send">Send application</button>' +
-        (CONFIG.endpoint ? '' : '<p class="demo">Preview only. Nothing is sent or saved.</p>') + '</div>';
+      // the notes come first, under the question, so they are read before Send; the answers follow
+      h = '<h2 class="q r" style="--i:0" tabindex="-1">Ready to send?</h2>' +
+        NOTICE.map((n, k) => '<p class="notice r" style="--i:' + (1 + k) + '">' + esc(n) + '</p>').join('') +
+        (CONFIG.contactLine ? '<p class="notice r" style="--i:4">' + esc(CONFIG.contactLine) + '</p>' : '') +
+        '<dl class="review-list r" style="--i:5" id="reviewList"></dl>' +
+        '<div class="foot r" style="--i:6"><p class="err" id="sendErr" role="alert"></p>' +
+        '<div class="review-actions"><button type="button" class="btn" id="send">Send application</button>' +
+        (CONFIG.endpoint ? '' : '<p class="demo">Preview only. Nothing is sent or saved.</p>') + '</div></div><i class="barmark" aria-hidden="true"></i>';
     } else {
       const id = 'f_' + st.key;
       h = '<label class="q r" style="--i:0" for="' + id + '" id="q_' + st.key + '">' + esc(st.q) + '</label>' +
@@ -896,15 +914,19 @@ function renderSteps() {
           (st.type === 'email' ? ' inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false"' : ' autocapitalize="words"') +
           (st.hint ? ' aria-describedby="h_' + st.key + '"' : '') + ' enterkeyhint="next"></div>';
       }
-      h += '<p class="err' + (st.req ? '' : ' none') + '" role="alert"></p>';      // an optional question never shows a message here
-      if (st.type !== 'choice') {
-        h += '<div class="actions r" style="--i:3"><button type="button" class="btn next">' + (st.req ? 'Next' : 'Skip') + '</button></div>';
-      }
+      const errP = '<p class="err' + (st.req ? '' : ' none') + '" role="alert"></p>';      // an optional question never shows a message here
+      h += st.type === 'choice' ? errP : '<div class="foot r" style="--i:3">' + errP + '<div class="actions"><button type="button" class="btn next">' +
+        (st.req ? 'Next' : 'Skip') + '</button></div></div><i class="barmark" aria-hidden="true"></i>';
     }
     el.innerHTML = h;
     stepsEl.appendChild(el);
   });
 }
+// A .foot is "stuck" while its own place in the page lies below the foot of the screen; only then does it sit on its
+// dark band. The mark just after it says where that place is. A step is watched afresh each time it is shown (sync).
+const barIO = 'IntersectionObserver' in window ? new IntersectionObserver((es) => es.forEach((e) =>
+  e.target.previousElementSibling.classList.toggle('stuck', !e.isIntersecting && e.boundingClientRect.top > 0)), {root: $('#flow')}) : null;
+function watchBars(el) { if (barIO && el) el.querySelectorAll('.barmark').forEach((m) => { barIO.unobserve(m); barIO.observe(m); }); }
 function stepEl(i) { return stepsEl.querySelector('.step[data-i="' + i + '"]'); }
 function fieldOf(i) { return stepEl(i).querySelector('input,textarea'); }
 function read(i) {
@@ -981,6 +1003,7 @@ function next() {
 }
 function sync(i) {
   const st = STEPS[i], el = stepEl(i), f = fieldOf(i);
+  watchBars(el);
   if (!f) return;
   el.querySelector('.err').textContent = '';
   if (!st.req) el.querySelector('.next').textContent = tidy(f.value, st.type === 'area') ? 'Next' : 'Skip';
