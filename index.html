@@ -290,9 +290,20 @@ body:not(.split) #done p{text-shadow:0 1px 14px rgba(16,23,26,.85),0 0 3px rgba(
 .split #done::before{display:none}
 .split #done .nav{position:absolute}
 .flat #done{background:var(--night)}
-#doneTimes span{display:block}
-#done.long::before{height:72%;background:linear-gradient(rgba(16,23,26,.88),rgba(16,23,26,.74) 68%,rgba(16,23,26,0))}
-@media (max-height:600px){body:not(.split) #doneTimes{display:none}}   /* a very short phone: the words end above the model */
+/* the thank-you screen: the wordmark larger than on the question screens and with clear space under it, so it reads
+   as the name on the note and not as a second heading */
+#done .nav img{width:clamp(196px,27vw,300px)}
+.low #done .nav img{width:168px}
+body:not(.split) #done h2{margin-top:clamp(30px,6.4vh,64px)}
+/* stacked (a phone, a narrow window): the wordmark and the words share one centre line with the model below them.
+   Side by side (a wide screen) they stay on the left margin, where the wordmark has been on every screen before. */
+body:not(.split) #done{text-align:center}
+body:not(.split) #done .nav img{margin:0 auto}
+body:not(.split) #done h2{margin-left:0}
+body:not(.split) #done p{margin-left:auto;margin-right:auto;text-wrap:balance}
+/* a very short phone: the words still end above the model, and the shade reaches under their last line */
+@media (max-height:600px){body:not(.split) #done h2{margin-top:22px}
+  body:not(.split) #done::before{height:62%;background:linear-gradient(rgba(16,23,26,.86),rgba(16,23,26,.7) 64%,rgba(16,23,26,0))}}
 
 /* ---- their own page: opened from the link in the email ---- */
 #mine{position:fixed;inset:0;z-index:40;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;opacity:0;transition:opacity .5s ease;
@@ -431,8 +442,7 @@ body:not(.split):not(.flat) #mine .actfoot .actions{margin-top:6px;--d:0}     /*
   <div class="nav"><img src="w4t_wordmark.png" alt="Wealthy4Tomorrow" width="900" height="183"></div>
   <h2 class="r" style="--i:6">Thank you, <span id="doneName"></span>.</h2>
   <p class="r" style="--i:8" id="doneLine"></p>
-  <p class="small r" style="--i:9" id="doneTimes" hidden></p>
-  <p class="small r" style="--i:10" id="doneSmall"></p>
+  <p class="small r" style="--i:9" id="doneSmall"></p>
   <p class="small r" style="--i:10" id="demoDone" hidden>Preview only. Nothing was sent or saved.</p>
 </section>
 
@@ -465,7 +475,7 @@ const tidy = (v, area) => area ? v.replace(/\r\n?/g, '\n').replace(/\t/g, ' ').r
   : v.replace(/[\r\n\t]/g, ' ').replace(HIDDEN, '').replace(/ {2,}/g, ' ').trim();
 const STEPS = [
   {key: 'name', type: 'text', label: 'Name', q: 'What should I call you?', auto: 'given-name', max: 80, req: 'Enter a name to continue.'},
-  {key: 'email', type: 'email', label: 'Email', q: 'Where should I send my reply?',
+  {key: 'email', type: 'email', label: 'Email', q: 'Which email should I send my reply to?',
     hint: 'Check the spelling. This is the only way I can reach you.', hintConfirm: 'One email arrives first, to confirm the address is yours.',
     auto: 'email', max: 120, req: 'Enter your email address to continue.'},
   {key: 'localStatus', type: 'choice', label: 'Citizen or PR', q: 'Are you a Singapore citizen or Singapore permanent resident?',
@@ -1152,7 +1162,7 @@ async function ask() {
 }
 function bookHints() {
   const set = (key, text) => { const el = $('#h_' + key); if (el) el.textContent = text; };
-  set('email', 'Check the spelling. Your link to choose a meeting time goes here.');
+  set('email', 'Please ensure your email is correct, as the meeting arrangement will be sent here.');
   set('meetWhen', 'Tap all that suit you. The times I offer come from these.');
 }
 function showGate() {
@@ -1227,12 +1237,8 @@ async function send() {
   $('#doneName').textContent = data.name;
   const mail = document.createElement('b'); mail.textContent = data.email;
   if (reply && reply.mail === 'sent') {
-    // the script has emailed them their link; the times are what is open at this moment, and nothing is held
+    // the script has emailed them their link; the times are on the page that link opens, not here (Jarad, 25 November)
     $('#doneLine').append('I’ve sent an email to ', mail, '. Open it to pick a time for us to meet.');
-    if (Array.isArray(reply.times) && reply.times.length) {
-      const el = $('#doneTimes'); el.hidden = false; el.append('Some of the times I’m free:'); $('#done').classList.add('long');
-      reply.times.slice(0, 3).forEach((t) => { const line = document.createElement('span'); line.textContent = String(t.day) + ', ' + String(t.at); el.append(line); });
-    }
     $('#doneSmall').textContent = 'If you don’t see it in a few minutes, check your spam folder.';
   } else if (CONFIG.confirmEmail) {
     $('#doneLine').append('One more step. I have sent an email to ', mail, '. Tap the link in it to confirm the address is yours, and I will reply from there.');
