@@ -327,6 +327,7 @@ body:not(.split):not(.flat) #mine .actfoot .actions{margin-top:6px;--d:0}     /*
 #mine .field{margin-top:22px}                       /* their mobile number, asked once, under the times */
 #mine .field label{display:block;font-weight:300;font-size:15.5px;color:var(--soft)}
 #mine .field input{font-size:20px;padding:6px 0 10px}
+#mine .field + .field{margin-top:14px}              /* where they would like to meet, optional, under the number */
 #mine .field + .foot{margin-top:22px}
 .btn.line{background:transparent;box-shadow:inset 0 0 0 1.5px rgba(245,240,225,.6)}
 .btn.line:hover{background:rgba(245,240,225,.1)}
@@ -1260,7 +1261,7 @@ addEventListener('online', () => { if (waitOnline && mode === 'flow' && STEPS[cu
    then their meeting, which the same link lets them move or cancel. …#o= and the owner's key is Jarad's view of one
    applicant. The receiving script decides everything; this only shows what it answers. */
 const LINK = /^#(c|o)=([a-f0-9]{32})$/.exec(location.hash);
-const mine = LINK ? {owner: LINK[1] === 'o', key: LINK[2], v: null, pick: '', page: 0, moving: false, confirm: '', busy: false, bright: false, plate: '', first: null, phone: ''} : null;
+const mine = LINK ? {owner: LINK[1] === 'o', key: LINK[2], v: null, pick: '', page: 0, moving: false, confirm: '', busy: false, bright: false, plate: '', first: null, phone: '', where: ''} : null;
 const mineEl = $('#mine'), mineBody = $('#mineBody');
 addEventListener('hashchange', () => { if (/^#(c|o)=[a-f0-9]{32}$/.test(location.hash)) location.reload(); });
 addEventListener('w4tset', () => { if (mine && mine.plate) window.W4TSet.setName(mine.plate); });
@@ -1307,7 +1308,9 @@ function mineHtml(msg) {
     const links = (v.more ? btn('more', 'Show other times', 'more') : '') + (mine.page ? btn('first', 'Back to the first few', 'more') : '');
     if (links) h.push('<div class="mores r"' + i() + '>' + links + '</div>');
     if (v.phone && !mine.moving) h.push('<div class="field r"' + i() + '><label for="minePhone">Your mobile number, so I can confirm the details with you</label>' +
-      '<input id="minePhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" value="' + esc(mine.phone) + '"></div>');
+      '<input id="minePhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" value="' + esc(mine.phone) + '"></div>' +
+      '<div class="field r"' + i() + '><label for="mineWhere">Where would you like to meet? (optional)</label>' +
+      '<input id="mineWhere" type="text" autocomplete="off" maxlength="80" value="' + esc(mine.where) + '"></div>');
     h.push('<div class="foot r"' + i() + '><p class="err" role="alert">' + esc(msg || '') + '</p><div class="actions">' + btn('book', 'Book this time') +
       (mine.moving ? btn('keep', 'Keep my time', 'more') : '') + '</div></div><i class="barmark" aria-hidden="true"></i>');
   };
@@ -1421,7 +1424,8 @@ async function mineBook(btn) {
   const box = $('#minePhone');
   // the same rule as the script: eight digits starting 8 or 9, with or without +65
   if (box && !/^(65)?[89]\d{7}$/.test(mine.phone.replace(/[\s().+-]/g, ''))) { mineErr(MSAY.phone); box.focus(); return; }
-  const out = await mineCall(box ? {do: 'book', t: mine.pick, phone: mine.phone} : {do: 'book', t: mine.pick}, btn, 'Booking…');
+  const where = mine.where.trim();
+  const out = await mineCall(box ? (where ? {do: 'book', t: mine.pick, phone: mine.phone, where: where} : {do: 'book', t: mine.pick, phone: mine.phone}) : {do: 'book', t: mine.pick}, btn, 'Booking…');
   if (!out) return;
   const got = mineTake(out);
   if (got === 'view') {
@@ -1442,7 +1446,9 @@ async function mineAct(what, btn) {          // cancel (theirs), ask (the owner'
   if (got) return mineDraw(what === 'ask' && out.ok && out.stage === 'booked' ? MSAY.movedOn : '');
   mineErr(MSAY[out.code] || MSAY.error);
 }
-mineBody.addEventListener('input', (e) => { if (e.target.id === 'minePhone') { mine.phone = e.target.value; mineErr(''); } });
+mineBody.addEventListener('input', (e) => { if (e.target.id === 'minePhone') { mine.phone = e.target.value; mineErr(''); } else if (e.target.id === 'mineWhere') mine.where = e.target.value; });
+// On a phone the Book button stays at the foot of the screen, so a box they tap is brought clear of it.
+mineBody.addEventListener('focusin', (e) => { if (e.target.id === 'minePhone' || e.target.id === 'mineWhere') e.target.scrollIntoView({block: 'center'}); });
 mineBody.addEventListener('click', (e) => {
   const b = e.target.closest('button');
   if (!b || mine.busy) return;
