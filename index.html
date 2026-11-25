@@ -340,6 +340,11 @@ body:not(.split):not(.flat) #mine .actfoot .actions{margin-top:6px;--d:0}     /*
 #mine .field input{font-size:20px;padding:6px 0 10px}
 #mine .field + .field{margin-top:14px}              /* where they would like to meet, optional, under the number */
 #mine .field + .foot{margin-top:22px}
+.fix{margin-top:30px}                                /* the owner's brief: the date, time and place he agreed with them */
+.fix .pair{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:0 22px}
+#mine .fix .field{margin-top:16px}
+#mine .fix input[type=date],#mine .fix input[type=time]{color-scheme:dark;display:block;min-height:46px;text-align:left}
+#mine .fix input::-webkit-date-and-time-value{text-align:left}
 .btn.line{background:transparent;box-shadow:inset 0 0 0 1.5px rgba(245,240,225,.6)}
 .btn.line:hover{background:rgba(245,240,225,.1)}
 .more{display:inline-flex;align-items:center;min-height:44px;border:0;background:transparent;padding:6px 0;font-family:var(--type);font-weight:400;font-size:15.5px;letter-spacing:-.01em;
@@ -1119,7 +1124,7 @@ function enterFlow() {
   B.classList.add('inflow'); topEl.classList.remove('on');
   if (flat) { $('#site').hidden = true; scrollTo(0, 0); }
   tween('seat', 1, 1500, 'inout');
-  if (Date.now() - gate.at > 90000) ask();
+  if (!counted.start || Date.now() - gate.at > 90000) ask('start');
   setTimeout(() => {
     fl.hidden = false;
     root.style.setProperty('--d', 1);
@@ -1152,11 +1157,24 @@ async function getJson(url, init, ms) {
 }
 const gate = {at: 0, open: true};
 let shut = false;
-async function ask() {
+/* Each tab says once that the page was opened and once that the questions were reached: a count by day and by where
+   they came from, sent with the "are you open?" question. Nothing about the visitor goes with it. */
+const counted = {};
+function count(step) {
+  if (!step || counted[step]) return '';
+  counted[step] = true;
+  try {
+    const had = sessionStorage.getItem('w4t-seen') || '';
+    if (had.indexOf(step) >= 0) return '';
+    sessionStorage.setItem('w4t-seen', had + step + ' ');
+  } catch (e) {}
+  return '?seen=' + step + '&src=' + encodeURIComponent(source);
+}
+async function ask(step) {
   if (!CONFIG.endpoint) return;
   gate.at = Date.now();
   try {
-    const out = await getJson(CONFIG.endpoint, {cache: 'no-store'}, 9000);
+    const out = await getJson(CONFIG.endpoint + count(step), {cache: 'no-store'}, 9000);
     if (out && out.service === 'w4t-apply') { gate.open = out.accepting !== false; showGate(); if (out.book === true) bookHints(); }
   } catch (e) {}
 }
@@ -1267,16 +1285,32 @@ addEventListener('online', () => { if (waitOnline && mode === 'flow' && STEPS[cu
    then their meeting, which the same link lets them move or cancel. …#o= and the owner's key is Jarad's view of one
    applicant. The receiving script decides everything; this only shows what it answers. */
 const LINK = /^#(c|o)=([a-f0-9]{32})$/.exec(location.hash);
-const mine = LINK ? {owner: LINK[1] === 'o', key: LINK[2], v: null, pick: '', page: 0, moving: false, confirm: '', busy: false, bright: false, plate: '', first: null, phone: '', where: ''} : null;
+const mine = LINK ? {owner: LINK[1] === 'o', key: LINK[2], v: null, pick: '', page: 0, moving: false, confirm: '', busy: false, bright: false, plate: '', first: null, phone: '', where: '', fix: null} : null;
 const mineEl = $('#mine'), mineBody = $('#mineBody');
 addEventListener('hashchange', () => { if (/^#(c|o)=[a-f0-9]{32}$/.test(location.hash)) location.reload(); });
+// Their page left open, then looked at again (the same link tapped twice, or back from another app): ask once more, so
+// it never keeps showing buttons for a meeting he has since confirmed or cancelled. Nothing they are doing is disturbed.
+let mineAt = Date.now();
+async function mineFresh(now) {
+  if (!mine || mine.owner || !mine.v || mine.busy || mine.confirm || mine.moving || mine.pick) return;
+  if (!now && Date.now() - mineAt < 60000) return;
+  mineAt = Date.now();
+  const was = JSON.stringify(mine.v), out = await mineCall({do: 'open'});
+  if (out && (out.stage || ['gone', 'closed'].includes(out.code)) && JSON.stringify(out) !== was && mineTake(out)) mineDraw();
+}
+addEventListener('pageshow', (e) => { if (e.persisted) mineFresh(true); });
+document.addEventListener('visibilitychange', () => { if (!document.hidden) mineFresh(false); });
 addEventListener('w4tset', () => { if (mine && mine.plate) window.W4TSet.setName(mine.plate); });
 const MSAY = {
   none: 'Please pick a time first.',
   phone: 'Please add your Singapore mobile number so I can reach you.',
   taken: 'Sorry, someone just took that time. Here are some others.',
   have: 'You already have a meeting booked with me. Use the link in my other email to see or change it.',
-  movedOn: 'They have just moved it, so nothing was changed.',
+  fixNone: 'Pick a date and a time first.',
+  fixPast: 'That time has already passed.',
+  fixFar: 'That is more than a year away. Check the year.',
+  fixTime: 'Type the time like 15:30.',
+  changed: 'They have just changed it, so nothing was set. It is now as shown above.',
   calendar: 'I can’t reach my calendar right now, so nothing has changed. Please try again in a few minutes.',
   busy: 'The page is busy right now. Please wait a minute and try again.',
   network: 'That didn’t go through. Please check your connection and try again.',
@@ -1322,18 +1356,30 @@ function mineHtml(msg) {
   };
   if (!v) head('One moment.');
   else if (v.owner) {
-    const first = esc(String(v.name || '').split(' ')[0]);
-    if (mine.confirm === 'ask' && v.meeting) {
-      head('Ask ' + first + ' for another time?', 'They get one email with their link, and ' + when(v.meeting) + ' is freed in your calendar.');
-      acts(btn('ask2', 'Yes, ask them') + btn('keep', 'Keep it', 'more'));
+    if (mine.confirm === 'end' && v.meeting) {
+      head('Cancel the meeting with ' + esc(String(v.name || '').split(' ')[0]) + '?', when(v.meeting) + ' comes off your calendar, and Google tells them it is cancelled.');
+      acts(btn('end2', 'Yes, cancel it', 'btn line') + btn('keep', 'Keep it', 'more'));
+    } else if (mine.confirm === 'clash' && v.wanted) {
+      head('You have something else then.', when(v.wanted) + ' overlaps something in your calendar.');
+      acts(btn('fix2', 'Set it anyway') + btn('keep', 'Pick another time', 'more'));
     } else {
-      head(esc(v.name), v.stage === 'booked' && v.meeting ? when(v.meeting) + ', Singapore time.' : v.stage === 'asked' ? 'You asked for another time. They have not chosen yet.'
-        : v.stage === 'cancelled' ? 'They cancelled their meeting.' : 'They have not chosen a time yet.', 'Applicant ' + esc(v.ref));
+      head(esc(v.name), v.stage === 'booked' && v.meeting ? when(v.meeting) + ', Singapore time.' + (v.sure ? ' Confirmed by you' + (v.where ? ', ' + esc(v.where) : '') + '.' : '')
+        : v.stage === 'cancelled' ? (v.mine ? 'You cancelled this meeting.' : 'They cancelled their meeting.') : 'They have not chosen a time yet.', 'Applicant ' + esc(v.ref));
       if (/failed/.test(v.note || '')) h.push('<p class="hint r"' + i() + '>' + esc(v.note) + '</p>');
       h.push('<dl class="review-list r"' + i() + '>' + [['Email', v.email]].concat(Array.isArray(v.answers) ? v.answers : []).filter((a) => a[1])
         .map((a) => '<div><dt>' + esc(a[0]) + '</dt><dd>' + esc(a[1]) + '</dd></div>').join('') + '</dl>');
-      const tel = String(v.mobile || '').replace(/\D/g, '');
-      if (v.stage === 'booked') acts(btn('ask', 'Ask for another time', 'btn line') +
+      // What he agreed with them by text. It starts as the meeting they hold, in Singapore time whatever this device is set to.
+      if (!mine.fix) {
+        const at = v.stage === 'booked' && v.meeting ? new Date(Date.parse(v.meeting.t) + 8 * 3600000).toISOString() : '';
+        mine.fix = {day: at.slice(0, 10), at: at.slice(11, 16), place: String(v.where || '')};
+      }
+      const f = mine.fix, tel = String(v.mobile || '').replace(/\D/g, '');
+      h.push('<div class="fix r"' + i() + '><p class="eyebrow">Agreed with them by text</p><div class="pair">' +
+        '<div class="field"><label for="fixDay">Date</label><input id="fixDay" type="date" min="' + new Date(Date.now() + 8 * 3600000).toISOString().slice(0, 10) + '" value="' + esc(f.day) + '"></div>' +
+        '<div class="field"><label for="fixAt">Time (Singapore)</label><input id="fixAt" type="time" value="' + esc(f.at) + '"></div></div>' +
+        '<div class="field"><label for="fixPlace">Place (optional)</label><input id="fixPlace" type="text" autocomplete="off" maxlength="80" value="' + esc(f.place) + '"></div>' +
+        '<p class="hint">Your calendar and their invitation change to match.</p></div>');
+      acts(btn('fix', 'Set this meeting') + (v.stage === 'booked' ? btn('end', 'Cancel this meeting', 'more') : '') +
         (tel ? '<a class="more" target="_blank" rel="noopener noreferrer" href="https://wa.me/65' + tel + '">Text them on WhatsApp</a>' : ''));
     }
   } else if (!v.stage) {
@@ -1350,23 +1396,28 @@ function mineHtml(msg) {
     const notes = [];
     if (v.invite) notes.push('The invite is in your email.');
     if (v.asked) notes.push('I’ll answer your question when we meet.');
-    if (!v.left) notes.push('If you need to change it again, just reply to my email.');
-    head(esc(v.meeting.day) + ', <span class="at">' + esc(v.meeting.at) + '</span>', (v.place ? 'See you at ' + esc(v.place) + '. I’ll contact you soon to confirm.' : 'I’ll contact you soon to confirm the details.'), 'You’re booked' + (v.first ? ', ' + esc(v.first) : '') + '.');
+    if (!v.left) notes.push(v.sure ? 'If you need to change it, just WhatsApp me.' : 'If you need to change it again, just reply to my email.');
+    // v.sure: he has confirmed the time (and the place) with them himself, so nothing is left to confirm
+    head(esc(v.meeting.day) + ', <span class="at">' + esc(v.meeting.at) + '</span>', v.sure ? (v.place ? 'See you at ' + esc(v.place) + '.' : 'See you then.')
+      : (v.place ? 'See you at ' + esc(v.place) + '. I’ll contact you soon to confirm.' : 'I’ll contact you soon to confirm the details.'), 'You’re booked' + (v.first ? ', ' + esc(v.first) : '') + '.');
     if (notes.length) h.push('<p class="hint r"' + i() + '>' + notes.join(' ') + '</p>');
     const wa = String(v.wa || '').replace(/\D/g, '');
-    h.push('<div class="actfoot">');
-    acts((v.left ? btn('move', 'Reschedule', 'btn line') : '') + btn('drop', 'I can’t make it', 'more') +
-      (wa ? '<a class="more" target="_blank" rel="noopener noreferrer" href="https://wa.me/' + wa + '">Message me on WhatsApp</a>' : ''));
-    h.push('</div>');
+    // once he has confirmed it (v.sure) their link only shows it: no moving, no cancelling, just the way to reach him
+    const can = (v.left ? btn('move', 'Reschedule', 'btn line') : '') + (v.sure ? '' : btn('drop', 'I can’t make it', 'more')) +
+      (wa ? '<a class="' + (v.sure ? 'btn line' : 'more') + '" target="_blank" rel="noopener noreferrer" href="https://wa.me/' + wa + '">Message me on WhatsApp</a>' : '');
+    if (can) h.push('<div class="actfoot">');
+    acts(can);
+    if (can) h.push('</div>');
   } else if (v.stage === 'cancelled' && !(v.times && v.times.length)) {
-    head('Your meeting is cancelled.', 'If you’d like to arrange another time, just reply to my email.');
+    head('Your meeting is cancelled.', 'If you’d like to arrange another time, just ' + (v.sure ? 'WhatsApp me.' : 'reply to my email.'));
+    const wa2 = String(v.wa || '').replace(/\D/g, '');
+    if (v.sure && wa2) acts('<a class="btn line" target="_blank" rel="noopener noreferrer" href="https://wa.me/' + wa2 + '">Message me on WhatsApp</a>');
   } else if (v.times && !v.times.length) {
     if (mine.moving) { head('I don’t have any other free times right now.', 'Your meeting stays on ' + when(v.meeting) + '.'); acts(btn('keep', 'Keep my time')); }
     else if (v.wait) { head('I can’t load my free times right now.', 'Please try again in a few minutes.'); acts(btn('load', 'Try again')); }
     else head('I don’t have a free time in the next two weeks.', 'Reply to my email and we’ll work something out.');
   } else {
     if (v.stage === 'booked') head('Pick a new time.', 'Your meeting stays on ' + when(v.meeting) + ' until you book a new one.');
-    else if (v.stage === 'asked') head('Sorry, I need to move our meeting.', 'Could you pick another time that works for you?');
     else if (v.stage === 'cancelled') head('Your meeting is cancelled.', 'If you’d still like to meet, you can pick another time below.');
     else head('Pick a time that suits you.', 'We’ll meet for about ' + esc(v.minutes) + ' minutes' + (v.place ? ' at ' + esc(v.place) : '') + '. All times are in Singapore time.');
     if (v.times) times();
@@ -1411,7 +1462,7 @@ function mineTake(out) {
   return '';
 }
 async function mineLoad(first) {
-  mine.v = null; mine.pick = ''; mine.page = 0; mine.moving = false; mine.confirm = '';
+  mine.v = null; mine.pick = ''; mine.page = 0; mine.moving = false; mine.confirm = ''; mine.fix = null;
   if (!first) mineDraw();
   const out = await (first || mineCall({do: mine.owner ? 'owner' : 'open'}));
   mine.v = out && typeof out === 'object' ? out : {ok: false, code: 'network'};
@@ -1442,17 +1493,58 @@ async function mineBook(btn) {
   if (got) return mineDraw();
   mineErr(MSAY[out.code] || MSAY.error);
 }
-async function mineAct(what, btn) {          // cancel (theirs), ask (the owner's)
-  // the owner's ask names the time he is looking at: if they have moved it since, the script changes nothing
-  const seen = what === 'ask' && mine.v && mine.v.meeting ? mine.v.meeting.t : '';
-  const out = await mineCall(seen ? {do: what, t: seen} : {do: what}, btn);
+async function mineAct(what, btn) {          // cancel
+  const out = await mineCall({do: what}, btn);
   if (!out) return;
   const got = mineTake(out);
-  if (got === 'view' && out.ok) { mine.confirm = ''; mine.moving = false; mine.pick = ''; mine.page = 0; }
-  if (got) return mineDraw(what === 'ask' && out.ok && out.stage === 'booked' ? MSAY.movedOn : '');
+  if (got === 'view' && (out.ok || out.sure)) { mine.confirm = ''; mine.moving = false; mine.pick = ''; mine.page = 0; }
+  if (got) return mineDraw();
   mineErr(MSAY[out.code] || MSAY.error);
 }
-mineBody.addEventListener('input', (e) => { if (e.target.id === 'minePhone') { mine.phone = e.target.value; mineErr(''); } else if (e.target.id === 'mineWhere') mine.where = e.target.value; });
+// The owner sets the meeting he agreed with them. The request names the time he is looking at: if they have changed it
+// since, the script changes nothing. force: he has been told it overlaps something in his calendar.
+async function mineFix(btn, force) {
+  // read from the boxes themselves: a picker may not have sent its change yet
+  const box = (id, was) => { const e = mineBody.querySelector('#' + id); return e ? e.value : was || ''; };
+  const f = {day: box('fixDay', mine.fix && mine.fix.day).trim(), at: box('fixAt', mine.fix && mine.fix.at).trim(), place: box('fixPlace', mine.fix && mine.fix.place)};
+  mine.fix = f;
+  if (!f.day || !f.at) return mineErr(MSAY.fixNone);
+  // a browser with no time picker shows a plain box: "03:00 PM" must never be read as three in the morning
+  if (!/^([01]\d|2[0-3]):[0-5]\d(:\d\d(\.\d+)?)?$/.test(f.at)) return mineErr(MSAY.fixTime);
+  const start = /^\d{4}-\d\d-\d\d$/.test(f.day) ? Date.parse(f.day + 'T' + f.at.slice(0, 5) + ':00+08:00') : NaN;
+  if (isNaN(start)) return mineErr(MSAY.fixNone);
+  if (start <= Date.now()) return mineErr(MSAY.fixPast);
+  if (start > Date.now() + 365 * 86400000) return mineErr(MSAY.fixFar);
+  const body = {do: 'set', t: new Date(start).toISOString(), seen: mine.v.stage === 'booked' && mine.v.meeting ? mine.v.meeting.t : ''};
+  if (f.place.trim()) body.place = f.place.trim();
+  if (force) body.force = true;
+  const out = await mineCall(body, btn, 'Setting…');
+  if (!out) return;
+  if (out.code === 'invalid') return mineErr(MSAY.fixNone);      // a time the script will not take: his brief stays
+  const got = mineTake(out);
+  if (got !== 'view') return got ? mineDraw() : mineErr(MSAY[out.code] || MSAY.error);
+  mine.confirm = out.code === 'clash' ? 'clash' : '';
+  if (out.ok || out.code === 'changed') mine.fix = null;        // the boxes start again from what is true now
+  mineDraw(out.ok || out.code === 'clash' ? '' : MSAY[out.code] || MSAY.error);
+}
+// The owner calls the meeting off, naming the time he is looking at.
+async function mineEnd(btn) {
+  const out = await mineCall({do: 'off', seen: mine.v.meeting ? mine.v.meeting.t : ''}, btn);
+  if (!out) return;
+  if (out.code === 'invalid') return mineErr(MSAY.error);
+  const got = mineTake(out);
+  if (got !== 'view') return got ? mineDraw() : mineErr(MSAY[out.code] || MSAY.error);
+  mine.confirm = ''; mine.fix = null;
+  mineDraw(out.ok ? '' : MSAY[out.code] || MSAY.error);
+}
+const mineTyped = (e) => {
+  const id = e.target.id;
+  if (id === 'minePhone') { mine.phone = e.target.value; mineErr(''); }
+  else if (id === 'mineWhere') mine.where = e.target.value;
+  else if (mine.fix && (id === 'fixDay' || id === 'fixAt' || id === 'fixPlace')) { mine.fix[id === 'fixDay' ? 'day' : id === 'fixAt' ? 'at' : 'place'] = e.target.value; mineErr(''); }
+};
+mineBody.addEventListener('input', mineTyped);
+mineBody.addEventListener('change', mineTyped);
 // On a phone the Book button stays at the foot of the screen, so a box they tap is brought clear of it.
 mineBody.addEventListener('focusin', (e) => { if (e.target.id === 'minePhone' || e.target.id === 'mineWhere') e.target.scrollIntoView({block: 'center'}); });
 mineBody.addEventListener('click', (e) => {
@@ -1471,9 +1563,11 @@ mineBody.addEventListener('click', (e) => {
   if (what === 'book') return mineBook(b);
   if (what === 'move') return mineTimes(0, b, true);
   if (what === 'keep') { mine.moving = false; mine.confirm = ''; mine.pick = ''; mine.page = 0; return mineDraw(); }
-  if (what === 'drop' || what === 'ask') { mine.confirm = what; return mineDraw(); }
+  if (what === 'drop' || what === 'end') { mine.confirm = what; return mineDraw(); }
+  if (what === 'end2') return mineEnd(b);
   if (what === 'drop2') return mineAct('cancel', b);
-  if (what === 'ask2') return mineAct('ask', b);
+  if (what === 'fix') return mineFix(b, false);
+  if (what === 'fix2') return mineFix(b, true);
 });
 
 /* ---------- start ---------- */
@@ -1507,7 +1601,7 @@ Promise.race([Promise.all([fontsReady, shot(KN), shot(KD), shot(KC), shot(KZ)]),
   fit(); intro();
   if (mine) { open(true); requestAnimationFrame(() => mineEl.classList.add('on')); return mineLoad(mine.first); }
   if (resume) enterFlow();
-  setTimeout(ask, 1200);
+  setTimeout(() => ask('open'), 1200);
 });
 if (document.fonts && document.fonts.load) document.fonts.load('400 188px "Nothing You Could Do"').then(drawInk, drawInk); else drawInk();
 </script>
